@@ -1,0 +1,80 @@
+import type { Metadata } from "next";
+import { NextIntlClientProvider, hasLocale } from "next-intl";
+import { getMessages, getTranslations } from "next-intl/server";
+import { notFound } from "next/navigation";
+import { Geist, Geist_Mono } from "next/font/google";
+import { routing } from "@/i18n/routing";
+import Navigation from "@/components/layout/Navigation";
+import Footer from "@/components/layout/Footer";
+import AnimatedBackground from "@/components/ui/AnimatedBackground";
+
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"], display: "swap" });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], display: "swap" });
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+  return {
+    title: t("title"),
+    description: t("description"),
+    metadataBase: new URL(process.env.BETTER_AUTH_URL ?? "http://localhost:3000"),
+    robots: { index: true, follow: true },
+    alternates: {
+      canonical: `${process.env.BETTER_AUTH_URL ?? "http://localhost:3000"}/${locale}`,
+      languages: { de: "/de", en: "/en" },
+    },
+    openGraph: {
+      title: t("title"),
+      description: t("description"),
+      type: "website",
+      locale: locale === "de" ? "de_DE" : "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("title"),
+      description: t("description"),
+    },
+  };
+}
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+export default async function LocaleLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
+  const messages = await getMessages();
+
+  return (
+    <html
+      lang={locale}
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${geistMono.variable}`}
+      data-scroll-behavior="smooth"
+    >
+      <body className="bg-[#030712] text-white antialiased min-h-screen flex flex-col">
+        <NextIntlClientProvider messages={messages}>
+          <AnimatedBackground />
+          <Navigation />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </NextIntlClientProvider>
+      </body>
+    </html>
+  );
+}

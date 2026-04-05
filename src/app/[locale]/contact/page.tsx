@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { FiMail, FiMapPin, FiCheckCircle, FiAlertCircle, FiSend, FiClock } from "react-icons/fi";
 import { SiDiscord, SiGithub, SiX } from "react-icons/si";
-import { FiLinkedin } from "react-icons/fi";
 import SectionHeader from "@/components/ui/SectionHeader";
 import GlassCard from "@/components/ui/GlassCard";
 import { createContactSchema, type ContactFormData } from "@/lib/validations/contact";
@@ -45,10 +44,9 @@ export default function ContactPage() {
   };
 
   const socialLinks = [
-    { href: "https://github.com", icon: SiGithub, label: "GitHub" },
-    { href: "https://discord.com", icon: SiDiscord, label: "Discord" },
-    { href: "https://x.com", icon: SiX, label: "X / Twitter" },
-    { href: "https://linkedin.com", icon: FiLinkedin, label: "LinkedIn" },
+    { href: "https://github.com/XSaitoKungX", icon: SiGithub, label: "GitHub" },
+    { href: "https://discord.com/channels/@me/848917797501141052", icon: SiDiscord, label: "Discord" },
+    { href: "https://x.com/xsait0kungx", icon: SiX, label: "X / Twitter" },
   ];
 
   const inputClass =
@@ -83,7 +81,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-xs text-white/40">{t("info.email")}</p>
-                    <p className="text-sm font-medium text-white/80">mark@example.dev</p>
+                    <p className="text-sm font-medium text-white/80">mark@xsaitox.dev</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">

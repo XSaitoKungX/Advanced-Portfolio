@@ -385,8 +385,8 @@ export default function TerminalHero() {
                   <div className="h-2" />
                 ) : line.type === "ascii" ? (
                   <div
-                    className="text-[#7C6BE8] text-xs leading-tight whitespace-pre font-mono"
-                    style={{ textShadow: "0 0 14px rgba(124,107,232,0.5)" }}
+                    className="text-[#A78BFA] text-[11px] leading-[1.3] whitespace-pre font-mono font-bold"
+                    style={{ textShadow: "0 0 18px rgba(167,139,250,0.8), 0 0 6px rgba(167,139,250,0.5)" }}
                   >
                     {line.content}
                   </div>

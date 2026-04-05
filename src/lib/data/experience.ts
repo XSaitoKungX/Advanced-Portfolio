@@ -21,7 +21,7 @@ export const experiences: Experience[] = [
     startDate: "2018-01",
     endDate: "2018-12",
     description: {
-      de: 'Die US-Serie "Scorpion" - basierend auf dem echten Team um Walter O\'Brien - hat mich als 13-Jahriger fasziniert und war der direkte Ausloser dafur, dass ich anfing zu programmieren. Ich wollte verstehen, wie Computer und Software wirklich funktionieren. Mein erstes "Hello World" in Python war der Anfang von allem.',
+      de: 'Die US-Serie "Scorpion" - basierend auf dem echten Team um Walter O\'Brien - hat mich als 13-Jähriger fasziniert und war der direkte Auslöser dafür, dass ich anfing zu programmieren. Ich wollte verstehen, wie Computer und Software wirklich funktionieren. Mein erstes "Hello World" in Python war der Anfang von allem.',
       en: 'The US TV show "Scorpion" - based on the real-life team around Walter O\'Brien - fascinated me at age 13 and was the direct trigger that got me into programming. I wanted to understand how computers and software actually work. My first "Hello World" in Python was where it all began.',
     },
     technologies: ["Python"],

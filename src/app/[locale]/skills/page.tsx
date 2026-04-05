@@ -15,11 +15,11 @@ const LEVEL_LABEL: Record<string, string> = {
   expert: "Expert",
 };
 
-const LEVEL_WIDTH: Record<string, string> = {
-  beginner: "25%",
-  intermediate: "55%",
-  advanced: "78%",
-  expert: "95%",
+const LEVEL_COLOR: Record<string, string> = {
+  beginner: "#6B7280",
+  intermediate: "#F59E0B",
+  advanced: "#3B82F6",
+  expert: "#10B981",
 };
 
 function SkillIcon({ name }: { name: string }) {
@@ -132,17 +132,20 @@ export default function SkillsPage() {
                     <p className="text-xs font-semibold text-white/80 mb-2 leading-tight">
                       {skill.name}
                     </p>
-                    <div className="w-full h-1 bg-white/[0.06] rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: LEVEL_WIDTH[skill.level] }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, delay: i * 0.04, ease: "easeOut" }}
-                        className="h-full rounded-full"
-                        style={{ background: `linear-gradient(90deg, ${skill.color}80, ${skill.color})` }}
+                    <span
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium"
+                      style={{
+                        background: `${LEVEL_COLOR[skill.level]}18`,
+                        color: LEVEL_COLOR[skill.level],
+                        border: `1px solid ${LEVEL_COLOR[skill.level]}35`,
+                      }}
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-full"
+                        style={{ background: LEVEL_COLOR[skill.level] }}
                       />
-                    </div>
-                    <p className="text-[10px] text-white/30 mt-1.5">{LEVEL_LABEL[skill.level]}</p>
+                      {LEVEL_LABEL[skill.level]}
+                    </span>
                   </div>
                 </div>
               </TiltCard>

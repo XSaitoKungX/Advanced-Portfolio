@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { RiTerminalBoxFill } from "react-icons/ri";
-import { FiGithub, FiLinkedin } from "react-icons/fi";
+import { FiGithub } from "react-icons/fi";
 import { SiDiscord, SiX } from "react-icons/si";
 
 export default function Footer() {
@@ -19,10 +19,9 @@ export default function Footer() {
   ];
 
   const social = [
-    { href: "https://github.com", icon: FiGithub, label: "GitHub" },
-    { href: "https://discord.com", icon: SiDiscord, label: "Discord" },
-    { href: "https://x.com", icon: SiX, label: "X" },
-    { href: "https://linkedin.com", icon: FiLinkedin, label: "LinkedIn" },
+    { href: "https://github.com/XSaitoKungX", icon: FiGithub, label: "GitHub" },
+    { href: "https://discord.com/channels/@me/848917797501141052", icon: SiDiscord, label: "Discord" },
+    { href: "https://x.com/xsait0kungx", icon: SiX, label: "X" },
   ];
 
   return (

@@ -21,24 +21,24 @@ function getAboutContent(locale: "de" | "en", age: number) {
   if (locale === "de") {
     return `## Wer ich bin
 
-Ich bin Mark, ${age} Jahre alt, aus Deutschland und aktuell in der Ausbildung zum **Fachinformatiker fuer Anwendungsentwicklung** an der Leuphana Universitaet (voraussichtlicher Abschluss: 2027).
+Ich bin Mark, ${age} Jahre alt, aus Deutschland und aktuell in der Ausbildung zum **Fachinformatiker für Anwendungsentwicklung** an der Leuphana Universität (voraussichtlicher Abschluss: 2027).
 
-Angefangen hat alles mit der US-Serie **"Scorpion"** – die Geschichte um Walter O'Brien und sein Team hat mich als 13-Jaehriger so fasziniert, dass ich anfing zu verstehen, wie Software wirklich funktioniert. Seitdem hoere ich nicht mehr auf.
+Angefangen hat alles mit der US-Serie **"Scorpion"** – die Geschichte um Walter O'Brien und sein Team hat mich als 13-Jähriger so fasziniert, dass ich anfing zu verstehen, wie Software wirklich funktioniert. Seitdem höre ich nicht mehr auf.
 
-Ich habe mir das Programmieren groesstenteils selbst beigebracht – von ersten Python-Skripten und Discord-Bots bis hin zu modernen Web-Apps mit React und Next.js. Mein oeffentlicher Discord-Bot **Astra** laeuft inzwischen in ueber 90 Servern.
+Ich habe mir das Programmieren größtenteils selbst beigebracht – von ersten Python-Skripten und Discord-Bots bis hin zu modernen Web-Apps mit React und Next.js. Mein öffentlicher Discord-Bot **Astra** läuft inzwischen in über 90 Servern.
 
 ## Was mich antreibt
 
-Ich baue Software, die ich selbst gerne nutzen wuerde – funktional, schnell und visuell ansprechend. Mir ist wichtig:
+Ich baue Software, die ich selbst gerne nutzen würde – funktional, schnell und visuell ansprechend. Mir ist wichtig:
 
-- **Sauberer Code** – wartbar, verstaendlich, strukturiert
-- **Gutes Design** – visuelle Qualitaet und durchdachte UX
+- **Sauberer Code** – wartbar, verständlich, strukturiert
+- **Gutes Design** – visuelle Qualität und durchdachte UX
 - **Ehrliches Handwerk** – solide Grundlagen statt Buzzword-Bingo
 - **Weiterentwicklung** – neugierig bleiben, Dinge ausprobieren
 
 ## Tech-Stack
 
-Mein aktueller Hauptstack: **TypeScript**, **Next.js**, **React**, **Node.js / Bun** und **PostgreSQL**. Fuer Deployment und Infrastruktur nutze ich **Docker**, **Nginx** und **Vercel**.
+Mein aktueller Hauptstack: **TypeScript**, **Next.js**, **React**, **Node.js / Bun** und **PostgreSQL**. Für Deployment und Infrastruktur nutze ich **Docker**, **Nginx** und **Vercel**.
 
 Ich bin kein Experte in allem – aber ich bringe in jedem dieser Bereiche echte Projekterfahrung mit.`;
   }
@@ -87,7 +87,7 @@ export default function AboutPage() {
 
   const stats = [
     { value: `${age}`, label: t("stats.age") },
-    { value: "7+", label: t("stats.experience") },
+    { value: "2", label: t("stats.experience") },
     { value: "90+", label: t("stats.servers") },
     { value: "2027", label: t("stats.graduation") },
   ];

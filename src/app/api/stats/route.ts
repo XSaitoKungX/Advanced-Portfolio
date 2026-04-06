@@ -77,9 +77,9 @@ async function getGitHubCommits(): Promise<number> {
     cachedCommits = totalCommits > 0 ? totalCommits : 1000; // fallback
     cacheTime = Date.now();
     return cachedCommits;
-  } catch (error) {
-    console.error("Failed to fetch GitHub commits:", error);
-    return cachedCommits ?? 1000; // return cached or fallback
+  } catch {
+    // Rate limit or other error - return cached or fallback without logging
+    return cachedCommits ?? 1000;
   }
 }
 

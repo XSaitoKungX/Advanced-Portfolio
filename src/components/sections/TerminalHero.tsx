@@ -212,10 +212,10 @@ export default function TerminalHero() {
       setTimeout(() => {
         const ms = Math.floor(Math.random() * 12) + 2;
         push(
-          { type: "output", content: `PING mark.dev (127.0.0.1): 56 bytes` },
-          { type: "output", content: `64 bytes from mark.dev: icmp_seq=0 time=${ms} ms` },
-          { type: "output", content: `64 bytes from mark.dev: icmp_seq=1 time=${ms + 1} ms` },
-          { type: "output", content: `64 bytes from mark.dev: icmp_seq=2 time=${ms - 1} ms` },
+          { type: "output", content: `PING xsaitox.dev (127.0.0.1): 56 bytes` },
+          { type: "output", content: `64 bytes from xsaitox.dev: icmp_seq=0 time=${ms} ms` },
+          { type: "output", content: `64 bytes from xsaitox.dev: icmp_seq=1 time=${ms + 1} ms` },
+          { type: "output", content: `64 bytes from xsaitox.dev: icmp_seq=2 time=${ms - 1} ms` },
           { type: "separator", content: "" },
           { type: "info", content: t("cmd_ping_result", { ms: String(ms) }) },
         );
@@ -358,7 +358,7 @@ export default function TerminalHero() {
             <div className="w-3 h-3 rounded-full bg-[#27C840] shadow-sm" />
           </div>
           <div className="flex-1 flex justify-center">
-            <span className="text-xs text-white/30 font-mono tracking-wider">mark.dev — terminal</span>
+            <span className="text-xs text-white/30 font-mono tracking-wider">xsaitox.dev — terminal</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />

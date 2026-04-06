@@ -37,7 +37,7 @@ export default function Footer() {
           <div>
             <Link href={`/${locale}`} className="flex items-center gap-2 mb-4">
               <RiTerminalBoxFill className="w-7 h-7 text-[#7C3AED]" />
-              <span className="text-lg font-bold text-white">mark.dev</span>
+              <span className="text-lg font-bold text-white">xsaitox.dev</span>
             </Link>
             <p className="text-sm text-white/40 leading-relaxed">
               Full-Stack Developer · UI/UX Designer · Open Source

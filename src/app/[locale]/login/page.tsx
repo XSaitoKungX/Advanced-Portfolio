@@ -56,7 +56,7 @@ export default function LoginPage() {
           >
             <RiTerminalBoxFill className="w-8 h-8 text-[#A78BFA]" />
           </motion.div>
-          <h1 className="text-2xl font-bold text-white">mark.dev</h1>
+          <h1 className="text-2xl font-bold text-white">xsaitox.dev</h1>
           <p className="text-sm text-white/40 mt-1">{t("welcome_back")}</p>
         </div>
 

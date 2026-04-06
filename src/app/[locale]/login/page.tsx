@@ -17,7 +17,7 @@ export default function LoginPage() {
   const { data: session } = useSession();
 
   if (session) {
-    router.replace(`/${locale}/admin`);
+    router.replace(`/${locale}/profile/${session.user.id}`);
     return null;
   }
 
@@ -26,7 +26,7 @@ export default function LoginPage() {
     try {
       await signIn.social({
         provider: "discord",
-        callbackURL: `/${locale}/admin`,
+        callbackURL: `/${locale}/auth/callback`,
       });
     } catch {
       setLoading(false);

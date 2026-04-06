@@ -6,6 +6,7 @@ import { headers } from "next/headers";
 export async function GET() {
   try {
     const entries = await prisma.guestbookEntry.findMany({
+      where: { status: "APPROVED" },
       orderBy: { createdAt: "desc" },
       select: {
         id: true,
@@ -47,10 +48,12 @@ export async function POST(request: Request) {
         image: session?.user?.image || undefined,
         isVerified: !!session?.user,
         userId: session?.user?.id || undefined,
+        // Verified users are auto-approved, anonymous go to pending
+        status: session?.user ? "APPROVED" : "PENDING",
       },
     });
 
-    return NextResponse.json({ success: true, entry });
+    return NextResponse.json({ success: true, entry, pending: !session?.user });
   } catch {
     return NextResponse.json({ error: "Failed to save entry" }, { status: 500 });
   }

@@ -64,6 +64,8 @@ export default function GuestbookPage() {
     }
   }
 
+  const [pending, setPending] = useState(false);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!message.trim() || submitting) return;
@@ -80,11 +82,13 @@ export default function GuestbookPage() {
       });
 
       if (res.ok) {
+        const data = await res.json();
         setMessage("");
         setName("");
         setSuccess(true);
-        fetchEntries();
-        setTimeout(() => setSuccess(false), 3000);
+        setPending(data.pending === true);
+        if (!data.pending) fetchEntries();
+        setTimeout(() => setSuccess(false), 5000);
       }
     } finally {
       setSubmitting(false);
@@ -193,10 +197,14 @@ export default function GuestbookPage() {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -20 }}
-                      className="flex items-center gap-2 text-green-400"
+                      className={`flex items-center gap-2 ${pending ? "text-yellow-400" : "text-green-400"}`}
                     >
                       <FiCheckCircle className="w-5 h-5" />
-                      <span className="text-sm font-medium">{t("guestbook.success_title")}</span>
+                      <span className="text-sm font-medium">
+                        {pending
+                          ? "Submitted! Awaiting admin approval."
+                          : t("guestbook.success_title")}
+                      </span>
                     </motion.div>
                   )}
                 </AnimatePresence>

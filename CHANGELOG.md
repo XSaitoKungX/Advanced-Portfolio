@@ -1,3 +1,12 @@
+## [0.3.2](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.3.1...v0.3.2) (2026-04-06)
+
+
+### Bug Fixes
+
+* Better Auth tables created in Neon PostgreSQL ([974193b](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/974193badfbd9639234b89520649b8d3d70beec8))
+
+
+
 ## [0.3.1](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.3.0...v0.3.1) (2026-04-06)
 
 

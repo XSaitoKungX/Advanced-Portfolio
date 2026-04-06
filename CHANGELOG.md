@@ -1,3 +1,12 @@
+## [0.3.5](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.3.4...v0.3.5) (2026-04-06)
+
+
+### Bug Fixes
+
+* update Better Auth schema to v1.5+ with password and session fields ([caa0a46](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/caa0a466e567a99162277a563c1dc113da22704d))
+
+
+
 ## [0.3.4](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.3.3...v0.3.4) (2026-04-06)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * configure Better Auth to use Neon PostgreSQL ([0d07d19](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/0d07d1924a6abbc45f176253918e1becaecc5107))
-
-
-
-# [0.3.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.2.0...v0.3.0) (2026-04-06)
-
-
-### Features
-
-* full Discord profile data via API (banner, badges, guild tag) ([bccdc44](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/bccdc4447f3c0271a84f22301f194c88c59b1bac))
 
 
 

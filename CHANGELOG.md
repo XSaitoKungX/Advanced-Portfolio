@@ -1,3 +1,12 @@
+## [0.3.3](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.3.2...v0.3.3) (2026-04-06)
+
+
+### Bug Fixes
+
+* add Better Auth tables to Prisma schema ([29fa2b0](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/29fa2b025b7cf1b57fd6c84b568c1eea698e1a83))
+
+
+
 ## [0.3.2](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.3.1...v0.3.2) (2026-04-06)
 
 

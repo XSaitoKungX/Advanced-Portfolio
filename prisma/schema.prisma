@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model GuestbookEntry {
+  id         String   @id @default(uuid())
+  message    String   @db.VarChar(500)
+  name       String   @db.VarChar(50)
+  email      String?  @db.VarChar(255)
+  image      String?  @db.VarChar(500)
+  isVerified Boolean  @default(false)
+  userId     String?  @db.VarChar(255)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([createdAt])
+  @@index([isVerified])
+}

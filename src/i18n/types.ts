@@ -151,6 +151,29 @@ export interface Translations {
     unauthorized: string;
     unauthorized_desc: string;
   };
+  guestbook: {
+    title: string;
+    subtitle: string;
+    description: string;
+    sign_with_discord: string;
+    sign_anonymous: string;
+    name_placeholder: string;
+    email_placeholder: string;
+    message_placeholder: string;
+    submit: string;
+    submitting: string;
+    success_title: string;
+    success_message: string;
+    no_entries: string;
+    first_entry: string;
+    verified_badge: string;
+    anonymous: string;
+    time_just_now: string;
+    time_minutes_ago: string;
+    time_hours_ago: string;
+    time_days_ago: string;
+    characters_left: string;
+  };
   common: {
     loading: string;
     error: string;

@@ -38,6 +38,7 @@ export default function Navigation() {
     { href: `/${locale}/projects`, label: t("projects") },
     { href: `/${locale}/experience`, label: t("experience") },
     { href: `/${locale}/contact`, label: t("contact") },
+    { href: `/${locale}/guestbook`, label: "Guestbook" },
   ];
 
   const isActive = (href: string) => {

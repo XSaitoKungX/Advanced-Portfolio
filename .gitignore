@@ -149,6 +149,9 @@ cypress/screenshots/
 # Bundle analyzer
 /analyze/
 
+# Prisma generated client
+src/generated/
+
 # Database (if using local sqlite)
 *.db
 *.sqlite

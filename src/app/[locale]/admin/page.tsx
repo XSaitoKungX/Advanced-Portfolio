@@ -1,57 +1,24 @@
 "use client";
 
 import { useTranslations, useLocale } from "next-intl";
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { FiArrowLeft, FiShield, FiUser, FiMail, FiCode } from "react-icons/fi";
 import { RiTerminalBoxFill } from "react-icons/ri";
 import { useSession } from "@/lib/auth-client";
-import { OWNER_DISCORD_ID } from "@/lib/auth";
+import { isOwner } from "@/lib/is-owner";
 import GlassCard from "@/components/ui/GlassCard";
 import { projects } from "@/lib/data/projects";
 import { skills } from "@/lib/data/skills";
 import { experiences } from "@/lib/data/experience";
 import { FiLayers, FiCpu, FiBriefcase } from "react-icons/fi";
 
-interface OwnerCheckResponse {
-  isOwner: boolean;
-  discordId?: string;
-  expectedId?: string;
-  userId?: string;
-  userKeys?: string[];
-  error?: string;
-}
-
 export default function AdminPage() {
   const locale = useLocale();
   const t = useTranslations("auth");
-  const { data: session, isPending: sessionPending } = useSession();
-  const [ownerCheck, setOwnerCheck] = useState<OwnerCheckResponse | null>(null);
-  const [checking, setChecking] = useState(true);
+  const { data: session, isPending } = useSession();
 
-  useEffect(() => {
-    if (!session) {
-      setChecking(false);
-      return;
-    }
-
-    // Check ownership via API (server-side Discord ID verification)
-    fetch("/api/debug/owner")
-      .then((res) => res.json())
-      .then((data: OwnerCheckResponse) => {
-        console.log("[/admin] Owner check:", data);
-        setOwnerCheck(data);
-        setChecking(false);
-      })
-      .catch((err) => {
-        console.error("[/admin] Owner check failed:", err);
-        setOwnerCheck({ isOwner: false, error: String(err) });
-        setChecking(false);
-      });
-  }, [session]);
-
-  const isPending = sessionPending || checking;
+  const ownerAccess = isOwner(session?.user ?? null);
 
   if (isPending) {
     return (
@@ -61,7 +28,7 @@ export default function AdminPage() {
     );
   }
 
-  if (!session || !ownerCheck?.isOwner) {
+  if (!session || !ownerAccess) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
         <motion.div
@@ -74,13 +41,6 @@ export default function AdminPage() {
           </div>
           <h1 className="text-2xl font-bold text-white mb-2">{t("unauthorized")}</h1>
           <p className="text-white/40 text-sm mb-6">{t("unauthorized_desc")}</p>
-          {ownerCheck && !ownerCheck.isOwner && (
-            <div className="text-xs text-white/30 mb-4 p-3 rounded-lg bg-white/5 font-mono">
-              <div>User: {ownerCheck.userId?.slice(0, 20)}...</div>
-              <div>Discord: {ownerCheck.discordId || "not found"}</div>
-              <div>Expected: {OWNER_DISCORD_ID.slice(0, 20)}...</div>
-            </div>
-          )}
           <Link
             href={`/${locale}`}
             className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white/70 border border-white/10 rounded-xl hover:bg-white/5 transition-all duration-200"
@@ -97,7 +57,7 @@ export default function AdminPage() {
     { icon: FiUser, label: locale === "de" ? "Angemeldet als" : "Signed in as", value: session.user.name ?? "Owner", color: "#A78BFA" },
     { icon: FiShield, label: "Role", value: "Owner / Admin", color: "#34D399" },
     { icon: FiMail, label: "E-Mail", value: session.user.email ?? "—", color: "#60A5FA" },
-    { icon: FiCode, label: "Discord ID", value: OWNER_DISCORD_ID, color: "#FBBF24" },
+    { icon: FiCode, label: "Discord", value: "Verified", color: "#FBBF24" },
   ];
 
   const quickLinks = [

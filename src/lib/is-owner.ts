@@ -8,7 +8,15 @@ type SessionUser = {
   [key: string]: unknown;
 };
 
-// Client-side check (limited data)
+// Extract Discord ID from the avatar URL
+// Format: https://cdn.discordapp.com/avatars/{DISCORD_ID}/{hash}.png
+function extractDiscordIdFromImageUrl(imageUrl: string | null | undefined): string | undefined {
+  if (!imageUrl) return undefined;
+  const match = imageUrl.match(/\/avatars\/(\d+)\//);
+  return match?.[1];
+}
+
+// Client-side check (extracts Discord ID from avatar URL)
 export function isOwnerClient(user: SessionUser | null | undefined): boolean {
   if (!user) {
     console.log("[isOwnerClient] No user provided");
@@ -16,24 +24,19 @@ export function isOwnerClient(user: SessionUser | null | undefined): boolean {
   }
   
   console.log("[isOwnerClient] User keys:", Object.keys(user));
-  console.log("[isOwnerClient] User id:", user.id);
-  console.log("[isOwnerClient] Looking for:", OWNER_DISCORD_ID);
+  console.log("[isOwnerClient] User image:", user.image);
+  console.log("[isOwnerClient] Looking for Discord ID:", OWNER_DISCORD_ID);
   
-  // Check all possible fields where Discord ID might be
-  const possibleId =
-    (user.discordId as string | undefined) ??
-    (user.providerId as string | undefined) ??
-    (user.providerAccountId as string | undefined) ??
-    (user.externalId as string | undefined);
-    
-  console.log("[isOwnerClient] Found ID:", possibleId);
+  // Better Auth stores Discord ID in the avatar URL!
+  const discordId = extractDiscordIdFromImageUrl(user.image as string);
   
-  if (possibleId) {
-    return possibleId === OWNER_DISCORD_ID;
+  console.log("[isOwnerClient] Extracted Discord ID:", discordId);
+  console.log("[isOwnerClient] Match:", discordId === OWNER_DISCORD_ID);
+  
+  if (discordId) {
+    return discordId === OWNER_DISCORD_ID;
   }
   
-  // If no Discord ID found, we can't verify on client side
-  console.log("[isOwnerClient] No Discord ID in user object, deferring to server");
   return false;
 }
 

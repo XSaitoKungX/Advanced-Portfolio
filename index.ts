@@ -6,46 +6,47 @@ import next from "next";
 
 // ── ANSI helpers ──────────────────────────────────────────────────────────────
 const c = {
-  reset:  "\x1b[0m",
-  bold:   "\x1b[1m",
-  dim:    "\x1b[2m",
-  // fg
-  white:  "\x1b[97m",
-  gray:   "\x1b[90m",
-  green:  "\x1b[92m",
-  yellow: "\x1b[93m",
-  blue:   "\x1b[94m",
-  purple: "\x1b[95m",
-  cyan:   "\x1b[96m",
-  red:    "\x1b[91m",
-  // bg
-  bgGreen:  "\x1b[42m",
-  bgRed:    "\x1b[41m",
-  bgYellow: "\x1b[43m",
-  bgBlue:   "\x1b[44m",
-  bgPurple: "\x1b[45m",
-  bgGray:   "\x1b[100m",
+  reset:   "\x1b[0m",
+  bold:    "\x1b[1m",
+  // fg — vivid
+  white:   "\x1b[97m",
+  silver:  "\x1b[37m",
+  gray:    "\x1b[90m",
+  green:   "\x1b[92m",
+  yellow:  "\x1b[93m",
+  blue:    "\x1b[94m",
+  magenta: "\x1b[95m",
+  cyan:    "\x1b[96m",
+  red:     "\x1b[91m",
+  orange:  "\x1b[38;5;214m",
+  // bg — vivid fills with black/white text
+  bgGreen:   "\x1b[42m\x1b[30m",
+  bgRed:     "\x1b[41m\x1b[97m",
+  bgYellow:  "\x1b[43m\x1b[30m",
+  bgBlue:    "\x1b[44m\x1b[97m",
+  bgMagenta: "\x1b[45m\x1b[97m",
+  bgCyan:    "\x1b[46m\x1b[30m",
 };
 
 const tag = {
-  ok:     `${c.bold}${c.bgGreen}\x1b[30m OK ${c.reset}`,
-  fail:   `${c.bold}${c.bgRed}\x1b[97m FAIL ${c.reset}`,
-  warn:   `${c.bold}${c.bgYellow}\x1b[30m WARN ${c.reset}`,
-  build:  `${c.bold}${c.bgPurple}\x1b[97m BUILD ${c.reset}`,
-  server: `${c.bold}${c.bgBlue}\x1b[97m SERVER ${c.reset}`,
-  info:   `${c.bold}${c.bgGray}\x1b[97m INFO ${c.reset}`,
+  ok:     `${c.bold}${c.bgGreen} OK ${c.reset}`,
+  fail:   `${c.bold}${c.bgRed} FAIL ${c.reset}`,
+  warn:   `${c.bold}${c.bgYellow} WARN ${c.reset}`,
+  build:  `${c.bold}${c.bgMagenta} BUILD ${c.reset}`,
+  server: `${c.bold}${c.bgCyan} SERVER ${c.reset}`,
+  info:   `${c.bold}${c.bgBlue} INFO ${c.reset}`,
 };
 
-function line(char = "─", len = 52) {
-  return c.gray + char.repeat(len) + c.reset;
+function line(len = 54) {
+  return `${c.gray}${"─".repeat(len)}${c.reset}`;
 }
 
-function log(badge: string, msg: string, detail?: string) {
+function log(badge: string, label: string, value?: string) {
   const ts = new Date().toLocaleTimeString("de-DE", { hour12: false });
   const time = `${c.gray}${ts}${c.reset}`;
-  const text = detail
-    ? `${c.white}${msg}${c.reset} ${c.gray}${detail}${c.reset}`
-    : `${c.white}${msg}${c.reset}`;
+  const text = value
+    ? `${c.silver}${label}${c.reset} ${value}`
+    : `${c.white}${label}${c.reset}`;
   console.log(`  ${time}  ${badge}  ${text}`);
 }
 
@@ -58,7 +59,7 @@ const appUrl  = process.env.APP_URL ?? `http://localhost:${port}`;
 
 // ── Banner ────────────────────────────────────────────────────────────────────
 console.log();
-console.log(`  ${c.bold}${c.purple}▲ Advanced Portfolio${c.reset}  ${c.gray}by Mark · ${nodeEnv}${c.reset}`);
+console.log(`  ${c.bold}${c.magenta}▲ Advanced Portfolio${c.reset}  ${c.gray}by Mark · ${nodeEnv}${c.reset}`);
 console.log(line());
 
 // ── Build check ───────────────────────────────────────────────────────────────
@@ -93,10 +94,10 @@ app.prepare().then(() => {
     handle(req, res, parsedUrl);
   }).listen(port, hostname, () => {
     console.log();
-    log(tag.server, "Server started at", `${c.cyan}${c.bold}http://${hostname}:${port}${c.reset}`);
-    log(tag.info,   "Domain:  ", `${c.cyan}${appUrl}${c.reset}`);
-    log(tag.info,   "Environment:", `${c.yellow}${nodeEnv}${c.reset}`);
-    log(tag.info,   "Runtime: ", `Bun ${c.gray}${process.versions.bun ?? "unknown"}${c.reset}`);
+    log(tag.server, "URL:        ", `${c.bold}${c.cyan}${appUrl}${c.reset}`);
+    log(tag.info,   "Bind:       ", `${c.white}${hostname}:${port}${c.reset}`);
+    log(tag.info,   "Environment:", `${c.bold}${nodeEnv === "production" ? c.green : c.yellow}${nodeEnv}${c.reset}`);
+    log(tag.info,   "Runtime:    ", `${c.white}Bun ${c.cyan}${process.versions.bun ?? "unknown"}${c.reset}`);
     console.log(line());
     console.log();
   });

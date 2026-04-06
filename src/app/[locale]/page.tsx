@@ -82,7 +82,7 @@ export default function HomePage() {
 
               <div className="flex items-center gap-3 mt-6">
                 <a
-                  href="https://github.com"
+                  href="https://github.com/XSaitoKungX"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2.5 rounded-xl border border-white/10 text-white/40 hover:text-white hover:border-white/20 hover:bg-white/5 transition-all duration-200"
@@ -91,22 +91,13 @@ export default function HomePage() {
                   <FiGithub className="w-5 h-5" />
                 </a>
                 <a
-                  href="https://discord.com"
+                  href="https://discord.com/channels/@me/848917797501141052"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2.5 rounded-xl border border-white/10 text-white/40 hover:text-[#5865F2] hover:border-[#5865F2]/30 hover:bg-[#5865F2]/10 transition-all duration-200"
                   aria-label="Discord"
                 >
                   <SiDiscord className="w-5 h-5" />
-                </a>
-                <a
-                  href="https://linkedin.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 rounded-xl border border-white/10 text-white/40 hover:text-[#0A66C2] hover:border-[#0A66C2]/30 hover:bg-[#0A66C2]/10 transition-all duration-200"
-                  aria-label="LinkedIn"
-                >
-                  <FiLinkedin className="w-5 h-5" />
                 </a>
               </div>
             </motion.div>

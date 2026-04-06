@@ -44,17 +44,79 @@ model UserProfile {
   premiumType       Int?
   publicFlags       Int?
   locale            String?  @db.VarChar(10)
-  
+
   // Discord Primary Guild / Server Tag
   identityGuildId   String?  @db.VarChar(255) @map("identity_guild_id")
   identityEnabled   Boolean? @map("identity_enabled")
   tag               String?  @db.VarChar(4)
   badge             String?  @db.VarChar(100)
-  
+
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
   @@index([userId])
   @@index([discordId])
   @@index([identityGuildId])
+}
+
+// Better Auth tables
+model User {
+  id            String    @id
+  name          String?
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+
+  @@map("user")
+}
+
+model Account {
+  id                   String    @id
+  userId               String
+  providerId           String
+  accountId            String
+  accessToken          String?
+  refreshToken           String?
+  accessTokenExpiresAt   DateTime?
+  refreshTokenExpiresAt  DateTime?
+  scope                String?
+  idToken              String?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+  @@index([userId])
+  @@map("account")
+}
+
+model Session {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
 }

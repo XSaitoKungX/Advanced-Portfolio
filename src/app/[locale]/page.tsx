@@ -1,17 +1,72 @@
 "use client";
 
 import { useTranslations, useLocale } from "next-intl";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { FiArrowRight, FiGithub, FiLinkedin } from "react-icons/fi";
+import { FiArrowRight, FiGithub } from "react-icons/fi";
 import { SiDiscord, SiTypescript, SiReact, SiNextdotjs, SiTailwindcss, SiBun } from "react-icons/si";
 import { HiArrowDown } from "react-icons/hi";
 import TerminalHero from "@/components/sections/TerminalHero";
 import RoleTyper from "@/components/sections/RoleTyper";
 
+interface Stats {
+  projects: number;
+  tech: number;
+  commits: number;
+}
+
+function useStats() {
+  const [stats, setStats] = useState<Stats>({ projects: 0, tech: 0, commits: 0 });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/stats")
+      .then((res) => res.json())
+      .then((data) => {
+        setStats(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        // Fallback values on error
+        setStats({ projects: 6, tech: 26, commits: 1000 });
+        setLoading(false);
+      });
+  }, []);
+
+  return { stats, loading };
+}
+
+function AnimatedNumber({ value, suffix = "" }: { value: number; suffix?: string }) {
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    if (value === 0) return;
+    const duration = 1000;
+    const steps = 30;
+    const increment = value / steps;
+    let current = 0;
+
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= value) {
+        setDisplay(value);
+        clearInterval(timer);
+      } else {
+        setDisplay(Math.floor(current));
+      }
+    }, duration / steps);
+
+    return () => clearInterval(timer);
+  }, [value]);
+
+  return <>{display.toLocaleString()}{suffix}</>;
+}
+
 export default function HomePage() {
   const t = useTranslations("home");
   const locale = useLocale();
+  const { stats, loading } = useStats();
 
   return (
     <div className="relative min-h-screen flex flex-col">
@@ -138,10 +193,10 @@ export default function HomePage() {
             className="flex flex-wrap items-center justify-center gap-8 lg:gap-16"
           >
             {[
-              { value: "10+", label: locale === "de" ? "Projekte" : "Projects" },
-              { value: "4+", label: locale === "de" ? "Jahre Erfahrung" : "Years Experience" },
-              { value: "20+", label: locale === "de" ? "Technologien" : "Technologies" },
-              { value: "1k+", label: "Commits" },
+              { value: stats.projects, label: locale === "de" ? "Projekte" : "Projects", suffix: "" },
+              { value: 2, label: locale === "de" ? "Jahre Erfahrung" : "Years Experience", suffix: "+" },
+              { value: stats.tech, label: locale === "de" ? "Technologien" : "Technologies", suffix: "" },
+              { value: stats.commits, label: "Commits", suffix: "+" },
             ].map((stat, i) => (
               <motion.div
                 key={stat.label}
@@ -151,7 +206,9 @@ export default function HomePage() {
                 transition={{ delay: i * 0.1 }}
                 className="text-center"
               >
-                <div className="text-3xl sm:text-4xl font-bold text-gradient-purple mb-1">{stat.value}</div>
+                <div className={`text-3xl sm:text-4xl font-bold text-gradient-purple mb-1 ${loading ? "animate-pulse" : ""}`}>
+                  {loading ? "—" : <AnimatedNumber value={stat.value} suffix={stat.suffix} />}
+                </div>
                 <div className="text-sm text-white/40">{stat.label}</div>
               </motion.div>
             ))}

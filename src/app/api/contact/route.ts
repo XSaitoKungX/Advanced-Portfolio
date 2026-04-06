@@ -1,8 +1,33 @@
 import { NextRequest } from "next/server";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 import { contactSchema } from "@/lib/validations/contact";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy initialization - created on first use
+let transporter: nodemailer.Transporter | null = null;
+
+function getTransporter(): nodemailer.Transporter {
+  if (!transporter) {
+    const host = process.env.SMTP_HOST ?? "mail.spacemail.com";
+    const port = parseInt(process.env.SMTP_PORT ?? "465", 10);
+    const user = process.env.SMTP_USER;
+    const pass = process.env.SMTP_PASS;
+
+    if (!user || !pass) {
+      throw new Error("SMTP credentials not configured");
+    }
+
+    transporter = nodemailer.createTransport({
+      host,
+      port,
+      secure: port === 465,
+      auth: { user, pass },
+    });
+  }
+  if (!transporter) {
+    throw new Error("SMTP not initialized");
+  }
+  return transporter;
+}
 
 const rateLimitMap = new Map<string, { count: number; reset: number }>();
 const RATE_LIMIT = 5;
@@ -38,8 +63,14 @@ export async function POST(req: NextRequest) {
 
     const result = contactSchema.safeParse(body);
     if (!result.success) {
+      const fieldErrors: Record<string, string[]> = {};
+      for (const issue of result.error.issues) {
+        const path = issue.path.join(".");
+        if (!fieldErrors[path]) fieldErrors[path] = [];
+        fieldErrors[path].push(issue.message);
+      }
       return Response.json(
-        { error: "Validation failed", details: result.error.flatten() },
+        { error: "Validation failed", details: fieldErrors },
         { status: 400 }
       );
     }
@@ -50,10 +81,10 @@ export async function POST(req: NextRequest) {
       return Response.json({ success: true });
     }
 
-    const contactEmail = process.env.CONTACT_EMAIL ?? "your@email.com";
+    const contactEmail = process.env.CONTACT_EMAIL ?? process.env.SMTP_USER ?? "your@email.com";
 
-    await resend.emails.send({
-      from: "Portfolio Contact <onboarding@resend.dev>",
+    await getTransporter().sendMail({
+      from: `"Portfolio Contact" <${process.env.SMTP_USER}>`,
       to: contactEmail,
       replyTo: email,
       subject: `[Portfolio] ${subject}`,

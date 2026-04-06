@@ -1,3 +1,12 @@
+## [0.3.1](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.3.0...v0.3.1) (2026-04-06)
+
+
+### Bug Fixes
+
+* configure Better Auth to use Neon PostgreSQL ([0d07d19](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/0d07d1924a6abbc45f176253918e1becaecc5107))
+
+
+
 # [0.3.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.2.0...v0.3.0) (2026-04-06)
 
 

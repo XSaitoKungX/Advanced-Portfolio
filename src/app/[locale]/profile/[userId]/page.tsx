@@ -38,14 +38,8 @@ export default function OwnProfilePage() {
 
   useEffect(() => {
     if (isPending) return;
-    // Own profile page — must be logged in and viewing own profile
     if (!session?.user) {
       router.push(`/${locale}/login`);
-      return;
-    }
-    if (session.user.id !== userId) {
-      // Redirect to global profile if viewing someone else's
-      router.push(`/${locale}/global/profile/${userId}`);
       return;
     }
     fetchProfile();
@@ -56,6 +50,11 @@ export default function OwnProfilePage() {
       const res = await fetch(`/api/profile/${userId}`);
       if (res.status === 404) { setNotFound(true); return; }
       const data = await res.json();
+      if (!data.isOwn) {
+        // Not own profile — redirect to global profile
+        router.replace(`/${locale}/global/profile/${data.profile.discordId ?? userId}`);
+        return;
+      }
       setProfile(data.profile);
     } catch {
       setNotFound(true);
@@ -104,7 +103,7 @@ export default function OwnProfilePage() {
               <p className="text-white/50 text-sm">
                 This is your public profile. Others can view it at{" "}
                 <span className="text-[#7C3AED] font-mono text-xs break-all">
-                  /global/profile/{userId}
+                  /global/profile/{profile?.discordId ?? userId}
                 </span>
               </p>
             </div>

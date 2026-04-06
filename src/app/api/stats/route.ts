@@ -14,72 +14,59 @@ async function getGitHubCommits(): Promise<number> {
   }
 
   try {
-    // Fetch user's public repos
-    const reposRes = await fetch(
-      "https://api.github.com/users/XSaitoKungX/repos?per_page=30&type=public",
+    // Fetch commits only for this portfolio repo
+    const commitsRes = await fetch(
+      "https://api.github.com/repos/XSaitoKungX/Advanced-Portfolio/commits?per_page=100",
       {
         headers: {
           Accept: "application/vnd.github.v3+json",
-          // Add GitHub token if available for higher rate limits
           ...(process.env.GITHUB_TOKEN && {
             Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
           }),
         },
-        next: { revalidate: 300 }, // Revalidate every 5 minutes
+        next: { revalidate: 300 },
       }
     );
 
-    if (!reposRes.ok) {
-      throw new Error(`GitHub API error: ${reposRes.status}`);
-    }
-
-    const repos = await reposRes.json();
-
-    // Sum commits from all repos (using default branch stats)
-    let totalCommits = 0;
-
-    for (const repo of repos) {
-      if (!repo.fork) {
-        // Get contribution stats for each repo
-        try {
-          const statsRes = await fetch(
-            `https://api.github.com/repos/XSaitoKungX/${repo.name}/stats/contributors`,
-            {
-              headers: {
-                Accept: "application/vnd.github.v3+json",
-                ...(process.env.GITHUB_TOKEN && {
-                  Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-                }),
-              },
-            }
-          );
-
-          if (statsRes.ok) {
-            const stats = await statsRes.json();
-            // Find user's contributions in this repo
-            const userStats = stats.find(
-              (s: { author: { login: string } }) =>
-                s.author.login === "XSaitoKungX"
-            );
-            if (userStats) {
-              totalCommits += userStats.total;
-            }
-          } else {
-            // Fallback: use repo's total commit count from repo data
-            totalCommits += repo.size || 0; // rough estimate
-          }
-        } catch {
-          // Ignore individual repo errors
+    if (!commitsRes.ok) {
+      // Try alternative repo name
+      const altRes = await fetch(
+        "https://api.github.com/repos/XSaitoKungX/portfolio/commits?per_page=100",
+        {
+          headers: {
+            Accept: "application/vnd.github.v3+json",
+            ...(process.env.GITHUB_TOKEN && {
+              Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+            }),
+          },
         }
+      );
+      
+      if (altRes.ok) {
+        const linkHeader = altRes.headers.get("link");
+        const total = linkHeader?.match(/page=(\d+)[^>]*>;\s*rel="last"/)?.[1];
+        const count = total ? parseInt(total, 10) : (await altRes.json()).length || 100;
+        cachedCommits = count;
+        cacheTime = Date.now();
+        return count;
       }
+      
+      throw new Error(`GitHub API error: ${commitsRes.status}`);
     }
 
-    cachedCommits = totalCommits > 0 ? totalCommits : 1000; // fallback
+    // Get total commit count from Link header (pagination)
+    const linkHeader = commitsRes.headers.get("link");
+    const totalPages = linkHeader?.match(/page=(\d+)[^>]*>;\s*rel="last"/)?.[1];
+    
+    // If no pagination, count returned commits
+    const commits = await commitsRes.json();
+    const totalCommits = totalPages ? parseInt(totalPages, 10) * 100 : commits.length || 100;
+    const finalCount = totalCommits > 0 ? totalCommits : 100;
+    cachedCommits = finalCount;
     cacheTime = Date.now();
-    return cachedCommits;
+    return finalCount;
   } catch {
-    // Rate limit or other error - return cached or fallback without logging
-    return cachedCommits ?? 1000;
+    return cachedCommits ?? 100;
   }
 }
 

@@ -1,3 +1,12 @@
+# [0.5.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.4.0...v0.5.0) (2026-04-09)
+
+
+### Features
+
+* optimize performance and enhance project page UI ([b4166e7](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/b4166e75281848614037ec00f434a1987ce6f27c))
+
+
+
 # [0.4.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.3.5...v0.4.0) (2026-04-09)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * add Better Auth tables to Prisma schema ([29fa2b0](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/29fa2b025b7cf1b57fd6c84b568c1eea698e1a83))
-
-
-
-## [0.3.2](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.3.1...v0.3.2) (2026-04-06)
-
-
-### Bug Fixes
-
-* Better Auth tables created in Neon PostgreSQL ([974193b](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/974193badfbd9639234b89520649b8d3d70beec8))
 
 
 

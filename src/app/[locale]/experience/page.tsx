@@ -65,10 +65,10 @@ function ExperienceItem({ exp, locale, t, index }: { exp: Experience; locale: st
               )}
             </div>
           </div>
-          <div className="flex items-center gap-1.5 text-xs text-white/40 whitespace-nowrap shrink-0">
-            <span>{formatDate(exp.startDate, locale)}</span>
+          <div className="flex items-center gap-1.5 text-xs text-white/40 shrink-0">
+            <span className="whitespace-nowrap">{formatDate(exp.startDate, locale)}</span>
             <span>—</span>
-            <span>{exp.endDate ? formatDate(exp.endDate, locale) : t("present")}</span>
+            <span className="whitespace-nowrap min-w-[60px]">{exp.endDate ? formatDate(exp.endDate, locale) : t("present")}</span>
           </div>
         </div>
 

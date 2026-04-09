@@ -8,6 +8,7 @@ import { FiSend, FiMessageSquare, FiCheckCircle, FiUser, FiHash } from "react-ic
 import { SiDiscord } from "react-icons/si";
 import { authClient } from "@/lib/auth-client";
 import GlassCard from "@/components/ui/GlassCard";
+import Image from "next/image";
 
 interface GuestbookEntry {
   id: string;
@@ -16,6 +17,7 @@ interface GuestbookEntry {
   email?: string;
   image?: string;
   isVerified: boolean;
+  status: "PENDING" | "APPROVED" | "REJECTED";
   createdAt: string;
 }
 
@@ -242,15 +244,17 @@ export default function GuestbookPage() {
                   <GlassCard className="p-5">
                     <div className="flex items-start gap-4">
                       {/* Avatar */}
-                      <div className="flex-shrink-0">
+                      <div className="shrink-0">
                         {entry.image ? (
-                          <img
+                          <Image
                             src={entry.image}
                             alt={entry.name}
-                            className="w-10 h-10 rounded-full"
+                            width={40}
+                            height={40}
+                            className={`rounded-full ${entry.status === "PENDING" ? "opacity-60" : ""}`}
                           />
                         ) : (
-                          <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                          <div className={`w-10 h-10 rounded-full bg-white/10 flex items-center justify-center ${entry.status === "PENDING" ? "opacity-60" : ""}`}>
                             <FiUser className="w-5 h-5 text-white/40" />
                           </div>
                         )}
@@ -266,7 +270,12 @@ export default function GuestbookPage() {
                               {t("guestbook.verified_badge")}
                             </span>
                           )}
-                          {!entry.isVerified && (
+                          {entry.status === "PENDING" && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
+                              {t("guestbook.pending_badge")}
+                            </span>
+                          )}
+                          {!entry.isVerified && entry.status === "APPROVED" && (
                             <span className="text-xs text-white/40">
                               {t("guestbook.anonymous")}
                             </span>

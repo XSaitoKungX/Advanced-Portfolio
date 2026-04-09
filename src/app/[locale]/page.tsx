@@ -104,7 +104,7 @@ export default function HomePage() {
               <div className="flex flex-wrap items-center gap-4">
                 <Link
                   href={`/${locale}/projects`}
-                  className="group inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-[#7C3AED] to-[#4F46E5] rounded-xl hover:opacity-90 transition-all duration-200 shadow-lg shadow-[#7C3AED]/25 hover:shadow-[#7C3AED]/40"
+                  className="group inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-linear-to-r from-[#7C3AED] to-[#4F46E5] rounded-xl hover:opacity-90 transition-all duration-200 shadow-lg shadow-[#7C3AED]/25 hover:shadow-[#7C3AED]/40"
                 >
                   {t("cta_projects")}
                   <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
@@ -127,7 +127,7 @@ export default function HomePage() {
                 ].map(({ icon: Icon, label, color }) => (
                   <span
                     key={label}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-lg border border-white/10 bg-white/[0.03] text-white/50"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-lg border border-white/10 bg-white/3 text-white/50"
                   >
                     <Icon className="w-3.5 h-3.5" style={{ color }} />
                     {label}

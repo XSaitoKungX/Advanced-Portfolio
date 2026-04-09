@@ -65,7 +65,7 @@ function ExperienceItem({ exp, locale, t, index }: { exp: Experience; locale: st
               )}
             </div>
           </div>
-          <div className="flex items-center gap-1.5 text-xs text-white/40 whitespace-nowrap flex-shrink-0">
+          <div className="flex items-center gap-1.5 text-xs text-white/40 whitespace-nowrap shrink-0">
             <span>{formatDate(exp.startDate, locale)}</span>
             <span>—</span>
             <span>{exp.endDate ? formatDate(exp.endDate, locale) : t("present")}</span>
@@ -80,7 +80,7 @@ function ExperienceItem({ exp, locale, t, index }: { exp: Experience; locale: st
           {exp.technologies.map((tech) => (
             <span
               key={tech}
-              className="px-2.5 py-1 text-xs font-medium text-white/60 bg-white/[0.04] border border-white/[0.08] rounded-lg"
+              className="px-2.5 py-1 text-xs font-medium text-white/60 bg-white/4 border border-white/8 rounded-lg"
             >
               {tech}
             </span>

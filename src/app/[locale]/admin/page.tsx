@@ -128,7 +128,7 @@ export default function AdminPage() {
               >
                 <GlassCard className="p-5 flex items-center gap-4">
                   <div
-                    className="p-3 rounded-xl flex-shrink-0"
+                    className="p-3 rounded-xl shrink-0"
                     style={{ background: `${color}15`, border: `1px solid ${color}25` }}
                   >
                     <Icon className="w-5 h-5" style={{ color }} />
@@ -169,7 +169,7 @@ export default function AdminPage() {
                 { icon: FiCpu, label: "Skills", value: skills.length, color: "#60A5FA" },
                 { icon: FiBriefcase, label: locale === "de" ? "Stationen" : "Experiences", value: experiences.length, color: "#34D399" },
               ].map(({ icon: Icon, label, value, color }) => (
-                <div key={label} className="text-center p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+                <div key={label} className="text-center p-4 rounded-xl bg-white/2 border border-white/6">
                   <Icon className="w-5 h-5 mx-auto mb-2" style={{ color }} />
                   <p className="text-2xl font-bold text-white">{value}</p>
                   <p className="text-xs text-white/40 mt-0.5">{label}</p>
@@ -210,7 +210,7 @@ export default function AdminPage() {
                           <span className="text-white/40 text-xs ml-2">{entry.email}</span>
                         )}
                       </div>
-                      <span className="text-white/30 text-xs flex-shrink-0">
+                      <span className="text-white/30 text-xs shrink-0">
                         {new Date(entry.createdAt).toLocaleDateString()}
                       </span>
                     </div>

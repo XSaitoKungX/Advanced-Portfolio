@@ -66,7 +66,7 @@ function StarCanvas() {
 export default function AnimatedBackground() {
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-      <div className="absolute inset-0 bg-[#030712]" />
+      <div className="absolute inset-0 bg-background" />
 
       <StarCanvas />
 
@@ -105,8 +105,8 @@ export default function AnimatedBackground() {
         }}
       />
 
-      <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] bg-[#7C3AED]/[0.04] rounded-full blur-[80px] animate-pulse" style={{ animationDuration: "10s" }} />
-      <div className="absolute bottom-1/3 right-1/4 w-[300px] h-[300px] bg-[#4F46E5]/[0.05] rounded-full blur-[60px] animate-pulse" style={{ animationDuration: "14s", animationDelay: "5s" }} />
+      <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] bg-[#7C3AED]/4 rounded-full blur-[80px] animate-pulse" style={{ animationDuration: "10s" }} />
+      <div className="absolute bottom-1/3 right-1/4 w-[300px] h-[300px] bg-[#4F46E5]/5 rounded-full blur-[60px] animate-pulse" style={{ animationDuration: "14s", animationDelay: "5s" }} />
     </div>
   );
 }

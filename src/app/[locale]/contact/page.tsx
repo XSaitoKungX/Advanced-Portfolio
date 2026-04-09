@@ -116,9 +116,9 @@ export default function ContactPage() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2.5 p-3 rounded-xl border border-white/[0.08] text-white/50 hover:text-white hover:bg-white/[0.06] hover:border-white/[0.15] transition-all duration-200"
+                    className="flex items-center gap-2.5 p-3 rounded-xl border border-white/8 text-white/50 hover:text-white hover:bg-white/6 hover:border-white/15 transition-all duration-200"
                   >
-                    <Icon className="w-4 h-4 flex-shrink-0" />
+                    <Icon className="w-4 h-4 shrink-0" />
                     <span className="text-xs font-medium">{label}</span>
                   </a>
                 ))}
@@ -216,7 +216,7 @@ export default function ContactPage() {
                       animate={{ opacity: 1 }}
                       className="flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm"
                     >
-                      <FiAlertCircle className="w-4 h-4 flex-shrink-0" />
+                      <FiAlertCircle className="w-4 h-4 shrink-0" />
                       {t("form.error_message")}
                     </motion.div>
                   )}
@@ -226,7 +226,7 @@ export default function ContactPage() {
                     disabled={status === "submitting"}
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
-                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-gradient-to-r from-[#7C3AED] to-[#4F46E5] rounded-xl hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg shadow-[#7C3AED]/25"
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-linear-to-r from-[#7C3AED] to-[#4F46E5] rounded-xl hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg shadow-[#7C3AED]/25"
                   >
                     {status === "submitting" ? (
                       <>

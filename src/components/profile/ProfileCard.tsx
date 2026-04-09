@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { FiCalendar, FiEdit2, FiCheck } from "react-icons/fi";
 import { SiDiscord } from "react-icons/si";
@@ -98,10 +99,14 @@ export default function ProfileCard({ profile, isOwn }: ProfileCardProps) {
         <div className="flex items-end justify-between -mt-10 mb-4">
           <div className="relative">
             {profile.avatar ? (
-              <img
+              <Image
                 src={profile.avatar}
                 alt={profile.displayName ?? "Avatar"}
-                className="w-20 h-20 rounded-full border-4 border-[#1a1023] object-cover"
+                width={80}
+                height={80}
+                loading="eager"
+                unoptimized={profile.avatar.endsWith(".gif")}
+                className="rounded-full border-4 border-[#1a1023] object-cover"
               />
             ) : (
               <div className="w-20 h-20 rounded-full border-4 border-[#1a1023] bg-[#7C3AED] flex items-center justify-center text-2xl font-bold text-white">
@@ -149,11 +154,13 @@ export default function ProfileCard({ profile, isOwn }: ProfileCardProps) {
             {profile.tag && profile.identityEnabled && (
               <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs bg-[#1a1023] text-white border border-white/20">
                 {profile.badge && profile.identityGuildId && (
-                  <img
+                  <Image
                     src={`https://cdn.discordapp.com/guild-tag-badges/${profile.identityGuildId}/${profile.badge}.png`}
                     alt=""
-                    className="w-4 h-4 object-contain"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    width={16}
+                    height={16}
+                    className="object-contain"
+                    onError={() => { return; }}
                   />
                 )}
                 <span className="font-semibold text-[#A78BFA]">{profile.tag}</span>
@@ -208,7 +215,7 @@ export default function ProfileCard({ profile, isOwn }: ProfileCardProps) {
             </div>
             <div className="flex items-center gap-2 text-white/50">
               <FiCalendar className="w-4 h-4" />
-              <span>Member since <span className="text-white/70">{new Date(profile.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</span></span>
+              <span>Member since <span className="text-white/70">{new Date(Number((BigInt(profile.discordId) >> BigInt(22)) + BigInt(1420070400000))).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</span></span>
             </div>
           </div>
         )}

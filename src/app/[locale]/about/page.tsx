@@ -105,7 +105,7 @@ export default function AboutPage() {
               download
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="inline-flex items-center gap-2 mt-8 px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-[#7C3AED] to-[#4F46E5] rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-[#7C3AED]/25"
+              className="inline-flex items-center gap-2 mt-8 px-6 py-3 text-sm font-semibold text-white bg-linear-to-r from-[#7C3AED] to-[#4F46E5] rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-[#7C3AED]/25"
             >
               <FiDownload className="w-4 h-4" />
               {t("download_cv")}
@@ -119,11 +119,11 @@ export default function AboutPage() {
           >
             <GlassCard className="p-6 mb-6">
             <div className="flex items-center gap-4">
-              <div className="relative flex-shrink-0">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7C3AED] to-[#4F46E5] flex items-center justify-center text-2xl font-bold text-white shadow-lg shadow-[#7C3AED]/30">
+              <div className="relative shrink-0">
+                <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-[#7C3AED] to-[#4F46E5] flex items-center justify-center text-2xl font-bold text-white shadow-lg shadow-[#7C3AED]/30">
                   M
                 </div>
-                <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-[#030712]" />
+                <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-background" />
               </div>
               <div>
                 <p className="text-base font-bold text-white">Mark</p>
@@ -168,7 +168,7 @@ export default function AboutPage() {
                     className="flex items-start gap-3"
                   >
                     <div
-                      className="mt-0.5 p-2 rounded-lg flex-shrink-0"
+                      className="mt-0.5 p-2 rounded-lg shrink-0"
                       style={{ background: `${color}15`, border: `1px solid ${color}25` }}
                     >
                       <Icon className="w-4 h-4" style={{ color }} />

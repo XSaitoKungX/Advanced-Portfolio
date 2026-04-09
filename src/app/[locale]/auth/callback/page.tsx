@@ -17,7 +17,7 @@ export default function AuthCallbackPage() {
     } else {
       router.replace(`/${locale}/login`);
     }
-  }, [session, isPending]);
+  }, [session, isPending, locale, router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center">

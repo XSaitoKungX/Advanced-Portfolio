@@ -5,9 +5,9 @@ import { useTranslations, useLocale } from "next-intl";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { SiDiscord } from "react-icons/si";
-import { RiTerminalBoxFill } from "react-icons/ri";
-import { FiShield, FiSettings, FiActivity } from "react-icons/fi";
+import { FiUser, FiBookOpen, FiArrowLeft, FiCheckCircle } from "react-icons/fi";
 import { signIn, useSession } from "@/lib/auth-client";
+import Link from "next/link";
 
 export default function LoginPage() {
   const t = useTranslations("auth");
@@ -33,10 +33,10 @@ export default function LoginPage() {
     }
   };
 
-  const features = [
-    { icon: FiShield, text: locale === "de" ? "Sicherer Discord OAuth Login" : "Secure Discord OAuth login" },
-    { icon: FiSettings, text: locale === "de" ? "Admin-Bereich zugriff" : "Admin area access" },
-    { icon: FiActivity, text: locale === "de" ? "System-Status Übersicht" : "System status overview" },
+  const benefits = [
+    { icon: FiUser, text: t("profile_access") },
+    { icon: FiBookOpen, text: t("guestbook_verified") },
+    { icon: FiCheckCircle, text: locale === "de" ? "Sicherer Discord OAuth" : "Secure Discord OAuth" },
   ];
 
   return (
@@ -52,19 +52,19 @@ export default function LoginPage() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#7C3AED]/10 border border-[#7C3AED]/20 mb-4"
+            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#5865F2]/10 border border-[#5865F2]/20 mb-4"
           >
-            <RiTerminalBoxFill className="w-8 h-8 text-[#A78BFA]" />
+            <SiDiscord className="w-8 h-8 text-[#5865F2]" />
           </motion.div>
-          <h1 className="text-2xl font-bold text-white">xsaitox.dev</h1>
-          <p className="text-sm text-white/40 mt-1">{t("welcome_back")}</p>
+          <h1 className="text-2xl font-bold text-white">{t("public_login_title")}</h1>
+          <p className="text-sm text-white/40 mt-2 max-w-xs mx-auto">{t("public_login_desc")}</p>
         </div>
 
-        <div className="relative bg-white/[0.03] border border-white/[0.08] rounded-2xl p-8">
-          <div className="absolute -inset-px bg-gradient-to-b from-white/5 to-transparent rounded-2xl pointer-events-none" />
+        <div className="relative bg-white/3 border border-white/8 rounded-2xl p-8">
+          <div className="absolute -inset-px bg-linear-to-b from-white/5 to-transparent rounded-2xl pointer-events-none" />
 
           <ul className="space-y-3 mb-7">
-            {features.map(({ icon: Icon, text }, i) => (
+            {benefits.map(({ icon: Icon, text }, i) => (
               <motion.li
                 key={text}
                 initial={{ opacity: 0, x: -10 }}
@@ -72,7 +72,7 @@ export default function LoginPage() {
                 transition={{ delay: 0.2 + i * 0.08 }}
                 className="flex items-center gap-3 text-sm text-white/50"
               >
-                <Icon className="w-4 h-4 text-[#A78BFA] flex-shrink-0" />
+                <Icon className="w-4 h-4 text-[#5865F2] shrink-0" />
                 {text}
               </motion.li>
             ))}
@@ -98,11 +98,15 @@ export default function LoginPage() {
             )}
           </motion.button>
 
-          <p className="text-xs text-white/20 text-center mt-4">
-            {locale === "de"
-              ? "Nur für autorisierte Nutzer zugänglich."
-              : "Only accessible to authorized users."}
-          </p>
+          <div className="pt-4 border-t border-white/10 space-y-3">
+            <Link
+              href={`/${locale}`}
+              className="flex items-center justify-center gap-2 text-sm text-white/40 hover:text-white/60 transition-colors"
+            >
+              <FiArrowLeft className="w-4 h-4" />
+              {t("back_to_home")}
+            </Link>
+          </div>
         </div>
       </motion.div>
     </div>

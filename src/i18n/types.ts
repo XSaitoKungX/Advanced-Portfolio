@@ -6,6 +6,7 @@ export interface Translations {
     projects: string;
     experience: string;
     contact: string;
+    guestbook: string;
     login: string;
     logout: string;
     admin: string;
@@ -150,6 +151,12 @@ export interface Translations {
     admin_area: string;
     unauthorized: string;
     unauthorized_desc: string;
+    public_login_title: string;
+    public_login_desc: string;
+    profile_access: string;
+    guestbook_verified: string;
+    go_to_profile: string;
+    back_to_home: string;
   };
   guestbook: {
     title: string;
@@ -167,6 +174,7 @@ export interface Translations {
     no_entries: string;
     first_entry: string;
     verified_badge: string;
+    pending_badge: string;
     anonymous: string;
     time_just_now: string;
     time_minutes_ago: string;

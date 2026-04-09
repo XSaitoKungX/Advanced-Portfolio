@@ -76,6 +76,7 @@ export default function TerminalHero() {
   const [lines, setLines] = useState<TerminalLine[]>([]);
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [historyIdx, setHistoryIdx] = useState(-1);
   const [interactive, setInteractive] = useState(false);
 
@@ -111,7 +112,7 @@ export default function TerminalHero() {
     };
     run();
     return () => { cancelled = true; };
-  }, []);
+  }, [push, t]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -347,7 +348,7 @@ export default function TerminalHero() {
       className="relative w-full max-w-2xl mx-auto cursor-text"
       onClick={() => inputRef.current?.focus()}
     >
-      <div className="absolute -inset-1 bg-gradient-to-r from-[#7C3AED]/30 via-[#4F46E5]/20 to-[#7C3AED]/30 rounded-2xl blur-xl opacity-60" />
+      <div className="absolute -inset-1 bg-linear-to-r from-[#7C3AED]/30 via-[#4F46E5]/20 to-[#7C3AED]/30 rounded-2xl blur-xl opacity-60" />
 
       <div className="relative bg-[#0D1117]/95 border border-white/10 rounded-2xl overflow-hidden shadow-2xl shadow-black/50">
         {/* Title bar */}

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
@@ -31,8 +32,10 @@ export default function Navigation() {
   }, []);
 
   useEffect(() => {
-    setMobileOpen(false);
-    setUserMenuOpen(false);
+    queueMicrotask(() => {
+      setMobileOpen(false);
+      setUserMenuOpen(false);
+    });
   }, [pathname]);
 
   useEffect(() => {
@@ -52,7 +55,7 @@ export default function Navigation() {
     { href: `/${locale}/projects`, label: t("projects") },
     { href: `/${locale}/experience`, label: t("experience") },
     { href: `/${locale}/contact`, label: t("contact") },
-    { href: `/${locale}/guestbook`, label: "Guestbook" },
+    { href: `/${locale}/guestbook`, label: t("guestbook") },
   ];
 
   const isActive = (href: string) => {
@@ -97,7 +100,7 @@ export default function Navigation() {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#030712]/85 backdrop-blur-2xl border-b border-white/[0.06] shadow-xl shadow-black/30"
+          ? "bg-background/85 backdrop-blur-2xl border-b border-white/6 shadow-xl shadow-black/30"
           : "bg-transparent"
       }`}
     >
@@ -105,12 +108,12 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-16 lg:h-18">
 
           {/* Logo */}
-          <Link href={`/${locale}`} className="flex items-center gap-2.5 group flex-shrink-0">
+          <Link href={`/${locale}`} className="flex items-center gap-2.5 group shrink-0">
             <div className="relative">
               <RiTerminalBoxFill className="w-7 h-7 text-[#7C3AED] group-hover:text-[#A78BFA] transition-colors duration-200" />
               <div className="absolute inset-0 bg-[#7C3AED]/30 blur-md rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
-            <span className="text-lg font-bold tracking-tight bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent group-hover:from-[#A78BFA] group-hover:to-white/90 transition-all duration-200">
+            <span className="text-lg font-bold tracking-tight bg-linear-to-r from-white to-white/60 bg-clip-text text-transparent group-hover:from-[#A78BFA] group-hover:to-white/90 transition-all duration-200">
               xsaitox.dev
             </span>
           </Link>
@@ -130,7 +133,7 @@ export default function Navigation() {
                 {isActive(link.href) && (
                   <motion.div
                     layoutId="nav-active"
-                    className="absolute inset-0 bg-white/[0.08] rounded-lg border border-white/[0.08]"
+                    className="absolute inset-0 bg-white/8 rounded-lg border border-white/8"
                     transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
                   />
                 )}
@@ -147,13 +150,15 @@ export default function Navigation() {
               <div className="relative" ref={userMenuRef}>
                 <button
                   onClick={() => setUserMenuOpen((v) => !v)}
-                  className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-xl border border-white/10 hover:border-white/20 bg-white/[0.03] hover:bg-white/[0.06] transition-all duration-200 group"
+                  className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-xl border border-white/10 hover:border-white/20 bg-white/3 hover:bg-white/6 transition-all duration-200 group"
                 >
                   {avatarUrl ? (
-                    <img
+                    <Image
                       src={avatarUrl}
                       alt={session.user.name ?? "Avatar"}
-                      className="w-7 h-7 rounded-full object-cover border border-white/10"
+                      width={28}
+                      height={28}
+                      className="rounded-full object-cover border border-white/10"
                     />
                   ) : (
                     <div className="w-7 h-7 rounded-full bg-[#7C3AED]/40 flex items-center justify-center border border-[#7C3AED]/30">
@@ -178,7 +183,7 @@ export default function Navigation() {
                       className="absolute right-0 top-full mt-2 w-52 bg-[#0d0a14]/95 backdrop-blur-2xl border border-white/10 rounded-xl shadow-2xl shadow-black/50 overflow-hidden"
                     >
                       {/* User info header */}
-                      <div className="px-4 py-3 border-b border-white/[0.06]">
+                      <div className="px-4 py-3 border-b border-white/6">
                         <p className="text-sm font-semibold text-white truncate">
                           {session.user.name ?? "User"}
                         </p>
@@ -199,22 +204,22 @@ export default function Navigation() {
                               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 ${
                                 item.accent
                                   ? "text-[#A78BFA] hover:bg-[#7C3AED]/15"
-                                  : "text-white/70 hover:text-white hover:bg-white/[0.06]"
+                                  : "text-white/70 hover:text-white hover:bg-white/6"
                               }`}
                             >
-                              <item.icon className="w-4 h-4 flex-shrink-0" />
+                              <item.icon className="w-4 h-4 shrink-0" />
                               {item.label}
                             </Link>
                           ))}
                       </div>
 
                       {/* Logout */}
-                      <div className="p-1.5 pt-0 border-t border-white/[0.06] mt-0.5">
+                      <div className="p-1.5 pt-0 border-t border-white/6 mt-0.5">
                         <button
                           onClick={() => { setUserMenuOpen(false); signOut(); }}
                           className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-red-400/80 hover:text-red-400 hover:bg-red-500/10 transition-all duration-150"
                         >
-                          <FiLogOut className="w-4 h-4 flex-shrink-0" />
+                          <FiLogOut className="w-4 h-4 shrink-0" />
                           {t("logout")}
                         </button>
                       </div>
@@ -225,7 +230,7 @@ export default function Navigation() {
             ) : (
               <Link
                 href={`/${locale}/login`}
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-[#7C3AED] to-[#4F46E5] rounded-lg hover:opacity-90 transition-all duration-200 shadow-lg shadow-[#7C3AED]/25"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-linear-to-r from-[#7C3AED] to-[#4F46E5] rounded-lg hover:opacity-90 transition-all duration-200 shadow-lg shadow-[#7C3AED]/25"
               >
                 <FiUser className="w-4 h-4" />
                 {t("login")}
@@ -262,7 +267,7 @@ export default function Navigation() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="lg:hidden overflow-hidden bg-[#030712]/95 backdrop-blur-2xl border-b border-white/[0.06]"
+            className="lg:hidden overflow-hidden bg-background/95 backdrop-blur-2xl border-b border-white/6"
           >
             <div className="max-w-7xl mx-auto px-4 pt-3 pb-5 space-y-1">
 
@@ -278,8 +283,8 @@ export default function Navigation() {
                     href={link.href}
                     className={`flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${
                       isActive(link.href)
-                        ? "bg-white/[0.08] text-white border border-white/[0.08]"
-                        : "text-white/55 hover:text-white hover:bg-white/[0.05]"
+                        ? "bg-white/8 text-white border border-white/8"
+                        : "text-white/55 hover:text-white hover:bg-white/5"
                     }`}
                   >
                     {link.label}
@@ -293,12 +298,12 @@ export default function Navigation() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.28 }}
-                  className="pt-3 mt-2 border-t border-white/[0.06] space-y-1"
+                  className="pt-3 mt-2 border-t border-white/6 space-y-1"
                 >
                   {/* User info */}
                   <div className="flex items-center gap-3 px-4 py-2 mb-2">
                     {avatarUrl ? (
-                      <img src={avatarUrl} alt="" className="w-9 h-9 rounded-full border border-white/10 object-cover" />
+                      <Image src={avatarUrl} alt="" width={36} height={36} className="rounded-full border border-white/10 object-cover" />
                     ) : (
                       <div className="w-9 h-9 rounded-full bg-[#7C3AED]/30 flex items-center justify-center">
                         <FiUser className="w-4 h-4 text-[#A78BFA]" />
@@ -319,7 +324,7 @@ export default function Navigation() {
                         className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                           item.accent
                             ? "text-[#A78BFA] hover:bg-[#7C3AED]/10"
-                            : "text-white/60 hover:text-white hover:bg-white/[0.05]"
+                            : "text-white/60 hover:text-white hover:bg-white/5"
                         }`}
                       >
                         <item.icon className="w-4 h-4" />
@@ -338,12 +343,12 @@ export default function Navigation() {
               )}
 
               {/* Bottom bar */}
-              <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between">
+              <div className="pt-3 border-t border-white/6 flex items-center justify-between">
                 <LanguageSwitcher />
                 {!session && (
                   <Link
                     href={`/${locale}/login`}
-                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-[#7C3AED] to-[#4F46E5] rounded-lg"
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-linear-to-r from-[#7C3AED] to-[#4F46E5] rounded-lg"
                   >
                     <FiUser className="w-4 h-4" />
                     {t("login")}

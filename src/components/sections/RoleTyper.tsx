@@ -31,8 +31,10 @@ export default function RoleTyper() {
           setDisplayed(displayed.slice(0, -1));
         }, 30);
       } else {
-        setRoleIndex((i) => (i + 1) % roles.length);
-        setPhase("typing");
+        queueMicrotask(() => {
+          setRoleIndex((i) => (i + 1) % roles.length);
+          setPhase("typing");
+        });
       }
     }
 

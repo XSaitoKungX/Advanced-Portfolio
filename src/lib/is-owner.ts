@@ -1,4 +1,4 @@
-import { OWNER_DISCORD_ID } from "./auth";
+import { OWNER_DISCORD_ID } from "./constants";
 
 type SessionUser = {
   id?: string;

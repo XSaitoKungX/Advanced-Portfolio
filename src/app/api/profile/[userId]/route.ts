@@ -66,9 +66,14 @@ export async function GET(
       },
     });
 
+    // Check if this is the user's own profile - compare by userId OR by discordId from avatar URL
+    const avatarMatch = (session?.user?.image as string | null)?.match(/\/avatars\/(\d+)\//);
+    const sessionDiscordId = avatarMatch?.[1];
     const isOwn = !!(session?.user && (
       session.user.id === profile?.userId ||
-      session.user.id === userId
+      session.user.id === userId ||
+      sessionDiscordId === userId ||
+      sessionDiscordId === profile?.discordId
     ));
 
     // If logged in and viewing own profile, refresh from Discord API

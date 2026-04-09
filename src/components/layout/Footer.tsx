@@ -25,7 +25,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative border-t border-white/5 bg-[#030712]/80 backdrop-blur-xl">
+    <footer className="relative border-t border-white/5 bg-background/80 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

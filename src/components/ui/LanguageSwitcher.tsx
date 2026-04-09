@@ -1,12 +1,11 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
 export default function LanguageSwitcher() {
   const locale = useLocale();
-  const t = useTranslations("common");
   const pathname = usePathname();
   const router = useRouter();
 

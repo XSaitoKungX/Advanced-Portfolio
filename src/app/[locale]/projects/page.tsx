@@ -43,7 +43,7 @@ function ProjectCard({
             ))}
           </div>
           <span
-            className="text-[10px] font-semibold px-2.5 py-1 rounded-full flex-shrink-0 ml-2"
+            className="text-[10px] font-semibold px-2.5 py-1 rounded-full shrink-0 ml-2"
             style={{
               background: `color-mix(in srgb, ${status.text} 10%, transparent)`,
               border: `1px solid color-mix(in srgb, ${status.text} 20%, transparent)`,
@@ -153,7 +153,7 @@ export default function ProjectsPage() {
               className={`px-4 py-2 text-sm font-medium rounded-xl border transition-all duration-200 ${
                 activeCategory === key
                   ? "bg-[#7C3AED] border-[#7C3AED] text-white shadow-lg shadow-[#7C3AED]/25"
-                  : "bg-white/[0.03] border-white/10 text-white/50 hover:text-white hover:border-white/20"
+                  : "bg-white/3 border-white/10 text-white/50 hover:text-white hover:border-white/20"
               }`}
             >
               {label}

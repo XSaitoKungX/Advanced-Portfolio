@@ -80,7 +80,7 @@ export default function SkillsPage() {
               className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl border transition-all duration-200 ${
                 activeCategory === key
                   ? "bg-[#7C3AED] border-[#7C3AED] text-white shadow-lg shadow-[#7C3AED]/25"
-                  : "bg-white/[0.03] border-white/10 text-white/50 hover:text-white hover:border-white/20"
+                  : "bg-white/3 border-white/10 text-white/50 hover:text-white hover:border-white/20"
               }`}
             >
               {label}
@@ -111,7 +111,7 @@ export default function SkillsPage() {
                 intensity={6}
                 className="group h-full"
               >
-                <div className="relative bg-white/[0.03] border border-white/[0.08] rounded-2xl p-5 h-full flex flex-col items-center gap-3 transition-all duration-300 group-hover:bg-white/[0.07] group-hover:border-white/[0.15]">
+                <div className="relative bg-white/3 border border-white/10 rounded-2xl p-5 h-full flex flex-col items-center gap-3 transition-all duration-300 group-hover:bg-white/7 group-hover:border-white/20">
                   <div
                     className="relative p-3 rounded-xl transition-all duration-300"
                     style={{

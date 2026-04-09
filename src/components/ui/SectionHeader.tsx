@@ -37,7 +37,7 @@ export default function SectionHeader({ title, subtitle, align = "center" }: Sec
         viewport={{ once: true }}
         transition={{ duration: 0.6, delay: 0.25, ease: "easeOut" }}
         style={{ transformOrigin: isCenter ? "center" : "left" }}
-        className={`mt-4 h-px w-16 bg-gradient-to-r from-[#7C3AED] to-transparent ${isCenter ? "mx-auto" : ""}`}
+        className={`mt-4 h-px w-16 bg-linear-to-r from-[#7C3AED] to-transparent ${isCenter ? "mx-auto" : ""}`}
       />
     </div>
   );

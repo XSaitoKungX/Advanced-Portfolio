@@ -67,7 +67,7 @@ export default async function LocaleLayout({
       className={`${geistSans.variable} ${geistMono.variable}`}
       data-scroll-behavior="smooth"
     >
-      <body className="bg-[#030712] text-white antialiased min-h-screen flex flex-col">
+      <body className="bg-background text-white antialiased min-h-screen flex flex-col">
         <NextIntlClientProvider messages={messages}>
           <AnimatedBackground />
           <Navigation />

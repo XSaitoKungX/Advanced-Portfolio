@@ -5,8 +5,19 @@ import { headers } from "next/headers";
 
 export async function GET() {
   try {
+    // Get current session to also show user's own pending entries
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+    
     const entries = await prisma.guestbookEntry.findMany({
-      where: { status: "APPROVED" },
+      where: {
+        OR: [
+          { status: "APPROVED" },
+          // Show user's own pending entries
+          ...(session?.user?.id ? [{ status: "PENDING" as const, userId: session.user.id }] : []),
+        ],
+      },
       orderBy: { createdAt: "desc" },
       select: {
         id: true,
@@ -14,11 +25,13 @@ export async function GET() {
         name: true,
         image: true,
         isVerified: true,
+        status: true,
         createdAt: true,
       },
     });
     return NextResponse.json({ entries });
-  } catch {
+  } catch (error) {
+    console.error("Guestbook GET error:", error);
     return NextResponse.json({ entries: [] });
   }
 }
@@ -48,13 +61,14 @@ export async function POST(request: Request) {
         image: session?.user?.image || undefined,
         isVerified: !!session?.user,
         userId: session?.user?.id || undefined,
-        // Verified users are auto-approved, anonymous go to pending
+        // Auto-approve verified Discord users, anonymous goes to pending for moderation
         status: session?.user ? "APPROVED" : "PENDING",
       },
     });
 
     return NextResponse.json({ success: true, entry, pending: !session?.user });
-  } catch {
+  } catch (error) {
+    console.error("Guestbook POST error:", error);
     return NextResponse.json({ error: "Failed to save entry" }, { status: 500 });
   }
 }

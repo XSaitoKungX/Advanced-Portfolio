@@ -1,3 +1,12 @@
+# [0.4.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.3.5...v0.4.0) (2026-04-09)
+
+
+### Features
+
+* modernize profile pages and fix guestbook display ([466458b](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/466458bf31107c0e119f84d856b5d8bfd2c0e0ef))
+
+
+
 ## [0.3.5](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.3.4...v0.3.5) (2026-04-06)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * Better Auth tables created in Neon PostgreSQL ([974193b](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/974193badfbd9639234b89520649b8d3d70beec8))
-
-
-
-## [0.3.1](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.3.0...v0.3.1) (2026-04-06)
-
-
-### Bug Fixes
-
-* configure Better Auth to use Neon PostgreSQL ([0d07d19](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/0d07d1924a6abbc45f176253918e1becaecc5107))
 
 
 

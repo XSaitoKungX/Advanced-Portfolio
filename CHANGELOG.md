@@ -1,3 +1,12 @@
+# [0.6.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.5.0...v0.6.0) (2026-04-09)
+
+
+### Features
+
+* add i18n support to Discord CustomRPC page and enhance footer ([1e38e2f](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/1e38e2fbc4325fc92842ec908a50d7b17b1000f3))
+
+
+
 # [0.5.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.4.0...v0.5.0) (2026-04-09)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * add unique token field to Session model in Prisma schema ([a07b1a6](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/a07b1a6e5d5716aa493e621ca2daede7f21a2f8a))
-
-
-
-## [0.3.3](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.3.2...v0.3.3) (2026-04-06)
-
-
-### Bug Fixes
-
-* add Better Auth tables to Prisma schema ([29fa2b0](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/29fa2b025b7cf1b57fd6c84b568c1eea698e1a83))
 
 
 

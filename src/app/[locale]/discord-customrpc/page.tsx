@@ -248,7 +248,7 @@ export default function DiscordCustomRPCPage() {
             </p>
 
             {/* Download Buttons */}
-            <DownloadButtons downloadFor={t("downloadFor")} />
+            <DownloadButtons />
 
             {/* GitHub Star Button */}
             <a

@@ -297,6 +297,7 @@ const en: Translations = {
     viewAllReleases: "View all releases",
     viewReleasesOnGithub: "View Releases on GitHub",
     changelogPlaceholder: "View the complete changelog and all releases on GitHub",
+    comingSoon: "Coming Soon",
     ctaTitle: "Ready to customize your Discord?",
     ctaDescription: "Join thousands of users who have already enhanced their Discord experience",
     downloadNow: "Download Now",

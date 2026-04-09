@@ -2,6 +2,7 @@
 
 import { FaWindows, FaLinux, FaApple } from "react-icons/fa";
 import { useSyncExternalStore } from "react";
+import { useTranslations } from "next-intl";
 
 function getOS(): "windows" | "mac" | "linux" {
   if (typeof window === "undefined") return "windows";
@@ -15,74 +16,45 @@ function subscribe() {
   return () => {};
 }
 
-interface DownloadButtonProps {
-  icon: React.ReactNode;
-  platform: string;
-  extension: string;
-  href: string;
-  downloadFor: string;
-  primary?: boolean;
-}
-
-function DownloadButton({ icon, platform, extension, href, downloadFor, primary }: DownloadButtonProps) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`flex items-center gap-3 px-5 py-3 rounded-xl font-medium transition-all duration-200 ${
-        primary
-          ? "bg-[#5865F2] hover:bg-[#4752C4] text-white shadow-lg shadow-[#5865F2]/25"
-          : "bg-white/5 hover:bg-white/10 border border-white/10 text-white/80 hover:text-white"
-      }`}
-    >
-      {icon}
-      <div className="text-left">
-        <div className="text-xs opacity-70">{downloadFor}</div>
-        <div className="text-sm font-semibold">{platform}</div>
-      </div>
-      <span className="text-xs opacity-50 ml-1">.{extension}</span>
-    </a>
-  );
-}
-
-interface DownloadButtonsProps {
-  downloadFor: string;
-}
-
-export function DownloadButtons({ downloadFor }: DownloadButtonsProps) {
+export function DownloadButtons() {
+  const t = useTranslations("discordCustomRPC");
   const detectedOS = useSyncExternalStore(
     subscribe,
     getOS,
     () => "windows" // Server snapshot
   );
 
+  const platforms = [
+    { icon: FaWindows, platform: "Windows", extension: "exe", os: "windows" as const },
+    { icon: FaLinux, platform: "Linux", extension: "deb", os: "linux" as const },
+    { icon: FaApple, platform: "Mac", extension: "dmg", os: "mac" as const },
+  ];
+
   return (
     <div className="flex flex-wrap justify-center gap-4 mb-8">
-      <DownloadButton
-        icon={<FaWindows className="w-6 h-6" />}
-        platform="Windows"
-        extension="exe"
-        href="https://github.com/XSaitoKungX/Discord-CustomRPC/releases/latest/download/discord-customrpc-windows.exe"
-        downloadFor={downloadFor}
-        primary={detectedOS === "windows"}
-      />
-      <DownloadButton
-        icon={<FaLinux className="w-6 h-6" />}
-        platform="Linux"
-        extension="deb"
-        href="https://github.com/XSaitoKungX/Discord-CustomRPC/releases/latest/download/discord-customrpc-linux.deb"
-        downloadFor={downloadFor}
-        primary={detectedOS === "linux"}
-      />
-      <DownloadButton
-        icon={<FaApple className="w-6 h-6" />}
-        platform="Mac"
-        extension="dmg"
-        href="https://github.com/XSaitoKungX/Discord-CustomRPC/releases/latest/download/discord-customrpc-mac.dmg"
-        downloadFor={downloadFor}
-        primary={detectedOS === "mac"}
-      />
+      {platforms.map(({ icon: Icon, platform, extension, os }) => (
+        <div
+          key={platform}
+          className={`flex items-center gap-3 px-5 py-3 rounded-xl font-medium transition-all duration-200 cursor-not-allowed ${
+            detectedOS === os
+              ? "bg-[#5865F2]/30 border border-[#5865F2]/30 text-white/60"
+              : "bg-white/5 border border-white/10 text-white/40"
+          }`}
+          title={t("comingSoon")}
+        >
+          <Icon className="w-6 h-6" />
+          <div className="text-left">
+            <div className="text-xs opacity-50">{t("downloadFor")}</div>
+            <div className="text-sm font-semibold flex items-center gap-2">
+              {platform}
+              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/10 text-white/50">
+                {t("comingSoon")}
+              </span>
+            </div>
+          </div>
+          <span className="text-xs opacity-30 ml-1">.{extension}</span>
+        </div>
+      ))}
     </div>
   );
 }

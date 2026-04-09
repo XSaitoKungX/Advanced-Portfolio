@@ -225,6 +225,7 @@ export interface Translations {
     viewAllReleases: string;
     viewReleasesOnGithub: string;
     changelogPlaceholder: string;
+    comingSoon: string;
     ctaTitle: string;
     ctaDescription: string;
     downloadNow: string;

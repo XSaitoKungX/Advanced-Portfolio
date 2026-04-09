@@ -8,8 +8,20 @@ import Navigation from "@/components/layout/Navigation";
 import Footer from "@/components/layout/Footer";
 import AnimatedBackground from "@/components/ui/AnimatedBackground";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"], display: "swap" });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], display: "swap" });
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+  display: "swap",
+  preload: true,
+  adjustFontFallback: false,
+});
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+  display: "swap",
+  preload: true,
+  adjustFontFallback: false,
+});
 
 export async function generateMetadata({
   params,
@@ -37,6 +49,18 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: t("title"),
       description: t("description"),
+    },
+    icons: {
+      icon: [
+        { url: "/favicon/favicon.ico", sizes: "any" },
+        { url: "/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+        { url: "/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+        { url: "/favicon/favicon-48x48.png", sizes: "48x48", type: "image/png" },
+        { url: "/favicon/favicon-192x192.png", sizes: "192x192", type: "image/png" },
+      ],
+      apple: [
+        { url: "/favicon/favicon-180x180.png", sizes: "180x180", type: "image/png" },
+      ],
     },
   };
 }

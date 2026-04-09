@@ -2,7 +2,9 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { motion } from "framer-motion";
-import { FiDownload, FiCode, FiZap, FiLayout, FiBookOpen } from "react-icons/fi";
+import Image from "next/image";
+import { FiDownload, FiCode, FiZap, FiLayout, FiBookOpen, FiArrowUpRight } from "react-icons/fi";
+import { SiDiscord } from "react-icons/si";
 import SectionHeader from "@/components/ui/SectionHeader";
 import GlassCard from "@/components/ui/GlassCard";
 import MarkdownRenderer from "@/components/ui/MarkdownRenderer";
@@ -120,8 +122,15 @@ export default function AboutPage() {
             <GlassCard className="p-6 mb-6">
             <div className="flex items-center gap-4">
               <div className="relative shrink-0">
-                <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-[#7C3AED] to-[#4F46E5] flex items-center justify-center text-2xl font-bold text-white shadow-lg shadow-[#7C3AED]/30">
-                  M
+                <div className="w-16 h-16 rounded-2xl overflow-hidden bg-linear-to-br from-[#7C3AED] to-[#4F46E5] shadow-lg shadow-[#7C3AED]/30">
+                  <Image
+                    src="/icon.png"
+                    alt="Mark"
+                    width={64}
+                    height={64}
+                    className="w-full h-full object-cover"
+                    unoptimized
+                  />
                 </div>
                 <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-background" />
               </div>
@@ -152,6 +161,47 @@ export default function AboutPage() {
                 </motion.div>
               ))}
             </div>
+
+            {/* Discord Bot Card */}
+            <motion.a
+              href="https://discord.gg/ugcity"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              whileHover={{ scale: 1.02 }}
+              className="block"
+            >
+              <GlassCard className="p-5 relative overflow-hidden group cursor-pointer">
+                <div className="absolute top-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <FiArrowUpRight className="w-4 h-4 text-white/50" />
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-[#5865F2]/20 border border-[#5865F2]/30 flex items-center justify-center shrink-0">
+                    <SiDiscord className="w-6 h-6 text-[#5865F2]" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <p className="text-base font-bold text-white">Astra Bot</p>
+                      <span className="px-1.5 py-0.5 text-[10px] font-medium text-[#5865F2] bg-[#5865F2]/10 border border-[#5865F2]/20 rounded">v2.0</span>
+                    </div>
+                    <p className="text-sm text-white/50 truncate">
+                      {locale === "de" ? "Vertraut von" : "Trusted by"} <span className="text-[#A78BFA] font-semibold">100+</span> Discord {locale === "de" ? "Servern" : "Servers"}
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-4 flex items-center gap-3 text-xs text-white/40">
+                  <span className="flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    {locale === "de" ? "Online" : "Online"}
+                  </span>
+                  <span>•</span>
+                  <span>90+ {locale === "de" ? "aktive Communities" : "active communities"}</span>
+                </div>
+              </GlassCard>
+            </motion.a>
 
             <GlassCard className="p-6">
               <h3 className="text-sm font-semibold text-white/50 uppercase tracking-wider mb-4">

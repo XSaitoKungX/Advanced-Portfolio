@@ -3,12 +3,20 @@
 import { useTranslations, useLocale } from "next-intl";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { FiArrowRight, FiGithub } from "react-icons/fi";
 import { SiDiscord, SiTypescript, SiReact, SiNextdotjs, SiTailwindcss, SiBun } from "react-icons/si";
 import { HiArrowDown } from "react-icons/hi";
-import TerminalHero from "@/components/sections/TerminalHero";
 import RoleTyper from "@/components/sections/RoleTyper";
+
+const TerminalHero = dynamic(() => import("@/components/sections/TerminalHero"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full max-w-3xl h-[100px] bg-[#0D1117]/50 rounded-2xl border border-white/10 animate-pulse" />
+  ),
+});
 
 interface Stats {
   projects: number;
@@ -140,19 +148,19 @@ export default function HomePage() {
                   href="https://github.com/XSaitoKungX"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 rounded-xl border border-white/10 text-white/40 hover:text-white hover:border-white/20 hover:bg-white/5 transition-all duration-200"
+                  className="group p-2.5 rounded-xl border border-white/10 text-white/40 hover:text-white hover:border-white/20 hover:bg-white/5 transition-all duration-200"
                   aria-label="GitHub"
                 >
-                  <FiGithub className="w-5 h-5" />
+                  <FiGithub className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 </a>
                 <a
-                  href="https://discord.com/channels/@me/848917797501141052"
+                  href="https://discord.gg/ugcity"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 rounded-xl border border-white/10 text-white/40 hover:text-[#5865F2] hover:border-[#5865F2]/30 hover:bg-[#5865F2]/10 transition-all duration-200"
+                  className="group p-2.5 rounded-xl border border-white/10 text-white/40 hover:text-[#5865F2] hover:border-[#5865F2]/30 hover:bg-[#5865F2]/10 transition-all duration-200"
                   aria-label="Discord"
                 >
-                  <SiDiscord className="w-5 h-5" />
+                  <SiDiscord className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 </a>
               </div>
             </motion.div>
@@ -161,8 +169,22 @@ export default function HomePage() {
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-              className="order-1 lg:order-2"
+              className="order-1 lg:order-2 flex flex-col items-center gap-6"
             >
+              {/* Mascot */}
+              <div className="relative w-full max-w-[260px] aspect-square">
+                <Image
+                  src="/saito-mascot.png"
+                  alt="Saito Mascot"
+                  fill
+                  className="object-contain drop-shadow-2xl"
+                  sizes="260px"
+                />
+                {/* Glow effect behind mascot */}
+                <div className="absolute inset-0 -z-10 bg-linear-to-br from-[#7C3AED]/30 via-[#4F46E5]/20 to-transparent blur-3xl scale-75" />
+              </div>
+
+              {/* Terminal */}
               <TerminalHero />
             </motion.div>
           </div>

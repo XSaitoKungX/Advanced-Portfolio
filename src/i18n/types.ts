@@ -23,6 +23,7 @@ export interface Translations {
       loading_modules: string;
       connecting: string;
       ready: string;
+      session_start: string;
       fetching: string;
       portfolio_ready: string;
       menu_projects: string;

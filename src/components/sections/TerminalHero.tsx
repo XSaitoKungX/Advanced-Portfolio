@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo, type KeyboardEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
+import { useSession } from "@/lib/auth-client";
+import { registry, CommandContext } from "@/lib/terminal/commands";
 
 interface TerminalLine {
   id: number;
@@ -14,14 +16,6 @@ interface TerminalLine {
   instant?: boolean;
 }
 
-const ASCII_NAME = [
-' ███╗   ███╗ █████╗ ██████╗ ██╗  ██╗',
-' ████╗ ████║██╔══██╗██╔══██╗██║ ██╔╝',
-' ██╔████╔██║███████║██████╔╝█████╔╝ ',
-' ██║╚██╔╝██║██╔══██║██╔══██╗██╔═██╗ ',
-' ██║ ╚═╝ ██║██║  ██║██║  ██║██║  ██╗',
-' ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝',
-];
 
 const BOOT_LINES: Omit<TerminalLine, "id">[] = [
   { type: "status", content: "boot",           prefix: "[INIT]", prefixColor: "#A78BFA" },
@@ -29,18 +23,16 @@ const BOOT_LINES: Omit<TerminalLine, "id">[] = [
   { type: "status", content: "connecting",     prefix: "[ OK ]", prefixColor: "#34D399" },
   { type: "status", content: "ready",          prefix: "[ OK ]", prefixColor: "#34D399" },
   { type: "separator", content: "" },
-  { type: "ascii", content: ASCII_NAME[0], instant: true },
-  { type: "ascii", content: ASCII_NAME[1], instant: true },
-  { type: "ascii", content: ASCII_NAME[2], instant: true },
-  { type: "ascii", content: ASCII_NAME[3], instant: true },
-  { type: "ascii", content: ASCII_NAME[4], instant: true },
+  { type: "status", content: "session_start",  prefix: "[SYSTEM]", prefixColor: "#A78BFA" },
+  { type: "status", content: "__SESSION_INFO__", prefix: "[TIME]", prefixColor: "#FBBF24", instant: true },
   { type: "separator", content: "" },
   { type: "status", content: "fetching",       prefix: "[LOAD]", prefixColor: "#FBBF24" },
   { type: "status", content: "portfolio_ready",prefix: "[ OK ]", prefixColor: "#34D399" },
   { type: "separator", content: "" },
 ];
 
-const BOOT_DELAYS = [400, 500, 400, 350, 300, 50, 50, 50, 50, 50, 200, 400, 600, 200];
+// BOOT_DELAYS for 10 entries
+const BOOT_DELAYS = [400, 500, 400, 350, 300, 400, 200, 300, 400, 600, 200];
 
 const MENU_LINES: Omit<TerminalLine, "id">[] = [
   { type: "menu", content: "menu_projects", prefix: "[1]", prefixColor: "#A78BFA" },
@@ -50,10 +42,10 @@ const MENU_LINES: Omit<TerminalLine, "id">[] = [
   { type: "info", content: "menu_hint" },
 ];
 
-function Prompt() {
+function Prompt({ username }: { username: string }) {
   return (
     <span className="flex items-center gap-0.5 shrink-0">
-      <span className="text-[#34D399]">mark</span>
+      <span className="text-[#34D399]">{username}</span>
       <span className="text-white/30">@</span>
       <span className="text-[#60A5FA]">dev</span>
       <span className="text-white/30">:</span>
@@ -63,29 +55,40 @@ function Prompt() {
   );
 }
 
-let lineIdCounter = 0;
-function nextId() { return ++lineIdCounter; }
-
 export default function TerminalHero() {
   const t = useTranslations("home.terminal");
   const locale = useLocale();
   const router = useRouter();
+  const { data: session } = useSession();
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const lineIdCounter = useRef(0);
+  const nextId = useCallback(() => ++lineIdCounter.current, []);
+
+  const username = useMemo(
+    () => (session?.user?.name ?? "guest").toLowerCase().replace(/\s+/g, ""),
+    [session?.user?.name]
+  );
+  const usernameRef = useRef(username);
+  useEffect(() => { usernameRef.current = username; }, [username]);
 
   const [lines, setLines] = useState<TerminalLine[]>([]);
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [historyIdx, setHistoryIdx] = useState(-1);
   const [interactive, setInteractive] = useState(false);
+
+  useEffect(() => {
+    lineIdCounter.current = 0;
+    setLines([]);
+  }, []);
 
   const push = useCallback((...newLines: Omit<TerminalLine, "id">[]) => {
     setLines((prev) => [
       ...prev,
       ...newLines.map((l) => ({ ...l, id: nextId() })),
     ]);
-  }, []);
+  }, [nextId]);
 
   useEffect(() => {
     let cancelled = false;
@@ -95,9 +98,22 @@ export default function TerminalHero() {
         await new Promise((r) => setTimeout(r, BOOT_DELAYS[i] ?? 200));
         if (cancelled) break;
         const raw = BOOT_LINES[i];
-        const content = raw.type === "status" || raw.type === "info"
-          ? t(raw.content as Parameters<typeof t>[0])
-          : raw.content;
+        let content: string;
+        if (raw.content === "__SESSION_INFO__") {
+          const now = new Date();
+          const timeStr = now.toLocaleString(locale, {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+          content = `${timeStr} — ${locale === "de" ? "Angemeldet als" : "Logged in as"} ${usernameRef.current}`;
+        } else {
+          content = raw.type === "status" || raw.type === "info"
+            ? t(raw.content as Parameters<typeof t>[0])
+            : raw.content;
+        }
         push({ ...raw, content });
       }
       if (!cancelled) {
@@ -112,7 +128,7 @@ export default function TerminalHero() {
     };
     run();
     return () => { cancelled = true; };
-  }, [push, t]);
+  }, [push, t, locale]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -124,7 +140,7 @@ export default function TerminalHero() {
     }
   }, [interactive]);
 
-  const runCommand = useCallback((raw: string) => {
+  const runCommand = useCallback(async (raw: string) => {
     const cmd = raw.trim();
     if (!cmd) return;
 
@@ -132,220 +148,63 @@ export default function TerminalHero() {
     setHistory((h) => [cmd, ...h.slice(0, 49)]);
     setHistoryIdx(-1);
 
-    const lower = cmd.toLowerCase();
+    const parts = cmd.split(" ");
+    const commandName = parts[0].toLowerCase();
+    const args = parts.slice(1);
 
-    if (lower === "1" || lower === "/projects") {
-      push(
-        { type: "output", content: t("cmd_projects_title") },
-        { type: "separator", content: "" },
-        ...["Astra Bot", "Astra Bot v3", "Portfolio", "Biolink Platform", "Game Hosting Panel"].map((p) => ({
-          type: "output" as const, content: `  → ${p}`,
-        })),
-        { type: "separator", content: "" },
-        { type: "info", content: t("cmd_navigate", { path: `/${locale}/projects` }) },
-      );
-      setTimeout(() => router.push(`/${locale}/projects`), 1200);
-      return;
-    }
+    const commandType = registry.resolve(commandName);
 
-    if (lower === "2" || lower === "/skills") {
-      push(
-        { type: "output", content: t("cmd_skills_title") },
-        { type: "separator", content: "" },
-        { type: "output", content: "  Frontend  → TypeScript, React, Next.js, Tailwind CSS" },
-        { type: "output", content: "  Backend   → Node.js, Bun, Python, PostgreSQL, Prisma" },
-        { type: "output", content: "  DevOps    → Docker, Nginx, Git, Vercel, Linux" },
-        { type: "output", content: "  Tools     → Windsurf, VS Code, IntelliJ IDEA" },
-        { type: "separator", content: "" },
-        { type: "info", content: t("cmd_navigate", { path: `/${locale}/skills` }) },
-      );
-      setTimeout(() => router.push(`/${locale}/skills`), 1400);
-      return;
-    }
+    if (commandType) {
+      const ctx: CommandContext = {
+        username,
+        locale,
+        router: { push: (path: string) => router.push(path) },
+        t,
+      };
 
-    if (lower === "3" || lower === "/contact") {
-      push(
-        { type: "output", content: t("cmd_contact_title") },
-        { type: "separator", content: "" },
-        { type: "output", content: "  Email  → via contact form" },
-        { type: "output", content: "  GitHub → github.com/markdev" },
-        { type: "separator", content: "" },
-        { type: "info", content: t("cmd_navigate", { path: `/${locale}/contact` }) },
-      );
-      setTimeout(() => router.push(`/${locale}/contact`), 1200);
-      return;
-    }
+      const result = await registry.execute(commandType, args, ctx);
 
-    if (lower === "/help") {
+      if (result.clear) {
+        setLines([]);
+        return;
+      }
+
+      result.lines.forEach((l) => push({ type: l.type, content: l.content }));
+
+      if (result.redirect) {
+        setTimeout(() => router.push(result.redirect!.path), result.redirect.delay);
+      }
+    } else {
       push(
-        { type: "output", content: t("cmd_help_title") },
-        { type: "separator", content: "" },
-        { type: "output", content: "  1  /projects    →  " + t("menu_projects") },
-        { type: "output", content: "  2  /skills      →  " + t("menu_skills") },
-        { type: "output", content: "  3  /contact     →  " + t("menu_contact") },
-        { type: "output", content: "     /experience  →  " + t("menu_experience") },
-        { type: "output", content: "     /about       →  " + t("menu_about") },
-        { type: "output", content: "     /whoami      →  " + t("cmd_whoami_title") },
-        { type: "output", content: "     /ping        →  " + t("cmd_ping_title") },
-        { type: "output", content: "     /date        →  " + t("cmd_date_title") },
-        { type: "output", content: "     /stack       →  " + t("cmd_stack_title") },
-        { type: "output", content: "     /astra       →  " + t("cmd_astra_title") },
-        { type: "output", content: "     /clear       →  " + t("cmd_clear_title") },
+        { type: "error", content: t("cmd_not_found", { cmd: commandName }) },
+        { type: "info", content: t("cmd_try_help") },
         { type: "separator", content: "" },
       );
-      return;
     }
-
-    if (lower === "/whoami") {
-      push(
-        { type: "output", content: "mark" },
-        { type: "separator", content: "" },
-        { type: "output", content: "  " + t("cmd_whoami_role") },
-        { type: "output", content: "  " + t("cmd_whoami_company") },
-        { type: "output", content: "  " + t("cmd_whoami_location") },
-        { type: "separator", content: "" },
-      );
-      return;
-    }
-
-    if (lower === "/ping") {
-      push({ type: "info", content: t("cmd_ping_sending") });
-      setTimeout(() => {
-        const ms = Math.floor(Math.random() * 12) + 2;
-        push(
-          { type: "output", content: `PING xsaitox.dev (127.0.0.1): 56 bytes` },
-          { type: "output", content: `64 bytes from xsaitox.dev: icmp_seq=0 time=${ms} ms` },
-          { type: "output", content: `64 bytes from xsaitox.dev: icmp_seq=1 time=${ms + 1} ms` },
-          { type: "output", content: `64 bytes from xsaitox.dev: icmp_seq=2 time=${ms - 1} ms` },
-          { type: "separator", content: "" },
-          { type: "info", content: t("cmd_ping_result", { ms: String(ms) }) },
-        );
-      }, 600);
-      return;
-    }
-
-    if (lower === "/date") {
-      const now = new Date();
-      const iso = now.toISOString();
-      const local = now.toLocaleString(locale === "de" ? "de-DE" : "en-US", {
-        weekday: "long", year: "numeric", month: "long", day: "numeric",
-        hour: "2-digit", minute: "2-digit", second: "2-digit",
-      });
-      push(
-        { type: "output", content: local },
-        { type: "output", content: `UTC: ${iso}` },
-        { type: "separator", content: "" },
-      );
-      return;
-    }
-
-    if (lower === "/stack") {
-      push(
-        { type: "output", content: t("cmd_stack_title") },
-        { type: "separator", content: "" },
-        { type: "output", content: "  Runtime    → Bun v1.x + Node.js v22" },
-        { type: "output", content: "  Framework  → Next.js 16 (Turbopack)" },
-        { type: "output", content: "  Styling    → Tailwind CSS v4" },
-        { type: "output", content: "  Auth       → Better Auth (Discord)" },
-        { type: "output", content: "  i18n       → next-intl (de/en)" },
-        { type: "output", content: "  Anim       → Framer Motion" },
-        { type: "output", content: "  Deploy     → Vercel + Docker" },
-        { type: "separator", content: "" },
-      );
-      return;
-    }
-
-    if (lower === "/astra") {
-      push(
-        { type: "output", content: "  Astra Bot — astra-bot.app" },
-        { type: "separator", content: "" },
-        { type: "output", content: "  Status   → 🟢 online" },
-        { type: "output", content: "  Servers  → 90+" },
-        { type: "output", content: "  Tech     → discord.js + TypeScript + PostgreSQL" },
-        { type: "output", content: "  Features → Moderation, Music, Custom Commands" },
-        { type: "separator", content: "" },
-        { type: "info", content: "https://astra-bot.app" },
-      );
-      return;
-    }
-
-    if (lower === "/experience") {
-      push(
-        { type: "output", content: t("cmd_experience_title") },
-        { type: "separator", content: "" },
-        { type: "output", content: "  2018  → Erste Schritte (Scorpion-Inspiration)" },
-        { type: "output", content: "  2019  → Python, discord.py, Unity" },
-        { type: "output", content: "  2021  → JavaScript, Node.js, discord.js" },
-        { type: "output", content: "  2022  → BBS2: C++, Elektrotechnik" },
-        { type: "output", content: "  2023  → React, Next.js, Astra Bot" },
-        { type: "output", content: "  2024  → Leuphana Azubi + BBS1 Godot Game" },
-        { type: "separator", content: "" },
-        { type: "info", content: t("cmd_navigate", { path: `/${locale}/experience` }) },
-      );
-      return;
-    }
-
-    if (lower === "/about") {
-      push(
-        { type: "output", content: t("cmd_about_title") },
-        { type: "separator", content: "" },
-        { type: "output", content: "  Name    → Mark" },
-        { type: "output", content: "  Age     → " + t("cmd_about_age") },
-        { type: "output", content: "  Status  → " + t("cmd_about_status") },
-        { type: "output", content: "  Until   → 2027" },
-        { type: "separator", content: "" },
-        { type: "info", content: t("cmd_navigate", { path: `/${locale}/about` }) },
-      );
-      return;
-    }
-
-    if (lower === "/clear" || lower === "clear") {
-      setLines([]);
-      return;
-    }
-
-    if (lower === "menu" || lower === "/menu") {
-      push({ type: "separator", content: "" });
-      MENU_LINES.forEach((l) => {
-        const content = l.type === "info" || l.type === "menu"
-          ? t(l.content as Parameters<typeof t>[0])
-          : l.content;
-        push({ ...l, content });
-      });
-      return;
-    }
-
-    push(
-      { type: "error", content: t("cmd_not_found", { cmd }) },
-      { type: "info", content: t("cmd_try_help") },
-    );
-  }, [t, locale, router, push]);
+  }, [push, t, locale, router, username]);
 
   const handleKey = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       const val = input;
       setInput("");
+      setHistoryIdx(-1);
       runCommand(val);
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setHistoryIdx((idx) => {
-        const next = Math.min(idx + 1, history.length - 1);
-        setInput(history[next] ?? "");
-        return next;
-      });
+      const nextIdx = Math.min(historyIdx + 1, history.length - 1);
+      setHistoryIdx(nextIdx);
+      setInput(history[nextIdx] ?? "");
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
-      setHistoryIdx((idx) => {
-        const next = Math.max(idx - 1, -1);
-        setInput(next === -1 ? "" : (history[next] ?? ""));
-        return next;
-      });
+      const nextIdx = Math.max(historyIdx - 1, -1);
+      setHistoryIdx(nextIdx);
+      setInput(nextIdx === -1 ? "" : (history[nextIdx] ?? ""));
     }
-  }, [input, history, runCommand]);
+  }, [input, history, historyIdx, runCommand]);
 
   return (
     <div
-      className="relative w-full max-w-2xl mx-auto cursor-text"
+      className="relative w-full max-w-3xl mx-auto cursor-text"
       onClick={() => inputRef.current?.focus()}
     >
       <div className="absolute -inset-1 bg-linear-to-r from-[#7C3AED]/30 via-[#4F46E5]/20 to-[#7C3AED]/30 rounded-2xl blur-xl opacity-60" />
@@ -368,7 +227,7 @@ export default function TerminalHero() {
         </div>
 
         {/* Output area */}
-        <div className="relative h-[360px] overflow-y-auto scrollbar-none p-4 font-mono text-sm">
+        <div className="relative h-[420px] overflow-y-auto scrollbar-none p-4 font-mono text-sm">
           <div className="absolute inset-0 pointer-events-none" style={{
             background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.008) 2px, rgba(255,255,255,0.008) 4px)",
           }} />
@@ -393,7 +252,7 @@ export default function TerminalHero() {
                   </div>
                 ) : line.type === "command" ? (
                   <div className="flex items-center gap-1.5 mt-1.5">
-                    <Prompt />
+                    <Prompt username={username} />
                     <span className="text-white ml-1">{line.content}</span>
                   </div>
                 ) : line.type === "output" ? (
@@ -425,7 +284,7 @@ export default function TerminalHero() {
           {/* Interactive input row */}
           {interactive && (
             <div className="flex items-center gap-1.5 mt-1.5">
-              <Prompt />
+              <Prompt username={username} />
               <input
                 ref={inputRef}
                 value={input}

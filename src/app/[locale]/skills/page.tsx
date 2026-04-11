@@ -8,19 +8,6 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import TiltCard from "@/components/ui/TiltCard";
 import { skills, type SkillCategory } from "@/lib/data/skills";
 
-const LEVEL_LABEL: Record<string, string> = {
-  beginner: "Beginner",
-  intermediate: "Intermediate",
-  advanced: "Advanced",
-  expert: "Expert",
-};
-
-const LEVEL_COLOR: Record<string, string> = {
-  beginner: "#6B7280",
-  intermediate: "#F59E0B",
-  advanced: "#3B82F6",
-  expert: "#10B981",
-};
 
 function SkillIcon({ name }: { name: string }) {
   const Icon = (SiIcons as Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>>)[name];
@@ -128,25 +115,9 @@ export default function SkillsPage() {
                     />
                   </div>
 
-                  <div className="text-center w-full">
-                    <p className="text-xs font-semibold text-white/80 mb-2 leading-tight">
-                      {skill.name}
-                    </p>
-                    <span
-                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium"
-                      style={{
-                        background: `${LEVEL_COLOR[skill.level]}18`,
-                        color: LEVEL_COLOR[skill.level],
-                        border: `1px solid ${LEVEL_COLOR[skill.level]}35`,
-                      }}
-                    >
-                      <span
-                        className="w-1.5 h-1.5 rounded-full"
-                        style={{ background: LEVEL_COLOR[skill.level] }}
-                      />
-                      {LEVEL_LABEL[skill.level]}
-                    </span>
-                  </div>
+                  <p className="text-xs font-semibold text-white/80 text-center leading-tight">
+                    {skill.name}
+                  </p>
                 </div>
               </TiltCard>
             </motion.div>

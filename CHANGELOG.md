@@ -1,3 +1,12 @@
+# [0.7.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.6.1...v0.7.0) (2026-04-11)
+
+
+### Features
+
+* update skills page and expand project details ([192196a](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/192196aafe16e9c69b7266921ed501c67ada7030))
+
+
+
 ## [0.6.1](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.6.0...v0.6.1) (2026-04-09)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * modernize profile pages and fix guestbook display ([466458b](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/466458bf31107c0e119f84d856b5d8bfd2c0e0ef))
-
-
-
-## [0.3.5](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.3.4...v0.3.5) (2026-04-06)
-
-
-### Bug Fixes
-
-* update Better Auth schema to v1.5+ with password and session fields ([caa0a46](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/caa0a466e567a99162277a563c1dc113da22704d))
 
 
 

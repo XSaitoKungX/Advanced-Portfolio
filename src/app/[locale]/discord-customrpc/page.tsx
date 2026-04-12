@@ -90,6 +90,10 @@ function useFaqs(t: (key: string) => string) {
       question: t("faq5Question"),
       answer: t("faq5Answer"),
     },
+    {
+      question: t("faq6Question"),
+      answer: t("faq6Answer"),
+    },
   ];
 }
 
@@ -250,6 +254,15 @@ export default function DiscordCustomRPCPage() {
             {/* Download Buttons */}
             <DownloadButtons />
 
+            {/* Profile Sharing Link */}
+            <Link
+              href="/discord-customrpc/share"
+              className="inline-flex items-center gap-2 mt-4 text-sm text-white/50 hover:text-[#5865F2] transition-colors"
+            >
+              <FiShare2 className="w-4 h-4" />
+              {t("viewSharedProfiles")}
+            </Link>
+
             {/* GitHub Star Button */}
             <a
               href="https://github.com/XSaitoKungX/Discord-CustomRPC"
@@ -352,6 +365,44 @@ export default function DiscordCustomRPCPage() {
               />
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Profile Sharing CTA */}
+      <section className="py-16 px-4 border-t border-white/5">
+        <div className="max-w-4xl mx-auto">
+          <GlassCard className="p-8 md:p-12 text-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-linear-to-br from-[#5865F2]/10 to-transparent" />
+            <div className="relative z-10">
+              <div className="w-16 h-16 rounded-2xl bg-[#5865F2]/20 flex items-center justify-center mx-auto mb-6">
+                <FiShare2 className="w-8 h-8 text-[#5865F2]" />
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                {t("shareCtaTitle")}
+              </h2>
+              <p className="text-white/60 mb-8 max-w-lg mx-auto">
+                {t("shareCtaDescription")}
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link
+                  href="/discord-customrpc/share"
+                  className="flex items-center gap-2 px-6 py-3 bg-[#5865F2] hover:bg-[#4752C4] text-white rounded-xl font-medium transition-all duration-200 shadow-lg shadow-[#5865F2]/25"
+                >
+                  <FiExternalLink className="w-5 h-5" />
+                  {t("openShareViewer")}
+                </Link>
+                <a
+                  href="https://github.com/XSaitoKungX/Discord-CustomRPC/blob/main/README.md#profile-sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl font-medium transition-all duration-200"
+                >
+                  <FiGithub className="w-5 h-5" />
+                  {t("learnMore")}
+                </a>
+              </div>
+            </div>
+          </GlassCard>
         </div>
       </section>
 

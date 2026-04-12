@@ -220,6 +220,8 @@ export interface Translations {
     faq4Answer: string;
     faq5Question: string;
     faq5Answer: string;
+    faq6Question: string;
+    faq6Answer: string;
     changelogTitle: string;
     changelogSubtitle: string;
     viewAllReleases: string;
@@ -234,6 +236,11 @@ export interface Translations {
     importProfile: string;
     loadingProfile: string;
     invalidProfileData: string;
+    viewSharedProfiles: string;
+    shareCtaTitle: string;
+    shareCtaDescription: string;
+    openShareViewer: string;
+    learnMore: string;
     madeWith: string;
     by: string;
     license: string;

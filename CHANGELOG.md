@@ -1,3 +1,12 @@
+# [0.9.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.8.0...v0.9.0) (2026-04-13)
+
+
+### Features
+
+* add dynamic GitHub releases integration and enhance profile sharing ([1e6302c](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/1e6302c000d4facd0e69225a6edb8910e52099e0))
+
+
+
 # [0.8.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.7.0...v0.8.0) (2026-04-12)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * add i18n support to Discord CustomRPC page and enhance footer ([1e38e2f](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/1e38e2fbc4325fc92842ec908a50d7b17b1000f3))
-
-
-
-# [0.5.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.4.0...v0.5.0) (2026-04-09)
-
-
-### Features
-
-* optimize performance and enhance project page UI ([b4166e7](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/b4166e75281848614037ec00f434a1987ce6f27c))
 
 
 

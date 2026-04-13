@@ -1,3 +1,12 @@
+# [0.8.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.7.0...v0.8.0) (2026-04-12)
+
+
+### Features
+
+* add profile sharing viewer and CTA section to Discord CustomRPC page ([31ca0a4](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/31ca0a48a4da442b82bdd240315e177f19a1b0d0))
+
+
+
 # [0.7.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.6.1...v0.7.0) (2026-04-11)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * optimize performance and enhance project page UI ([b4166e7](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/b4166e75281848614037ec00f434a1987ce6f27c))
-
-
-
-# [0.4.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.3.5...v0.4.0) (2026-04-09)
-
-
-### Features
-
-* modernize profile pages and fix guestbook display ([466458b](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/466458bf31107c0e119f84d856b5d8bfd2c0e0ef))
 
 
 

@@ -22,6 +22,20 @@ interface SharedProfile {
   button2Url?: string;
 }
 
+// Demo profile for showcase when no data parameter is provided
+const DEMO_PROFILE: SharedProfile = {
+  name: "Gaming Setup 🎮",
+  applicationId: "1234567890123456789",
+  details: "Playing Valorant",
+  state: "Competitive - Ranked",
+  largeImageKey: "game_logo",
+  largeImageText: "Valorant",
+  smallImageKey: "status_online",
+  smallImageText: "Online",
+  button1Label: "Watch Stream",
+  button2Label: "Join Discord",
+};
+
 function decodeProfile(data: string): SharedProfile | null {
   try {
     const json = atob(data);
@@ -38,11 +52,11 @@ export default function SharePage() {
 
   const data = searchParams.get("data");
 
-  const { profile, error } = useMemo(() => {
-    if (!data) return { profile: null, error: "No profile data provided." };
+  const { profile, error, isDemo } = useMemo(() => {
+    if (!data) return { profile: DEMO_PROFILE, error: null, isDemo: true };
     const decoded = decodeProfile(data);
-    if (!decoded) return { profile: null, error: "Invalid or corrupted profile data." };
-    return { profile: decoded, error: null };
+    if (!decoded) return { profile: null, error: "Invalid or corrupted profile data.", isDemo: false };
+    return { profile: decoded, error: null, isDemo: false };
   }, [data]);
 
   const handleOpenInApp = () => {
@@ -69,7 +83,14 @@ export default function SharePage() {
             <SiDiscord className="w-10 h-10 text-[#5865F2]" />
             <h1 className="text-2xl font-bold text-white">Discord Custom RPC</h1>
           </div>
-          <p className="text-zinc-400 text-sm">Shared Profile</p>
+          <p className="text-zinc-400 text-sm">
+            {isDemo ? "Profile Sharing Demo" : "Shared Profile"}
+          </p>
+          {isDemo && (
+            <p className="text-zinc-500 text-xs mt-2 max-w-sm mx-auto">
+              This is a demo profile. Share your own profiles from the app to get a real share link!
+            </p>
+          )}
         </div>
 
         {error ? (
@@ -141,30 +162,54 @@ export default function SharePage() {
 
             {/* Actions */}
             <div className="space-y-3">
-              <button
-                onClick={handleOpenInApp}
-                className="w-full flex items-center justify-center gap-2.5 bg-[#5865F2] hover:bg-[#4752c4] text-white font-semibold py-3.5 px-6 rounded-xl transition-colors"
-              >
-                <FiExternalLink className="w-5 h-5" />
-                Open in Discord Custom RPC
-              </button>
+              {isDemo ? (
+                // Demo mode buttons
+                <>
+                  <Link
+                    href="/discord-customrpc"
+                    className="w-full flex items-center justify-center gap-2.5 bg-[#5865F2] hover:bg-[#4752c4] text-white font-semibold py-3.5 px-6 rounded-xl transition-colors"
+                  >
+                    <FiDownload className="w-5 h-5" />
+                    Download the App
+                  </Link>
 
-              <button
-                onClick={handleCopyDeeplink}
-                className="w-full flex items-center justify-center gap-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 font-medium py-3 px-6 rounded-xl transition-colors"
-              >
-                {copied ? (
-                  <>
-                    <FiCheckCircle className="w-4 h-4 text-green-400" />
-                    <span className="text-green-400">Copied!</span>
-                  </>
-                ) : (
-                  <>
+                  <button
+                    disabled
+                    className="w-full flex items-center justify-center gap-2.5 bg-white/5 border border-white/10 text-zinc-500 font-medium py-3 px-6 rounded-xl cursor-not-allowed"
+                  >
                     <FiCopy className="w-4 h-4" />
-                    Copy deeplink
-                  </>
-                )}
-              </button>
+                    Copy deeplink (Demo)
+                  </button>
+                </>
+              ) : (
+                // Normal mode buttons
+                <>
+                  <button
+                    onClick={handleOpenInApp}
+                    className="w-full flex items-center justify-center gap-2.5 bg-[#5865F2] hover:bg-[#4752c4] text-white font-semibold py-3.5 px-6 rounded-xl transition-colors"
+                  >
+                    <FiExternalLink className="w-5 h-5" />
+                    Open in Discord Custom RPC
+                  </button>
+
+                  <button
+                    onClick={handleCopyDeeplink}
+                    className="w-full flex items-center justify-center gap-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 font-medium py-3 px-6 rounded-xl transition-colors"
+                  >
+                    {copied ? (
+                      <>
+                        <FiCheckCircle className="w-4 h-4 text-green-400" />
+                        <span className="text-green-400">Copied!</span>
+                      </>
+                    ) : (
+                      <>
+                        <FiCopy className="w-4 h-4" />
+                        Copy deeplink
+                      </>
+                    )}
+                  </button>
+                </>
+              )}
 
               <div className="text-center pt-2">
                 <Link
@@ -172,7 +217,7 @@ export default function SharePage() {
                   className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors inline-flex items-center gap-1.5"
                 >
                   <FiDownload className="w-3.5 h-3.5" />
-                  Don&apos;t have the app? Download it here
+                  {isDemo ? "Back to Discord Custom RPC" : "Don&apos;t have the app? Download it here"}
                 </Link>
               </div>
             </div>

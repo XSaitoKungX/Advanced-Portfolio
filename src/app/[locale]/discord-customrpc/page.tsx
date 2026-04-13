@@ -205,10 +205,22 @@ function ProfileShareViewer({ t }: { t: (key: string) => string }) {
   );
 }
 
+interface GitHubRelease {
+  id: number;
+  tag_name: string;
+  name: string;
+  body: string;
+  published_at: string;
+  prerelease: boolean;
+  html_url: string;
+}
+
 export default function DiscordCustomRPCPage() {
   const t = useTranslations("discordCustomRPC");
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [stars, setStars] = useState<number | null>(null);
+  const [releases, setReleases] = useState<GitHubRelease[]>([]);
+  const [releasesLoading, setReleasesLoading] = useState(true);
 
   const FEATURES = useFeatures(t);
   const STEPS = useSteps(t);
@@ -223,6 +235,21 @@ export default function DiscordCustomRPCPage() {
       })
       .then((data) => setStars(data.stargazers_count ?? null))
       .catch(() => setStars(null));
+
+    // Fetch GitHub releases
+    fetch("https://api.github.com/repos/XSaitoKungX/Discord-CustomRPC/releases?per_page=5")
+      .then((res) => {
+        if (!res.ok) throw new Error("Not found");
+        return res.json();
+      })
+      .then((data) => {
+        setReleases(Array.isArray(data) ? data : []);
+        setReleasesLoading(false);
+      })
+      .catch(() => {
+        setReleases([]);
+        setReleasesLoading(false);
+      });
   }, []);
 
   return (
@@ -254,31 +281,38 @@ export default function DiscordCustomRPCPage() {
             {/* Download Buttons */}
             <DownloadButtons />
 
-            {/* Profile Sharing Link */}
-            <Link
-              href="/discord-customrpc/share"
-              className="inline-flex items-center gap-2 mt-4 text-sm text-white/50 hover:text-[#5865F2] transition-colors"
-            >
-              <FiShare2 className="w-4 h-4" />
-              {t("viewSharedProfiles")}
-            </Link>
-
-            {/* GitHub Star Button */}
-            <a
-              href="https://github.com/XSaitoKungX/Discord-CustomRPC"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-all duration-200"
-            >
-              <FiGithub className="w-5 h-5" />
-              <span className="font-medium">{t("starOnGithub")}</span>
-              {stars !== null && (
-                <span className="flex items-center gap-1 px-2 py-0.5 bg-[#FBBF24]/10 text-[#FBBF24] rounded-full text-xs">
-                  <FiStar className="w-3 h-3" />
-                  {stars}
+            {/* Secondary Actions */}
+            <div className="flex flex-wrap items-center justify-center gap-3 mt-4">
+              {/* Profile Sharing Link */}
+              <Link
+                href="/discord-customrpc/share"
+                className="group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-linear-to-r from-white/10 to-white/5 hover:from-white/15 hover:to-white/10 border border-white/20 hover:border-white/30 text-white transition-all duration-300 shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 hover:-translate-y-0.5"
+              >
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 group-hover:bg-white/15 transition-colors">
+                  <FiShare2 className="w-4 h-4" />
                 </span>
-              )}
-            </a>
+                <span className="font-semibold">{t("viewSharedProfiles")}</span>
+              </Link>
+
+              {/* GitHub Star Button */}
+              <a
+                href="https://github.com/XSaitoKungX/Discord-CustomRPC"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-linear-to-r from-white/10 to-white/5 hover:from-white/15 hover:to-white/10 border border-white/20 hover:border-white/30 text-white transition-all duration-300 shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 hover:-translate-y-0.5"
+              >
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 group-hover:bg-white/15 transition-colors">
+                  <FiGithub className="w-4 h-4" />
+                </span>
+                <span className="font-semibold">{t("starOnGithub")}</span>
+                {stars !== null && (
+                  <span className="flex items-center gap-1.5 px-2.5 py-1 bg-linear-to-r from-[#FBBF24]/20 to-[#F59E0B]/20 text-[#FBBF24] rounded-full text-xs font-bold border border-[#FBBF24]/20">
+                    <FiStar className="w-3 h-3 fill-current" />
+                    {stars}
+                  </span>
+                )}
+              </a>
+            </div>
           </motion.div>
 
           {/* Profile Share Viewer (if data param present) */}
@@ -426,21 +460,68 @@ export default function DiscordCustomRPCPage() {
           </div>
 
           <GlassCard className="p-6">
-            <div className="text-center py-8">
-              <FiGithub className="w-12 h-12 text-white/20 mx-auto mb-4" />
-              <p className="text-white/60 mb-4">
-                {t("changelogPlaceholder")}
-              </p>
-              <a
-                href="https://github.com/XSaitoKungX/Discord-CustomRPC/releases"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#5865F2]/10 hover:bg-[#5865F2]/20 border border-[#5865F2]/20 text-[#5865F2] rounded-xl font-medium transition-all duration-200"
-              >
-                <FiExternalLink className="w-4 h-4" />
-                {t("viewReleasesOnGithub")}
-              </a>
-            </div>
+            {releasesLoading ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="w-8 h-8 border-2 border-[#5865F2] border-t-transparent rounded-full animate-spin" />
+              </div>
+            ) : releases.length > 0 ? (
+              <div className="space-y-4">
+                {releases.map((release, index) => (
+                  <motion.div
+                    key={release.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="group"
+                  >
+                    <a
+                      href={release.html_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-200"
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-semibold text-white group-hover:text-[#5865F2] transition-colors">
+                              {release.name || release.tag_name}
+                            </span>
+                            {release.prerelease && (
+                              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                                {t("betaWarning")}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs text-white/40">
+                            {t("released")} {new Date(release.published_at).toLocaleDateString()}
+                          </p>
+                          {release.body && (
+                            <p className="text-sm text-white/60 mt-2 line-clamp-2">
+                              {release.body.substring(0, 150).replace(/#{1,6}\s/g, '').trim()}...
+                            </p>
+                          )}
+                        </div>
+                        <FiExternalLink className="w-4 h-4 text-white/30 group-hover:text-white/60 transition-colors shrink-0 mt-1" />
+                      </div>
+                    </a>
+                  </motion.div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <FiGithub className="w-12 h-12 text-white/20 mx-auto mb-4" />
+                <p className="text-white/60 mb-4">{t("noReleasesFound")}</p>
+                <a
+                  href="https://github.com/XSaitoKungX/Discord-CustomRPC/releases"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#5865F2]/10 hover:bg-[#5865F2]/20 border border-[#5865F2]/20 text-[#5865F2] rounded-xl font-medium transition-all duration-200"
+                >
+                  <FiExternalLink className="w-4 h-4" />
+                  {t("viewReleasesOnGithub")}
+                </a>
+              </div>
+            )}
           </GlassCard>
         </div>
       </section>

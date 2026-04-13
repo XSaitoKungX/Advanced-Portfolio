@@ -227,7 +227,11 @@ export interface Translations {
     viewAllReleases: string;
     viewReleasesOnGithub: string;
     changelogPlaceholder: string;
+    noReleasesFound: string;
+    released: string;
     comingSoon: string;
+    betaWarning: string;
+    preReleaseNotice: string;
     ctaTitle: string;
     ctaDescription: string;
     downloadNow: string;

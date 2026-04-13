@@ -250,16 +250,72 @@ Astra v3 takes the solid foundation of v2 and turns it into a robust, maintainab
     slug: "system-monitor",
     title: "System Monitor",
     description: {
-      de: "CPU, RAM, GPU live überwachen — Glassmorphism-Dashboard.",
-      en: "Monitor CPU, RAM, GPU live — glassmorphism dashboard.",
+      de: "CPU, RAM, GPU, Disk und Netzwerk live überwachen — modernes Glassmorphism-Dashboard mit Tauri v2 + Rust.",
+      en: "Monitor CPU, RAM, GPU, disk and network live — modern glassmorphism dashboard built with Tauri v2 + Rust.",
     },
-    tags: ["Desktop", "Linux", "Windows"],
-    labels: ["Desktop", "Linux", "Windows"],
-    stack: ["Electron", "Node.js", "Chart.js"],
+    longDescription: {
+      de: `## System Monitor
+
+Ein modernes, Open-Source-Desktop-App zur Echtzeit-Überwachung aller wichtigen Systemressourcen. Entwickelt als schlanker Ersatz für Task Manager, htop und btop.
+
+### Features
+
+- **Dashboard**: Glassmorphism-Übersicht mit Live-Karten für alle Metriken
+- **CPU**: Pro-Kern-Auslastung, Taktfrequenz, Temperatur und Verlaufsdiagramm
+- **GPU**: VRAM, Last, Temperatur via sysfs (Linux) und WMI (Windows)
+- **Netzwerk**: Upload/Download-Speed, pro-Interface-Statistiken
+- **Speedtest**: Eingebaut via Cloudflare — Ping, Jitter, Down- und Upload
+- **Prozesse**: Live-Liste mit Kill-Funktion
+- **System Tray**: Minimiert in die Taskleiste, vollständig per Tray steuerbar
+- **Auto-Update**: Automatische Update-Prüfung via GitHub Releases
+- **Themes**: Default, Dark, Light, Space, Dev
+
+### Tech Stack
+
+- **Tauri v2** + **Rust** als Backend
+- **React 18** + **TypeScript** (strikt)
+- **TailwindCSS v4** für Styling
+- **Recharts** für Diagramme
+- **Zustand** für State Management
+- **sysinfo** für Systemdaten
+
+Open Source unter MIT Lizenz auf [GitHub](https://github.com/XSaitoKungX/System-Monitor).`,
+      en: `## System Monitor
+
+A modern, open source desktop app for real-time monitoring of all key system resources. Built as a lightweight replacement for Task Manager, htop and btop.
+
+### Features
+
+- **Dashboard**: Glassmorphism overview with live cards for all metrics
+- **CPU**: Per-core usage, clock speed, temperature and history chart
+- **GPU**: VRAM, load, temperature via sysfs (Linux) and WMI (Windows)
+- **Network**: Upload/download speed, per-interface statistics
+- **Speedtest**: Built-in via Cloudflare — ping, jitter, down- and upload
+- **Processes**: Live list with kill functionality
+- **System Tray**: Minimizes to tray, fully controllable from tray menu
+- **Auto-Update**: Automatic update check via GitHub Releases
+- **Themes**: Default, Dark, Light, Space, Dev
+
+### Tech Stack
+
+- **Tauri v2** + **Rust** as backend
+- **React 18** + **TypeScript** (strict)
+- **TailwindCSS v4** for styling
+- **Recharts** for charts
+- **Zustand** for state management
+- **sysinfo** for system data
+
+Open source under MIT license on [GitHub](https://github.com/XSaitoKungX/System-Monitor).`,
+    },
+    tags: ["Desktop", "Linux", "Windows", "Mac", "Open Source"],
+    labels: ["Desktop", "Tauri", "Rust", "Open Source"],
+    stack: ["Tauri v2", "Rust", "React", "TypeScript", "TailwindCSS"],
     category: "system",
-    status: "planning",
-    featured: false,
+    status: "launched",
+    featured: true,
     year: 2025,
+    github: "https://github.com/XSaitoKungX/System-Monitor",
+    demo: "https://xsaitox.dev/en/system-monitor",
   },
   {
     id: "startup-manager",

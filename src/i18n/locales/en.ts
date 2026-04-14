@@ -371,6 +371,9 @@ const en: Translations = {
     madeWith: "Made with",
     by: "by",
     license: "MIT License",
+    downloadFor: "Download for",
+    comingSoon: "Coming Soon",
+    preReleaseNotice: "This is a pre-release version. Bugs may occur.",
   },
   common: {
     loading: "Loading...",

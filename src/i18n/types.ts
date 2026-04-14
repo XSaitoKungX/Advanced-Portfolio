@@ -299,6 +299,9 @@ export interface Translations {
     madeWith: string;
     by: string;
     license: string;
+    downloadFor: string;
+    comingSoon: string;
+    preReleaseNotice: string;
   };
   profile: {
     backToHome: string;

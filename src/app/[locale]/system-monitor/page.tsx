@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import {
   FiGithub,
-  FiDownload,
   FiMonitor,
   FiCpu,
   FiActivity,
@@ -13,16 +12,16 @@ import {
   FiList,
   FiChevronDown,
   FiChevronUp,
-  FiExternalLink,
   FiHeart,
 } from "react-icons/fi";
 import { SiRust, SiReact, SiTailwindcss, SiTypescript } from "react-icons/si";
+import { FaLinux, FaWindows, FaApple } from "react-icons/fa";
 import { useState } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import GlassCard from "@/components/ui/GlassCard";
+import { SystemMonitorDownloadButtons } from "@/components/system-monitor/DownloadButtons";
 
 const GITHUB_REPO = "https://github.com/XSaitoKungX/System-Monitor";
-const GITHUB_RELEASES = `${GITHUB_REPO}/releases/latest`;
 
 function useFeatures(t: (k: string) => string) {
   return [
@@ -37,9 +36,9 @@ function useFeatures(t: (k: string) => string) {
 
 function usePlatforms(t: (k: string) => string) {
   return [
-    { emoji: "🐧", name: t("platformLinux"), desc: t("platformLinuxDesc"), color: "#f97316" },
-    { emoji: "🪟", name: t("platformWindows"), desc: t("platformWindowsDesc"), color: "#3b82f6" },
-    { emoji: "🍎", name: t("platformMac"), desc: t("platformMacDesc"), color: "#a855f7" },
+    { icon: FaLinux, name: t("platformLinux"), desc: t("platformLinuxDesc"), color: "#f97316" },
+    { icon: FaWindows, name: t("platformWindows"), desc: t("platformWindowsDesc"), color: "#3b82f6" },
+    { icon: FaApple, name: t("platformMac"), desc: t("platformMacDesc"), color: "#a855f7" },
   ];
 }
 
@@ -123,7 +122,7 @@ export default function SystemMonitorPage() {
 
             <h1 className="text-4xl sm:text-6xl font-bold text-white mb-6 leading-tight tracking-tight">
               {t("title")}{" "}
-              <span className="bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
                 {t("titleHighlight")}
               </span>
             </h1>
@@ -132,22 +131,13 @@ export default function SystemMonitorPage() {
               {t("description")}
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <a
-                href={GITHUB_RELEASES}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl font-semibold text-white transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-                style={{ background: "linear-gradient(135deg, #3b82f6, #8b5cf6)", boxShadow: "0 0 30px rgba(59,130,246,0.3)" }}
-              >
-                <FiDownload className="w-4 h-4" />
-                {t("downloadLatest")}
-              </a>
+            <SystemMonitorDownloadButtons />
+            <div className="flex flex-wrap items-center justify-center gap-4 mt-2">
               <a
                 href={GITHUB_REPO}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl font-semibold text-white/70 hover:text-white border border-white/10 hover:border-white/20 hover:bg-white/5 transition-all duration-300"
+                className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl font-medium text-white/60 hover:text-white border border-white/10 hover:border-white/20 hover:bg-white/5 transition-all duration-300 text-sm"
               >
                 <FiGithub className="w-4 h-4" />
                 {t("viewOnGithub")}
@@ -198,7 +188,9 @@ export default function SystemMonitorPage() {
                 transition={{ delay: i * 0.1 }}
               >
                 <GlassCard className="p-6 text-center">
-                  <span className="text-4xl mb-3 block">{p.emoji}</span>
+                  <span className="text-4xl mb-3 block" style={{ color: p.color }}>
+                    <p.icon />
+                  </span>
                   <h3 className="font-bold text-white mb-2">{p.name}</h3>
                   <p className="text-xs text-white/50 leading-relaxed">{p.desc}</p>
                 </GlassCard>
@@ -281,24 +273,15 @@ export default function SystemMonitorPage() {
                 style={{ background: "radial-gradient(ellipse at top right, rgba(59,130,246,0.08), transparent 60%)" }} />
               <h2 className="text-3xl font-bold text-white mb-3">{t("ctaTitle")}</h2>
               <p className="text-white/50 mb-8 max-w-lg mx-auto">{t("ctaDescription")}</p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <a
-                  href={GITHUB_RELEASES}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 shadow-lg"
-                  style={{ background: "linear-gradient(135deg, #3b82f6, #8b5cf6)" }}
-                >
-                  <FiDownload className="w-4 h-4" />
-                  {t("downloadLatest")}
-                </a>
+              <SystemMonitorDownloadButtons />
+              <div className="flex flex-wrap justify-center gap-4 mt-2">
                 <a
                   href={GITHUB_REPO}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-white/70 hover:text-white border border-white/10 hover:border-white/20 hover:bg-white/5 transition-all duration-300"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-white/60 hover:text-white border border-white/10 hover:border-white/20 hover:bg-white/5 transition-all duration-300 text-sm"
                 >
-                  <FiExternalLink className="w-4 h-4" />
+                  <FiGithub className="w-4 h-4" />
                   {t("viewOnGithub")}
                 </a>
               </div>

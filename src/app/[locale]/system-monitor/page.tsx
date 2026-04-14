@@ -55,15 +55,17 @@ function useFaqs(t: (k: string) => string) {
     { question: t("faq1Question"), answer: t("faq1Answer") },
     { question: t("faq2Question"), answer: t("faq2Answer") },
     { question: t("faq3Question"), answer: t("faq3Answer") },
+    { question: t("faq4Question"), answer: t("faq4Answer") },
   ];
 }
 
 const TECH_STACK = [
   { icon: <SiRust className="w-5 h-5" />, label: "Rust", color: "#f97316" },
-  { icon: <SiReact className="w-5 h-5" />, label: "React 18", color: "#38bdf8" },
+  { icon: <SiReact className="w-5 h-5" />, label: "React 19", color: "#38bdf8" },
   { icon: <SiTypescript className="w-5 h-5" />, label: "TypeScript", color: "#3b82f6" },
-  { icon: <SiTailwindcss className="w-5 h-5" />, label: "Tailwind CSS", color: "#06b6d4" },
+  { icon: <SiTailwindcss className="w-5 h-5" />, label: "Tailwind CSS v4", color: "#06b6d4" },
   { icon: <span className="text-base font-bold">T2</span>, label: "Tauri v2", color: "#fcd34d" },
+  { icon: <span className="text-base font-bold">R</span>, label: "Recharts", color: "#22c55e" },
 ];
 
 function FaqItem({ question, answer }: { question: string; answer: string }) {

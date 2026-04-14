@@ -294,6 +294,8 @@ export interface Translations {
     faq2Answer: string;
     faq3Question: string;
     faq3Answer: string;
+    faq4Question: string;
+    faq4Answer: string;
     ctaTitle: string;
     ctaDescription: string;
     madeWith: string;

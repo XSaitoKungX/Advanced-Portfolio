@@ -1,3 +1,12 @@
+# [0.13.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.12.0...v0.13.0) (2026-04-16)
+
+
+### Features
+
+* add /smart-calendar page + i18n translations ([e56aa01](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/e56aa01a39f2e7a3ab42605ea7254d0d54a6f61a))
+
+
+
 # [0.12.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.11.0...v0.12.0) (2026-04-14)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * add dynamic GitHub releases integration and enhance profile sharing ([1e6302c](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/1e6302c000d4facd0e69225a6edb8910e52099e0))
-
-
-
-# [0.8.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.7.0...v0.8.0) (2026-04-12)
-
-
-### Features
-
-* add profile sharing viewer and CTA section to Discord CustomRPC page ([31ca0a4](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/31ca0a48a4da442b82bdd240315e177f19a1b0d0))
 
 
 

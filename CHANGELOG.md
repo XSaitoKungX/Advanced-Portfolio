@@ -1,3 +1,12 @@
+# [0.12.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.11.0...v0.12.0) (2026-04-14)
+
+
+### Features
+
+* **system-monitor:** improve landing page content ([68bfc3c](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/68bfc3c372d459005e7740c251a537e959e549a1)), closes [#4](https://github.com/XSaitoKungX/Advanced-Portfolio/issues/4)
+
+
+
 # [0.11.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.10.0...v0.11.0) (2026-04-14)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * add profile sharing viewer and CTA section to Discord CustomRPC page ([31ca0a4](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/31ca0a48a4da442b82bdd240315e177f19a1b0d0))
-
-
-
-# [0.7.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.6.1...v0.7.0) (2026-04-11)
-
-
-### Features
-
-* update skills page and expand project details ([192196a](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/192196aafe16e9c69b7266921ed501c67ada7030))
 
 
 

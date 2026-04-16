@@ -350,6 +350,67 @@ Open source under MIT license on [GitHub](https://github.com/XSaitoKungX/System-
     year: 2025,
   },
 
+  // 🗓️ Smart Calendar
+  {
+    id: "smart-calendar",
+    slug: "smart-calendar",
+    title: "Smart Calendar — Kana AI",
+    description: {
+      de: "KI-gestützter Kalender für Linux — mit Kana AI-Assistentin, Event-Management, Alarmen, Timern und Multi-Provider-KI (OpenRouter, Gemini, Claude, Ollama).",
+      en: "AI-powered calendar for Linux — with Kana AI assistant, event management, alarms, timers and multi-provider AI (OpenRouter, Gemini, Claude, Ollama).",
+    },
+    longDescription: {
+      de: `## Smart Calendar — Kana AI
+
+Ein moderner Desktop-Kalender für Linux, gebaut mit Flutter. Im Mittelpunkt steht Kana — eine eingebaute KI-Assistentin, die natürliche Sprache versteht und dir hilft, deinen Kalender zu verwalten.
+
+### Features
+
+- **Kalender**: Monats-, Wochen- und Tagesansicht mit Kategorien, Konflikt-Erkennung und Erinnerungen
+- **Kana AI**: Chat-Assistentin mit Unterstützung für OpenRouter (kostenlos), Google Gemini, Anthropic Claude und Ollama
+- **Uhr-Suite**: Weltzeituhr, Stoppuhr, Countdown-Timer und Alarmverwaltung mit Wochentag-Wiederholung
+- **Offline First**: Alle Daten lokal in SQLite gespeichert via Drift ORM
+- **Sicherheit**: API Keys im OS-Schlüsselbund via flutter_secure_storage
+
+### Tech Stack
+
+- **Flutter** + **Dart** für plattformübergreifende Desktop-App
+- **Drift / SQLite** für lokale Datenpersistenz
+- **Riverpod** für State Management
+- **Dio** für HTTP-Kommunikation mit AI-APIs
+- **flutter_local_notifications** für Erinnerungen`,
+      en: `## Smart Calendar — Kana AI
+
+A modern desktop calendar for Linux built with Flutter. At its heart is Kana — a built-in AI assistant who understands natural language and helps you manage your schedule.
+
+### Features
+
+- **Calendar**: Monthly, weekly and daily views with categories, conflict detection and reminders
+- **Kana AI**: Chat assistant supporting OpenRouter (free), Google Gemini, Anthropic Claude and Ollama
+- **Clock Suite**: World clock, stopwatch, countdown timers and alarm manager with repeat days
+- **Offline First**: All data stored locally in SQLite via Drift ORM
+- **Security**: API keys stored in OS keychain via flutter_secure_storage
+
+### Tech Stack
+
+- **Flutter** + **Dart** for cross-platform desktop app
+- **Drift / SQLite** for local data persistence
+- **Riverpod** for state management
+- **Dio** for HTTP communication with AI APIs
+- **flutter_local_notifications** for reminders`,
+    },
+    tags: ["Flutter", "Dart", "AI", "Linux", "Desktop"],
+    labels: ["Flutter", "AI", "Desktop", "Linux"],
+    stack: ["Flutter", "Dart", "Drift", "SQLite", "Riverpod"],
+    category: "system",
+    status: "in_progress",
+    image: undefined,
+    demo: "https://xsaitox.dev/en/smart-calendar",
+    github: "https://github.com/XSaitoKungX/Smart-Calendar",
+    featured: true,
+    year: 2025,
+  },
+
   // ⚡ Utility / Fun
   {
     id: "project-tracker",

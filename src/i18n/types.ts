@@ -472,5 +472,20 @@ export interface Translations {
     hasSymbol: string;
     secureTitle: string;
     secureDesc: string;
+    placeholder: string;
+    wordCount: string;
+    separator: string;
+    capitalize: string;
+    addNumber: string;
+    pinLength: string;
+    groups: string;
+    groupLen: string;
+    preview: string;
+    bytes: string;
+    format: string;
+    sessionNote: string;
+    keySize: string;
+    bitsNote: string;
+    hasDigit: string;
   };
 }

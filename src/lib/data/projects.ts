@@ -413,6 +413,24 @@ A modern desktop calendar for Linux built with Flutter. At its heart is Kana —
 
   // ⚡ Utility / Fun
   {
+    id: "password-generator",
+    slug: "password-generator",
+    title: "Password Generator",
+    description: {
+      de: "Kryptografisch sichere Passwörter direkt im Browser — kein Server, kein Tracking, keine Datenübertragung.",
+      en: "Cryptographically secure password generator that runs entirely in the browser — no server, no tracking, no data sent.",
+    },
+    tags: ["Web", "Tool", "Security"],
+    labels: ["Web", "Security", "Tool"],
+    stack: ["Next.js", "TypeScript", "Web Crypto API", "Tailwind CSS"],
+    category: "utility",
+    status: "launched",
+    demo: "https://xsaitox.dev/en/tools/password-generator",
+    featured: false,
+    year: 2025,
+  },
+
+  {
     id: "project-tracker",
     slug: "project-tracker",
     title: "Project Tracker",

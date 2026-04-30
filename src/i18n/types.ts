@@ -447,4 +447,30 @@ export interface Translations {
     title: string;
     description: string;
   };
+  passwordGenerator: {
+    badge: string;
+    title: string;
+    description: string;
+    options: string;
+    length: string;
+    uppercase: string;
+    lowercase: string;
+    numbers: string;
+    symbols: string;
+    excludeSimilar: string;
+    strength: string;
+    copy: string;
+    copied: string;
+    regenerate: string;
+    history: string;
+    clear: string;
+    bulk: string;
+    generate: string;
+    download: string;
+    chars: string;
+    hasUpper: string;
+    hasSymbol: string;
+    secureTitle: string;
+    secureDesc: string;
+  };
 }

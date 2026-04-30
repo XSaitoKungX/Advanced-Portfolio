@@ -1,3 +1,12 @@
+# [0.15.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.14.1...v0.15.0) (2026-04-30)
+
+
+### Features
+
+* **password-generator:** full rewrite with 6 modes ([339890d](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/339890da25fd54874673298908208fd2ee08bd1f))
+
+
+
 ## [0.14.1](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.14.0...v0.14.1) (2026-04-30)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * **system-monitor:** improve landing page content ([68bfc3c](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/68bfc3c372d459005e7740c251a537e959e549a1)), closes [#4](https://github.com/XSaitoKungX/Advanced-Portfolio/issues/4)
-
-
-
-# [0.11.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.10.0...v0.11.0) (2026-04-14)
-
-
-### Features
-
-* add download buttons for System Monitor + fix Discord-RPC Windows button + icons ([16430da](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/16430daf47b456a464b258050747fbabc6bb3ef5))
 
 
 

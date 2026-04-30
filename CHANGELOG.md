@@ -1,3 +1,12 @@
+## [0.14.1](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.14.0...v0.14.1) (2026-04-30)
+
+
+### Bug Fixes
+
+* **password-generator:** remove unused refs/effects + minor cleanup ([93363ae](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/93363ae7aecedbd71dc134b97c8e7ac951f23a0d))
+
+
+
 # [0.14.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.13.0...v0.14.0) (2026-04-30)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * add download buttons for System Monitor + fix Discord-RPC Windows button + icons ([16430da](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/16430daf47b456a464b258050747fbabc6bb3ef5))
-
-
-
-# [0.10.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.9.0...v0.10.0) (2026-04-13)
-
-
-### Features
-
-* add /system-monitor page + update projects data ([b93b854](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/b93b8544f7a804b0bf614db619fd3804370839e0))
 
 
 

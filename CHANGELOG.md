@@ -1,3 +1,12 @@
+# [0.14.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.13.0...v0.14.0) (2026-04-30)
+
+
+### Features
+
+* add Password Generator tool + projects entry ([1f9c8ed](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/1f9c8ede12c1e8aad885cd12610a93b8a832a9a3))
+
+
+
 # [0.13.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.12.0...v0.13.0) (2026-04-16)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * add /system-monitor page + update projects data ([b93b854](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/b93b8544f7a804b0bf614db619fd3804370839e0))
-
-
-
-# [0.9.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.8.0...v0.9.0) (2026-04-13)
-
-
-### Features
-
-* add dynamic GitHub releases integration and enhance profile sharing ([1e6302c](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/1e6302c000d4facd0e69225a6edb8910e52099e0))
 
 
 

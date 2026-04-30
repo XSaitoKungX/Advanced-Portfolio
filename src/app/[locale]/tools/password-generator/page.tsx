@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FiCopy, FiCheck, FiRefreshCw, FiShield, FiZap, FiEye, FiEyeOff,
@@ -27,7 +27,7 @@ function generatePassword(opts: PasswordOptions): string {
 
   const array = new Uint32Array(opts.length);
   crypto.getRandomValues(array);
-  let result = Array.from(array, (n) => charset[n % charset.length]).join("");
+  const result = Array.from(array, (n) => charset[n % charset.length]).join("");
 
   // Guarantee at least one char from each enabled group
   const mandatory: string[] = [];
@@ -121,7 +121,7 @@ function Toggle({
           <p className="text-[11px] text-white/30 mt-0.5">{description}</p>
         )}
       </div>
-      <div className={`w-9 h-5 rounded-full transition-colors duration-200 relative flex-shrink-0 ${checked ? "bg-violet-500" : "bg-white/15"}`}>
+      <div className={`w-9 h-5 rounded-full transition-colors duration-200 relative shrink-0 ${checked ? "bg-violet-500" : "bg-white/15"}`}>
         <motion.div
           className="absolute top-0.5 w-4 h-4 rounded-full bg-white shadow-sm"
           animate={{ left: checked ? "calc(100% - 18px)" : "2px" }}
@@ -135,15 +135,13 @@ function Toggle({
 export default function PasswordGeneratorPage() {
   const t = useTranslations("passwordGenerator");
   const [opts, setOpts] = useState<PasswordOptions>(DEFAULT_OPTS);
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(() => generatePassword(DEFAULT_OPTS));
   const [copied, setCopied] = useState(false);
   const [visible, setVisible] = useState(true);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [copiedHistory, setCopiedHistory] = useState<number | null>(null);
   const [count, setCount] = useState(1);
   const [bulk, setBulk] = useState<string[]>([]);
-  const inputRef = useRef<HTMLInputElement>(null);
-
   const generate = useCallback((o = opts) => {
     const pw = generatePassword(o);
     setPassword(pw);
@@ -155,8 +153,6 @@ export default function PasswordGeneratorPage() {
     const pws = Array.from({ length: count }, () => generatePassword(opts));
     setBulk(pws);
   }, [opts, count]);
-
-  useEffect(() => { generate(DEFAULT_OPTS); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const copyPw = async (pw: string, idx?: number) => {
     await navigator.clipboard.writeText(pw);
@@ -236,7 +232,6 @@ export default function PasswordGeneratorPage() {
                   <span className="text-sm font-bold text-violet-400 tabular-nums w-8 text-right">{opts.length}</span>
                 </div>
                 <input
-                  ref={inputRef}
                   type="range" min={4} max={128}
                   value={opts.length}
                   onChange={(e) => set("length", Number(e.target.value))}

@@ -228,6 +228,70 @@ Astra v3 takes the solid foundation of v2 and turns it into a robust, maintainab
 
   // 🛠️ Developer Tools
   {
+    id: "discgen-cli",
+    slug: "discgen-cli",
+    title: "discgen-cli",
+    description: {
+      de: "Interaktiver CLI zum Generieren produktionsreifer TypeScript Discord Bots — mit discord.js v14, Components v2, Economy, i18n, SQLite/PostgreSQL und mehr.",
+      en: "Interactive CLI to scaffold production-ready TypeScript Discord bots — with discord.js v14, Components v2, economy, i18n, SQLite/PostgreSQL and more.",
+    },
+    longDescription: {
+      de: `## discgen-cli
+
+Ein interaktiver CLI-Generator für Discord Bots — von null zu einem vollständig typisierten, produktionsreifen Bot mit einem einzigen Befehl.
+
+### Features
+
+- **Interaktiver Wizard**: Powered by @clack/prompts — schönes Setup mit smarten Defaults
+- **Template-Presets**: \`basic\`, \`moderation\` und \`full\` — jeder Preset verkabelt Commands, Events und Utilities automatisch
+- **Components v2**: Jeder generierte Command nutzt ContainerBuilder, TextDisplayBuilder und MessageFlags.IsComponentsV2
+- **Datenbank-Support**: SQLite via better-sqlite3 oder PostgreSQL via Drizzle ORM
+- **i18n eingebaut**: TypeScript-Locale-Dateien (kein JSON), useT()-Helper, /locale-Command mit ManageGuild-Permission
+- **Code-Generator**: \`discgen-cli g command|event|guard|button|select|modal|service <name>\`
+- **Prefix + Slash**: Unterstützung für Slash Commands, Prefix Commands oder beides
+- **184 Unit Tests**: Vollständige Test-Abdeckung mit vitest
+
+### Tech Stack
+
+- **TypeScript** + **Node.js**
+- **discord.js v14**
+- **@clack/prompts** für den interaktiven Wizard
+- **commander** für Argument-Parsing
+- **vitest** für Tests`,
+      en: `## discgen-cli
+
+An interactive CLI generator for Discord bots — from zero to a fully-typed, production-ready bot with a single command.
+
+### Features
+
+- **Interactive Wizard**: Powered by @clack/prompts — beautiful setup with smart defaults
+- **Template Presets**: \`basic\`, \`moderation\` and \`full\` — each preset wires up commands, events and utilities automatically
+- **Components v2**: Every generated command uses ContainerBuilder, TextDisplayBuilder and MessageFlags.IsComponentsV2
+- **Database Support**: SQLite via better-sqlite3 or PostgreSQL via Drizzle ORM
+- **i18n Built-in**: TypeScript locale files (not JSON), useT() helper, /locale command with ManageGuild permission
+- **Code Generator**: \`discgen-cli g command|event|guard|button|select|modal|service <name>\`
+- **Prefix + Slash**: Support for slash commands, prefix commands or both
+- **184 Unit Tests**: Full test coverage with vitest
+
+### Tech Stack
+
+- **TypeScript** + **Node.js**
+- **discord.js v14**
+- **@clack/prompts** for the interactive wizard
+- **commander** for argument parsing
+- **vitest** for tests`,
+    },
+    tags: ["CLI", "TypeScript", "Discord.js", "Open Source", "npm"],
+    labels: ["CLI", "TypeScript", "Open Source", "npm"],
+    stack: ["TypeScript", "Node.js", "discord.js", "vitest"],
+    category: "devtools",
+    status: "launched",
+    featured: true,
+    year: 2025,
+    github: "https://github.com/XSaitoKungX/discgen-cli",
+    demo: "https://xsaitox.dev/en/discgen-cli",
+  },
+  {
     id: "readme-generator",
     slug: "readme-generator",
     title: "README Generator",

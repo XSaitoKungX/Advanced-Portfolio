@@ -13,6 +13,7 @@ import {
 import { useSession, signOut } from "@/lib/auth-client";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 import { isOwner } from "@/lib/is-owner";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export default function Navigation() {
   const t = useTranslations("nav");
@@ -23,6 +24,7 @@ export default function Navigation() {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const { data: session } = useSession();
+  const { profile } = useCurrentUser();
   const ownerAccess = isOwner(session?.user ?? null);
 
   useEffect(() => {
@@ -63,10 +65,10 @@ export default function Navigation() {
     return pathname.startsWith(href);
   };
 
-  // Extract discordId from avatar URL for profile link
-  const avatarUrl = session?.user?.image as string | null;
-  const discordIdMatch = avatarUrl?.match(/\/avatars\/(\d+)\//);
-  const discordId = discordIdMatch?.[1];
+  // Use live profile data when available, fallback to session
+  const avatarUrl = profile?.avatar ?? (session?.user?.image as string | null);
+  const discordId = profile?.discordId;
+  const userName = profile?.displayName ?? session?.user?.name ?? "User";
   const profileHref = session?.user
     ? `/${locale}/profile/${discordId ?? session.user.id}`
     : `/${locale}/login`;
@@ -155,7 +157,7 @@ export default function Navigation() {
                   {avatarUrl ? (
                     <Image
                       src={avatarUrl}
-                      alt={session.user.name ?? "Avatar"}
+                      alt={userName}
                       width={28}
                       height={28}
                       className="rounded-full object-cover border border-white/10"
@@ -166,7 +168,7 @@ export default function Navigation() {
                     </div>
                   )}
                   <span className="text-sm font-medium text-white/80 group-hover:text-white max-w-[100px] truncate transition-colors duration-200">
-                    {session.user.name?.split(" ")[0] ?? "User"}
+                    {userName.split(" ")[0]}
                   </span>
                   <FiChevronDown
                     className={`w-3.5 h-3.5 text-white/40 transition-transform duration-200 ${userMenuOpen ? "rotate-180" : ""}`}
@@ -185,7 +187,7 @@ export default function Navigation() {
                       {/* User info header */}
                       <div className="px-4 py-3 border-b border-white/6">
                         <p className="text-sm font-semibold text-white truncate">
-                          {session.user.name ?? "User"}
+                          {userName}
                         </p>
                         <p className="text-xs text-white/40 truncate mt-0.5">
                           {session.user.email ?? (discordId ? `@${discordId}` : "")}
@@ -310,7 +312,7 @@ export default function Navigation() {
                       </div>
                     )}
                     <div>
-                      <p className="text-sm font-semibold text-white">{session.user.name}</p>
+                      <p className="text-sm font-semibold text-white">{userName}</p>
                       <p className="text-xs text-white/40">{session.user.email}</p>
                     </div>
                   </div>

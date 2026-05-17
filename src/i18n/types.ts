@@ -182,6 +182,14 @@ export interface Translations {
     time_hours_ago: string;
     time_days_ago: string;
     characters_left: string;
+    pending_success: string;
+    entry_count_one: string;
+    entry_count_other: string;
+    error_loading: string;
+    delete_own: string;
+    delete_confirm: string;
+    delete_success: string;
+    retry: string;
   };
   discordCustomRPC: {
     badge: string;
@@ -559,5 +567,81 @@ export interface Translations {
     keySize: string;
     bitsNote: string;
     hasDigit: string;
+    // Mode labels
+    modeClassic: string;
+    modePassphrase: string;
+    modePin: string;
+    modeIphone: string;
+    modeSession: string;
+    modeBits: string;
+    modeUuid: string;
+    modeMemorable: string;
+    modePattern: string;
+    // Classic additions
+    pronounceable: string;
+    pronounceableDesc: string;
+    ensureFirstAlpha: string;
+    expandedSymbols: string;
+    // Passphrase additions
+    customSeparator: string;
+    numberPosition: string;
+    numberPrefix: string;
+    numberSuffix: string;
+    numberRandom: string;
+    // PIN additions
+    noRepeating: string;
+    noSequential: string;
+    groupDisplay: string;
+    groupSize: string;
+    // iPhone additions
+    iphoneSeparator: string;
+    iphoneMixedCase: string;
+    // Session subcategories
+    sessionSubSecret: string;
+    sessionSubJwt: string;
+    sessionSubApiKey: string;
+    sessionSubCsrf: string;
+    jwtAlgorithm: string;
+    jwtNote: string;
+    apiKeyPrefix: string;
+    apiKeyPrefixHint: string;
+    apiKeyBodyFormat: string;
+    apiKeyBodyLength: string;
+    csrfStyle: string;
+    csrfExampleHeader: string;
+    csrfTip: string;
+    // Bits additions
+    bitsUuid: string;
+    bitsUlid: string;
+    // UUID mode
+    uuidVariant: string;
+    uuidV4Desc: string;
+    uuidV7Desc: string;
+    uuidUlidDesc: string;
+    uuidNanoidDesc: string;
+    // Memorable mode
+    memorablePattern: string;
+    memorablePatternFull: string;
+    memorablePatternShort: string;
+    memorableCapitalize: string;
+    memorableNumberRange: string;
+    // Pattern mode
+    patternInput: string;
+    patternInputHint: string;
+    patternLegend: string;
+    patternPresets: string;
+    patternToken_A: string;
+    patternToken_a: string;
+    patternToken_0: string;
+    patternToken_hash: string;
+    patternToken_q: string;
+    patternToken_star: string;
+    // Strength labels
+    entropyLabel: string;
+    strengthWeak: string;
+    strengthFair: string;
+    strengthGood: string;
+    strengthStrong: string;
+    strengthVeryStrong: string;
   };
 }

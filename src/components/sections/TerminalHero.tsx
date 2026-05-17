@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { registry, CommandContext } from "@/lib/terminal/commands";
 
 interface TerminalLine {
@@ -60,14 +61,15 @@ export default function TerminalHero() {
   const locale = useLocale();
   const router = useRouter();
   const { data: session } = useSession();
+  const { profile } = useCurrentUser();
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const lineIdCounter = useRef(0);
   const nextId = useCallback(() => ++lineIdCounter.current, []);
 
   const username = useMemo(
-    () => (session?.user?.name ?? "guest").toLowerCase().replace(/\s+/g, ""),
-    [session?.user?.name]
+    () => (profile?.displayName ?? profile?.username ?? session?.user?.name ?? "guest").toLowerCase().replace(/\s+/g, ""),
+    [profile?.displayName, profile?.username, session?.user?.name]
   );
   const usernameRef = useRef(username);
   useEffect(() => { usernameRef.current = username; }, [username]);

@@ -1,15 +1,13 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { headers } from "next/headers";
-import { isOwnerClient } from "@/lib/is-owner";
+import { isOwnerServer } from "@/lib/is-owner-server";
 
 async function requireAdmin() {
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session?.user || !isOwnerClient(session.user)) {
+  const isOwner = await isOwnerServer();
+  if (!isOwner) {
     return null;
   }
-  return session;
+  return true;
 }
 
 export async function GET() {

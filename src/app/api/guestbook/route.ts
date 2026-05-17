@@ -26,13 +26,71 @@ export async function GET() {
         image: true,
         isVerified: true,
         status: true,
+        userId: true,
         createdAt: true,
       },
     });
+
+    // Overlay live profile data for verified entries so avatar/name never stale
+    const verifiedUserIds = [...new Set(
+      entries
+        .filter((e) => e.isVerified && e.userId)
+        .map((e) => e.userId as string)
+    )];
+
+    if (verifiedUserIds.length > 0) {
+      const profiles = await prisma.userProfile.findMany({
+        where: { userId: { in: verifiedUserIds } },
+        select: { userId: true, avatar: true, displayName: true },
+      });
+      const profileMap = new Map(profiles.map((p) => [p.userId, p]));
+
+      const enriched = entries.map((e) => {
+        if (!e.isVerified || !e.userId) return e;
+        const p = profileMap.get(e.userId);
+        if (!p) return e;
+        return {
+          ...e,
+          image: p.avatar ?? e.image,
+          name: p.displayName ?? e.name,
+        };
+      });
+
+      return NextResponse.json({ entries: enriched });
+    }
+
     return NextResponse.json({ entries });
   } catch (error) {
     console.error("Guestbook GET error:", error);
     return NextResponse.json({ entries: [] });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { id } = await request.json();
+    if (!id) {
+      return NextResponse.json({ error: "Entry ID required" }, { status: 400 });
+    }
+
+    const entry = await prisma.guestbookEntry.findUnique({ where: { id } });
+    if (!entry || entry.userId !== session.user.id) {
+      return NextResponse.json({ error: "Not found or not your entry" }, { status: 403 });
+    }
+
+    await prisma.guestbookEntry.delete({ where: { id } });
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Guestbook DELETE error:", error);
+    return NextResponse.json({ error: "Failed to delete entry" }, { status: 500 });
   }
 }
 

@@ -1,3 +1,12 @@
+# [0.16.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.15.0...v0.16.0) (2026-05-04)
+
+
+### Features
+
+* add /discgen-cli page + i18n translations ([3c69e0a](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/3c69e0a62eb84702b8610477fc99c96f7c8a6be7))
+
+
+
 # [0.15.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.14.1...v0.15.0) (2026-04-30)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * add /smart-calendar page + i18n translations ([e56aa01](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/e56aa01a39f2e7a3ab42605ea7254d0d54a6f61a))
-
-
-
-# [0.12.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.11.0...v0.12.0) (2026-04-14)
-
-
-### Features
-
-* **system-monitor:** improve landing page content ([68bfc3c](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/68bfc3c372d459005e7740c251a537e959e549a1)), closes [#4](https://github.com/XSaitoKungX/Advanced-Portfolio/issues/4)
 
 
 

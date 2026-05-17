@@ -1,3 +1,12 @@
+# [0.17.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.16.0...v0.17.0) (2026-05-17)
+
+
+### Features
+
+* **guestbook:** add delete own entry + improve UX/UI ([270cee3](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/270cee33c01a1224c8eba192339ebdff20ce752d))
+
+
+
 # [0.16.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.15.0...v0.16.0) (2026-05-04)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * add Password Generator tool + projects entry ([1f9c8ed](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/1f9c8ede12c1e8aad885cd12610a93b8a832a9a3))
-
-
-
-# [0.13.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.12.0...v0.13.0) (2026-04-16)
-
-
-### Features
-
-* add /smart-calendar page + i18n translations ([e56aa01](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/e56aa01a39f2e7a3ab42605ea7254d0d54a6f61a))
 
 
 

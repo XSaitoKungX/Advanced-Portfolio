@@ -164,7 +164,7 @@ export default function AboutPage() {
 
             {/* Discord Bot Card */}
             <motion.a
-              href="https://discord.gg/ugcity"
+              href="https://discord.gg/FNcAvF2aGQ"
               target="_blank"
               rel="noopener noreferrer"
               initial={{ opacity: 0, y: 20 }}

@@ -24,23 +24,29 @@ export default function Footer() {
   ];
 
   const projectLinks = [
-    { 
-      href: `/${locale}/discord-customrpc`, 
+    {
+      href: `/${locale}/discgen-cli`,
+      label: "discgen-cli",
+      description: "Discord Bot CLI",
+      external: false,
+    },
+    {
+      href: `/${locale}/discord-customrpc`,
       label: "Discord CustomRPC",
       description: "Rich Presence Tool",
-      external: false 
+      external: false,
     },
-    { 
-      href: "https://github.com/XSaitoKungX/astra-bot", 
+    {
+      href: "https://github.com/XSaitoKungX/astra-bot",
       label: "Astra Bot",
       description: "Discord Bot",
-      external: true 
+      external: true,
     },
-    { 
-      href: "https://github.com/XSaitoKungX/rpc-manager", 
-      label: "RPC Manager",
-      description: "Multi-Account RPC",
-      external: true 
+    {
+      href: `/${locale}/system-monitor`,
+      label: "System Monitor",
+      description: "Tauri + Rust Desktop App",
+      external: false,
     },
   ];
 

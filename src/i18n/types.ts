@@ -182,6 +182,14 @@ export interface Translations {
     time_hours_ago: string;
     time_days_ago: string;
     characters_left: string;
+    pending_success: string;
+    entry_count_one: string;
+    entry_count_other: string;
+    error_loading: string;
+    delete_own: string;
+    delete_confirm: string;
+    delete_success: string;
+    retry: string;
   };
   discordCustomRPC: {
     badge: string;
@@ -447,6 +455,78 @@ export interface Translations {
     title: string;
     description: string;
   };
+  discgenCli: {
+    badge: string;
+    title: string;
+    titleHighlight: string;
+    description: string;
+    viewOnNpm: string;
+    viewOnGithub: string;
+    demoTitle: string;
+    demoSubtitle: string;
+    featuresTitle: string;
+    featuresSubtitle: string;
+    featureWizard: string;
+    featureWizardDesc: string;
+    featureTemplates: string;
+    featureTemplatesDesc: string;
+    featureDatabase: string;
+    featuresDatabaseDesc: string;
+    featureI18n: string;
+    featureI18nDesc: string;
+    featureComponents: string;
+    featureComponentsDesc: string;
+    featureGenerate: string;
+    featureGenerateDesc: string;
+    presetsTitle: string;
+    presetsSubtitle: string;
+    presetBasic: string;
+    presetBasicDesc: string;
+    presetModeration: string;
+    presetModerationDesc: string;
+    presetFull: string;
+    presetFullDesc: string;
+    recommended: string;
+    featured: string;
+    generateTitle: string;
+    generateSubtitle: string;
+    generateNote: string;
+    generateNoteDesc: string;
+    howItWorksTitle: string;
+    howItWorksSubtitle: string;
+    step1Title: string;
+    step1Desc: string;
+    step2Title: string;
+    step2Desc: string;
+    step3Title: string;
+    step3Desc: string;
+    stackTitle: string;
+    faqTitle: string;
+    faqSubtitle: string;
+    faq1Question: string;
+    faq1Answer: string;
+    faq2Question: string;
+    faq2Answer: string;
+    faq3Question: string;
+    faq3Answer: string;
+    faq4Question: string;
+    faq4Answer: string;
+    faq5Question: string;
+    faq5Answer: string;
+    faq6Question: string;
+    faq6Answer: string;
+    changelogTitle: string;
+    changelogSubtitle: string;
+    viewAllReleases: string;
+    noReleasesFound: string;
+    viewReleasesOnGithub: string;
+    released: string;
+    ctaTitle: string;
+    ctaDescription: string;
+    madeWith: string;
+    by: string;
+    license: string;
+  };
   passwordGenerator: {
     badge: string;
     title: string;
@@ -487,5 +567,81 @@ export interface Translations {
     keySize: string;
     bitsNote: string;
     hasDigit: string;
+    // Mode labels
+    modeClassic: string;
+    modePassphrase: string;
+    modePin: string;
+    modeIphone: string;
+    modeSession: string;
+    modeBits: string;
+    modeUuid: string;
+    modeMemorable: string;
+    modePattern: string;
+    // Classic additions
+    pronounceable: string;
+    pronounceableDesc: string;
+    ensureFirstAlpha: string;
+    expandedSymbols: string;
+    // Passphrase additions
+    customSeparator: string;
+    numberPosition: string;
+    numberPrefix: string;
+    numberSuffix: string;
+    numberRandom: string;
+    // PIN additions
+    noRepeating: string;
+    noSequential: string;
+    groupDisplay: string;
+    groupSize: string;
+    // iPhone additions
+    iphoneSeparator: string;
+    iphoneMixedCase: string;
+    // Session subcategories
+    sessionSubSecret: string;
+    sessionSubJwt: string;
+    sessionSubApiKey: string;
+    sessionSubCsrf: string;
+    jwtAlgorithm: string;
+    jwtNote: string;
+    apiKeyPrefix: string;
+    apiKeyPrefixHint: string;
+    apiKeyBodyFormat: string;
+    apiKeyBodyLength: string;
+    csrfStyle: string;
+    csrfExampleHeader: string;
+    csrfTip: string;
+    // Bits additions
+    bitsUuid: string;
+    bitsUlid: string;
+    // UUID mode
+    uuidVariant: string;
+    uuidV4Desc: string;
+    uuidV7Desc: string;
+    uuidUlidDesc: string;
+    uuidNanoidDesc: string;
+    // Memorable mode
+    memorablePattern: string;
+    memorablePatternFull: string;
+    memorablePatternShort: string;
+    memorableCapitalize: string;
+    memorableNumberRange: string;
+    // Pattern mode
+    patternInput: string;
+    patternInputHint: string;
+    patternLegend: string;
+    patternPresets: string;
+    patternToken_A: string;
+    patternToken_a: string;
+    patternToken_0: string;
+    patternToken_hash: string;
+    patternToken_q: string;
+    patternToken_star: string;
+    // Strength labels
+    entropyLabel: string;
+    strengthWeak: string;
+    strengthFair: string;
+    strengthGood: string;
+    strengthStrong: string;
+    strengthVeryStrong: string;
   };
 }

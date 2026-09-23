@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import type { Pool } from "pg";
 import { OWNER_DISCORD_ID } from "./constants";
+import { syncDiscordProfileForUser } from "./sync-discord";
 
 export { OWNER_DISCORD_ID };
 
@@ -31,5 +32,14 @@ export const auth = betterAuth({
   session: {
     expiresIn: 60 * 60 * 24 * 30,
     updateAge: 60 * 60 * 24,
+  },
+  databaseHooks: {
+    session: {
+      create: {
+        after: async (session) => {
+          syncDiscordProfileForUser(session.userId).catch(() => {});
+        },
+      },
+    },
   },
 });

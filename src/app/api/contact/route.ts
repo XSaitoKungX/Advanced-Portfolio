@@ -45,6 +45,25 @@ function checkRateLimit(ip: string): boolean {
   return true;
 }
 
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>"']/g, (char) => {
+    switch (char) {
+      case "&":
+        return "&amp;";
+      case "<":
+        return "&lt;";
+      case ">":
+        return "&gt;";
+      case "\"":
+        return "&quot;";
+      case "'":
+        return "&#39;";
+      default:
+        return char;
+    }
+  });
+}
+
 export async function POST(req: NextRequest) {
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
@@ -82,6 +101,10 @@ export async function POST(req: NextRequest) {
     }
 
     const contactEmail = process.env.CONTACT_EMAIL ?? process.env.SMTP_USER ?? "your@email.com";
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safeSubject = escapeHtml(subject);
+    const safeMessage = escapeHtml(message);
 
     await getTransporter().sendMail({
       from: `"Portfolio Contact" <${process.env.SMTP_USER}>`,
@@ -93,13 +116,13 @@ export async function POST(req: NextRequest) {
         <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#0d1117;color:#f9fafb;border-radius:12px;">
           <h2 style="color:#a78bfa;margin:0 0 16px;">Neue Kontaktanfrage</h2>
           <table style="width:100%;border-collapse:collapse;">
-            <tr><td style="padding:8px 0;color:#9ca3af;font-size:14px;">Name</td><td style="padding:8px 0;font-weight:600;">${name}</td></tr>
-            <tr><td style="padding:8px 0;color:#9ca3af;font-size:14px;">E-Mail</td><td style="padding:8px 0;font-weight:600;">${email}</td></tr>
-            <tr><td style="padding:8px 0;color:#9ca3af;font-size:14px;">Betreff</td><td style="padding:8px 0;font-weight:600;">${subject}</td></tr>
+            <tr><td style="padding:8px 0;color:#9ca3af;font-size:14px;">Name</td><td style="padding:8px 0;font-weight:600;">${safeName}</td></tr>
+            <tr><td style="padding:8px 0;color:#9ca3af;font-size:14px;">E-Mail</td><td style="padding:8px 0;font-weight:600;">${safeEmail}</td></tr>
+            <tr><td style="padding:8px 0;color:#9ca3af;font-size:14px;">Betreff</td><td style="padding:8px 0;font-weight:600;">${safeSubject}</td></tr>
           </table>
           <hr style="border:none;border-top:1px solid #1f2937;margin:16px 0;"/>
           <p style="color:#9ca3af;font-size:14px;margin-bottom:8px;">Nachricht:</p>
-          <p style="line-height:1.7;white-space:pre-wrap;">${message}</p>
+          <p style="line-height:1.7;white-space:pre-wrap;">${safeMessage}</p>
         </div>
       `,
     });

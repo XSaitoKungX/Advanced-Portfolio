@@ -154,7 +154,7 @@ export default function HomePage() {
                   <FiGithub className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 </a>
                 <a
-                  href="https://discord.gg/ugcity"
+                  href="https://discord.gg/FNcAvF2aGQ"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group p-2.5 rounded-xl border border-white/10 text-white/40 hover:text-[#5865F2] hover:border-[#5865F2]/30 hover:bg-[#5865F2]/10 transition-all duration-200"

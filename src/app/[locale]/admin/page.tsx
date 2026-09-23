@@ -6,7 +6,9 @@ import Link from "next/link";
 import { FiArrowLeft, FiShield, FiUser, FiMail, FiCode, FiCheck, FiX, FiTrash2, FiMessageSquare } from "react-icons/fi";
 import { RiTerminalBoxFill } from "react-icons/ri";
 import { useSession } from "@/lib/auth-client";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { isOwner } from "@/lib/is-owner";
+import { OWNER_DISCORD_ID } from "@/lib/constants";
 import GlassCard from "@/components/ui/GlassCard";
 import { projects } from "@/lib/data/projects";
 import { skills } from "@/lib/data/skills";
@@ -18,7 +20,8 @@ export default function AdminPage() {
   const locale = useLocale();
   const t = useTranslations("auth");
   const { data: session, isPending } = useSession();
-  const ownerAccess = isOwner(session?.user ?? null);
+  const { profile } = useCurrentUser();
+  const ownerAccess = isOwner(session?.user ?? null) || profile?.discordId === OWNER_DISCORD_ID;
 
   const [pendingEntries, setPendingEntries] = useState<Array<{
     id: string; name: string; message: string; createdAt: string; email?: string;
@@ -85,7 +88,7 @@ export default function AdminPage() {
   }
 
   const stats = [
-    { icon: FiUser, label: locale === "de" ? "Angemeldet als" : "Signed in as", value: session.user.name ?? "Owner", color: "#A78BFA" },
+    { icon: FiUser, label: locale === "de" ? "Angemeldet als" : "Signed in as", value: profile?.displayName ?? session.user.name ?? "Owner", color: "#A78BFA" },
     { icon: FiShield, label: "Role", value: "Owner / Admin", color: "#34D399" },
     { icon: FiMail, label: "E-Mail", value: session.user.email ?? "—", color: "#60A5FA" },
     { icon: FiCode, label: "Discord", value: "Verified", color: "#FBBF24" },

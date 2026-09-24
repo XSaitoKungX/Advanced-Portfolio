@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import Image from "next/image";
 import { FiDownload, FiCode, FiZap, FiLayout, FiBookOpen, FiArrowUpRight } from "react-icons/fi";
 import { SiDiscord } from "react-icons/si";
@@ -25,9 +26,9 @@ function getAboutContent(locale: "de" | "en", age: number) {
 
 Ich bin Mark, ${age} Jahre alt, aus Deutschland und aktuell in der Ausbildung zum **Fachinformatiker für Anwendungsentwicklung** an der Leuphana Universität (voraussichtlicher Abschluss: 2027).
 
-Angefangen hat alles mit der US-Serie **"Scorpion"** – die Geschichte um Walter O'Brien und sein Team hat mich als 13-Jähriger so fasziniert, dass ich anfing zu verstehen, wie Software wirklich funktioniert. Seitdem höre ich nicht mehr auf.
+Angefangen hat alles mit der US-Serie **"Scorpion"** – die Geschichte um Walter O'Brien und sein Team hat mich mit 13 fasziniert. Mit 14 begann ich selbst zu programmieren und wollte verstehen, wie Software wirklich funktioniert.
 
-Ich habe mir das Programmieren größtenteils selbst beigebracht – von ersten Python-Skripten und Discord-Bots bis hin zu modernen Web-Apps mit React und Next.js. Mein öffentlicher Discord-Bot **Astra** läuft inzwischen in über 90 Servern.
+Ich habe mir das Programmieren größtenteils selbst beigebracht – von ersten Python-Skripten und Discord-Bots bis hin zu modernen Web-Apps mit React und Next.js. Außerdem entwickle ich den öffentlichen Discord-Bot **Astra**.
 
 ## Was mich antreibt
 
@@ -40,7 +41,7 @@ Ich baue Software, die ich selbst gerne nutzen würde – funktional, schnell un
 
 ## Tech-Stack
 
-Mein aktueller Hauptstack: **TypeScript**, **Next.js**, **React**, **Node.js / Bun** und **PostgreSQL**. Für Deployment und Infrastruktur nutze ich **Docker**, **Nginx** und **Vercel**.
+Mein aktueller Hauptstack: **TypeScript**, **Next.js**, **React**, **Node.js / Bun** und **PostgreSQL**. Diese Website läuft aktuell in einem Bun-Container auf einem Hetzner-Server mit Pelican; der Umzug ins eigene Homelab ist geplant.
 
 Ich bin kein Experte in allem – aber ich bringe in jedem dieser Bereiche echte Projekterfahrung mit.`;
   }
@@ -48,9 +49,9 @@ Ich bin kein Experte in allem – aber ich bringe in jedem dieser Bereiche echte
 
 I'm Mark, ${age} years old, from Germany, currently doing my apprenticeship as an **IT Specialist for Application Development** at Leuphana University (expected graduation: 2027).
 
-It all started with the TV show **"Scorpion"** – the story of Walter O'Brien and his team fascinated me at age 13 and made me want to understand how software actually works. I haven't stopped since.
+It all started with the TV show **"Scorpion"** – the story of Walter O'Brien and his team fascinated me at 13. I started programming at 14 because I wanted to understand how software actually works.
 
-I'm largely self-taught – from early Python scripts and Discord bots to modern web apps with React and Next.js. My public Discord bot **Astra** is now running in over 90 servers.
+I'm largely self-taught – from early Python scripts and Discord bots to modern web apps with React and Next.js. I also develop the public Discord bot **Astra**.
 
 ## What Drives Me
 
@@ -63,7 +64,7 @@ I build software I'd want to use myself – functional, fast and visually polish
 
 ## Tech Stack
 
-My current main stack: **TypeScript**, **Next.js**, **React**, **Node.js / Bun** and **PostgreSQL**. For deployment and infrastructure I use **Docker**, **Nginx** and **Vercel**.
+My current main stack: **TypeScript**, **Next.js**, **React**, **Node.js / Bun** and **PostgreSQL**. This website currently runs in a Bun container on a Hetzner server managed with Pelican; migration to my own homelab is planned.
 
 I'm not an expert in everything – but I bring real project experience to each of these areas.`;
 }
@@ -79,6 +80,26 @@ export default function AboutPage() {
   const t = useTranslations("about");
   const locale = useLocale();
   const age = calcAge(BIRTH_DATE);
+  const [astraServers, setAstraServers] = useState<number | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/stats")
+      .then((response) => {
+        if (!response.ok) throw new Error("Failed to fetch stats");
+        return response.json() as Promise<{ astraServers?: unknown }>;
+      })
+      .then((data) => {
+        if (active) setAstraServers(typeof data.astraServers === "number" ? data.astraServers : null);
+      })
+      .catch(() => {
+        if (active) setAstraServers(null);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const values = [
     { icon: FiCode, key: "clean_code", color: "#A78BFA" },
@@ -89,8 +110,8 @@ export default function AboutPage() {
 
   const stats = [
     { value: `${age}`, label: t("stats.age") },
-    { value: "2", label: t("stats.experience") },
-    { value: "90+", label: t("stats.servers") },
+    { value: "3", label: t("stats.experience") },
+    { value: astraServers === null ? "—" : astraServers.toLocaleString(), label: t("stats.servers") },
     { value: "2027", label: t("stats.graduation") },
   ];
 
@@ -139,7 +160,7 @@ export default function AboutPage() {
                 <p className="text-sm text-[#A78BFA]">{locale === "de" ? "Azubi Fachinformatiker" : "CS Apprentice"}</p>
                 <span className="inline-flex items-center gap-1.5 mt-1.5 text-[10px] font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2 py-0.5">
                   <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
-                  {locale === "de" ? "Verfügbar" : "Available"}
+                  {t("availability")}
                 </span>
               </div>
             </div>
@@ -188,7 +209,7 @@ export default function AboutPage() {
                       <span className="px-1.5 py-0.5 text-[10px] font-medium text-[#5865F2] bg-[#5865F2]/10 border border-[#5865F2]/20 rounded">v2.0</span>
                     </div>
                     <p className="text-sm text-white/50 truncate">
-                      {locale === "de" ? "Vertraut von" : "Trusted by"} <span className="text-[#A78BFA] font-semibold">100+</span> Discord {locale === "de" ? "Servern" : "Servers"}
+                      {locale === "de" ? "Vertraut von" : "Trusted by"} <span className="text-[#A78BFA] font-semibold">{astraServers?.toLocaleString() ?? "—"}</span> Discord {locale === "de" ? "Servern" : "Servers"}
                     </p>
                   </div>
                 </div>
@@ -198,7 +219,7 @@ export default function AboutPage() {
                     {locale === "de" ? "Online" : "Online"}
                   </span>
                   <span>•</span>
-                  <span>90+ {locale === "de" ? "aktive Communities" : "active communities"}</span>
+                  <span>{locale === "de" ? "Live-Serverstatistik" : "Live server count"}</span>
                 </div>
               </GlassCard>
             </motion.a>

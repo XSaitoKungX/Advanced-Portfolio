@@ -221,36 +221,44 @@ registry.register(CommandType.STACK, (_args, ctx) => ({
   lines: [
     { type: "output", content: ctx.t("cmd_stack_title") },
     { type: "separator", content: "" },
-    { type: "output", content: "  Runtime    → Bun v1.x + Node.js v22" },
+    { type: "output", content: "  Runtime    → Bun v1.4.x + Node.js APIs" },
     { type: "output", content: "  Framework  → Next.js 16 (Turbopack)" },
     { type: "output", content: "  Styling    → Tailwind CSS v4" },
     { type: "output", content: "  Auth       → Better Auth (Discord)" },
     { type: "output", content: "  i18n       → next-intl (de/en)" },
-    { type: "output", content: "  Anim       → Framer Motion" },
+    { type: "output", content: "  Anim       → Motion" },
     { type: "output", content: "  Deploy     → Pelican Panel (Bun Egg)" },
     { type: "separator", content: "" },
   ],
 }));
 
-registry.register(CommandType.ASTRA, () => ({
-  lines: [
-    { type: "output", content: "  Astra Bot — astra-bot.app" },
-    { type: "separator", content: "" },
-    { type: "output", content: "  Status   → 🟢 online" },
-    { type: "output", content: "  Servers  → 100+" },
-    { type: "output", content: "  Tech     → discord.js + TypeScript + PostgreSQL" },
-    { type: "output", content: "  Features → Moderation, Music, Custom Commands" },
-    { type: "separator", content: "" },
-    { type: "info", content: "https://astra-bot.app" },
-    { type: "separator", content: "" },
-  ],
-}));
+registry.register(CommandType.ASTRA, async () => {
+  const serverCount = await fetch("/api/stats")
+    .then((response) => response.ok ? response.json() : null)
+    .then((data: { astraServers?: unknown } | null) =>
+      typeof data?.astraServers === "number" ? data.astraServers.toLocaleString() : "—"
+    )
+    .catch(() => "—");
+
+  return {
+    lines: [
+      { type: "output", content: "  Astra Bot — astra-bot.app" },
+      { type: "separator", content: "" },
+      { type: "output", content: "  Servers  → " + serverCount },
+      { type: "output", content: "  Tech     → discord.js + TypeScript + PostgreSQL" },
+      { type: "output", content: "  Features → Moderation, Music, Custom Commands" },
+      { type: "separator", content: "" },
+      { type: "info", content: "https://astra-bot.app" },
+      { type: "separator", content: "" },
+    ],
+  };
+});
 
 registry.register(CommandType.EXPERIENCE, () => ({
   lines: [
     { type: "output", content: "Experience Timeline:" },
     { type: "separator", content: "" },
-    { type: "output", content: "  2025  → 100+ Servers with Astra Bot" },
+    { type: "output", content: "  2025  → Astra Bot development" },
     { type: "output", content: "  2024  → Leuphana Azubi + BBS1 Godot Game" },
     { type: "output", content: "  2023  → React, Next.js, TypeScript mastery" },
     { type: "output", content: "  2022  → BBS2: C++, Elektrotechnik" },
@@ -291,11 +299,11 @@ registry.register(CommandType.NEOFETCH, (_args, ctx) => ({
     { type: "output", content: "                  ▟█████▙             OS: Portfolio OS x86_64" },
     { type: "output", content: "                 ▟███████▙            Host: Pelican Panel (Bun Egg)" },
     { type: "output", content: "                ▟███◥◤███▙           Kernel: Next.js 16 (Turbopack)" },
-    { type: "output", content: "               ▟███▙  ▟███▙          Uptime: 100+ Discord servers" },
-    { type: "output", content: "              ▟█████▙▟█████▙         Packages: Bun v1.x, React 19" },
+    { type: "output", content: "               ▟███▙  ▟███▙          Bot: Astra v2" },
+    { type: "output", content: "              ▟█████▙▟█████▙         Packages: Bun 1.4, React 19.3" },
     { type: "output", content: "             ▟█████████████▙        Shell: bun" },
     { type: "output", content: "            ▟██████◥◤███████▙        Theme: Tailwind CSS v4" },
-    { type: "output", content: "           ▟██████▙  ▟███████▙       Lang: TypeScript 5.7" },
+    { type: "output", content: "           ▟██████▙  ▟███████▙       Lang: TypeScript 6.0" },
     { type: "output", content: "          ▟███████▙▟█████████▙      User: " + ctx.t("cmd_whoami_role") },
     { type: "output", content: "         ▟███████████████████▙     Locale: " + ctx.locale },
     { type: "separator", content: "" },

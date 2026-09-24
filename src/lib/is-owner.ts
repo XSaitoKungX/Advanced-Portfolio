@@ -23,12 +23,6 @@ export function isOwnerClient(user: SessionUser | null | undefined): boolean {
   return discordId === OWNER_DISCORD_ID;
 }
 
-// Server-side check
-export async function isOwnerServer(): Promise<boolean> {
-  // Server-side check requires API call - handled in admin page
-  return false;
-}
-
 // Legacy export for compatibility
 export function isOwner(user: SessionUser | null | undefined): boolean {
   return isOwnerClient(user);

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { RiTerminalBoxFill } from "react-icons/ri";
 import { FiGithub, FiExternalLink, FiMail, FiHeart } from "react-icons/fi";
 import { SiDiscord, SiX, SiNextdotjs, SiTailwindcss, SiTypescript } from "react-icons/si";

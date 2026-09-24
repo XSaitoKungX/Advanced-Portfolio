@@ -2,13 +2,13 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
-import { useSession } from "@/lib/auth-client";
+import { useLocale, useTranslations } from "next-intl";
+import { authClient, useSession } from "@/lib/auth-client";
 import ProfileCard from "@/components/profile/ProfileCard";
 import { FiArrowLeft, FiLink, FiEye, FiEdit2, FiCheck, FiCalendar, FiMessageSquare } from "react-icons/fi";
 import { SiDiscord } from "react-icons/si";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import GlassCard from "@/components/ui/GlassCard";
 
 interface UserProfile {
@@ -45,6 +45,7 @@ function formatDate(date: string | Date) {
 export default function OwnProfilePage() {
   const params = useParams();
   const locale = useLocale();
+  const t = useTranslations("profile");
   const router = useRouter();
   const { data: session, isPending } = useSession();
   const userId = params.userId as string;
@@ -55,6 +56,7 @@ export default function OwnProfilePage() {
   const [editingBio, setEditingBio] = useState(false);
   const [bio, setBio] = useState("");
   const [savingBio, setSavingBio] = useState(false);
+  const [deletionState, setDeletionState] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   const fetchProfile = useCallback(async () => {
     try {
@@ -99,6 +101,18 @@ export default function OwnProfilePage() {
       }
     } finally {
       setSavingBio(false);
+    }
+  }
+
+  async function requestAccountDeletion() {
+    if (!window.confirm(t("deleteAccountConfirm"))) return;
+
+    setDeletionState("sending");
+    try {
+      const { error } = await authClient.deleteUser({ callbackURL: `/${locale}` });
+      setDeletionState(error ? "error" : "sent");
+    } catch {
+      setDeletionState("error");
     }
   }
 
@@ -308,6 +322,22 @@ export default function OwnProfilePage() {
             </motion.div>
           </div>
         </div>
+        {session?.user?.id === profile.userId && (
+          <GlassCard className="mt-6 border border-red-500/20 p-6">
+            <h2 className="text-lg font-semibold text-red-300">{t("deleteAccountTitle")}</h2>
+            <p className="mt-2 text-sm leading-relaxed text-white/60">{t("deleteAccountDescription")}</p>
+            <button
+              type="button"
+              onClick={requestAccountDeletion}
+              disabled={deletionState === "sending" || deletionState === "sent"}
+              className="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-2 text-sm font-medium text-red-200 transition-colors hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {deletionState === "sending" ? t("deleteAccountSending") : t("deleteAccountButton")}
+            </button>
+            {deletionState === "sent" && <p role="status" className="mt-3 text-sm text-emerald-300">{t("deleteAccountRequested")}</p>}
+            {deletionState === "error" && <p role="alert" className="mt-3 text-sm text-red-300">{t("deleteAccountError")}</p>}
+          </GlassCard>
+        )}
       </div>
     </div>
   );

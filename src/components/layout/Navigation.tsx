@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { RiTerminalBoxFill } from "react-icons/ri";
 import {
   FiMenu, FiX, FiUser, FiShield, FiLogOut, FiChevronDown, FiGlobe,
@@ -167,7 +167,7 @@ export default function Navigation() {
                       <FiUser className="w-3.5 h-3.5 text-[#A78BFA]" />
                     </div>
                   )}
-                  <span className="text-sm font-medium text-white/80 group-hover:text-white max-w-[100px] truncate transition-colors duration-200">
+                  <span className="text-sm font-medium text-white/80 group-hover:text-white max-w-25 truncate transition-colors duration-200">
                     {userName.split(" ")[0]}
                   </span>
                   <FiChevronDown

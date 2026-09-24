@@ -21,8 +21,8 @@ export const experiences: Experience[] = [
     startDate: "2018-01",
     endDate: "2018-12",
     description: {
-      de: 'Die US-Serie "Scorpion" - basierend auf dem echten Team um Walter O\'Brien - hat mich als 13-Jähriger fasziniert und war der direkte Auslöser dafür, dass ich anfing zu programmieren. Ich wollte verstehen, wie Computer und Software wirklich funktionieren. Mein erstes "Hello World" in Python war der Anfang von allem.',
-      en: 'The US TV show "Scorpion" - based on the real-life team around Walter O\'Brien - fascinated me at age 13 and was the direct trigger that got me into programming. I wanted to understand how computers and software actually work. My first "Hello World" in Python was where it all began.',
+      de: 'Die US-Serie "Scorpion" - basierend auf dem echten Team um Walter O\'Brien - faszinierte mich mit 13. Mit 14 begann ich zu programmieren. Ich wollte verstehen, wie Computer und Software wirklich funktionieren. Mein erstes "Hello World" in Python war der Anfang von allem.',
+      en: 'The US TV show "Scorpion" - based on the real-life team around Walter O\'Brien - fascinated me at 13. I started programming at 14. I wanted to understand how computers and software actually work. My first "Hello World" in Python was where it all began.',
     },
     technologies: ["Python"],
     type: "personal",
@@ -86,8 +86,8 @@ export const experiences: Experience[] = [
     startDate: "2023-01",
     endDate: "2024-07",
     description: {
-      de: "Ab 18 Jahren fokussierte ich mich zunehmend auf moderne Web-Technologien. React und Next.js wurden zu meinen primären Werkzeugen. Ich legte großen Wert auf sauberes UI/UX-Design und entwickelte parallel meinen Discord-Bot Astra, der mittlerweile in über 90 Servern aktiv ist.",
-      en: "From age 18 onward, I focused increasingly on modern web technologies. React and Next.js became my primary tools. I placed a strong emphasis on clean UI/UX design and simultaneously developed my Discord bot Astra, which is now active in over 90 servers.",
+      de: "Ab 18 Jahren fokussierte ich mich zunehmend auf moderne Web-Technologien. React und Next.js wurden zu meinen primären Werkzeugen. Ich legte großen Wert auf sauberes UI/UX-Design und entwickelte parallel meinen Discord-Bot Astra.",
+      en: "From age 18 onward, I focused increasingly on modern web technologies. React and Next.js became my primary tools. I placed a strong emphasis on clean UI/UX design while developing my Discord bot Astra.",
     },
     technologies: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Node.js", "PostgreSQL"],
     type: "personal",

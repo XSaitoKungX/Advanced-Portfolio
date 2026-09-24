@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === "production",
   },
   experimental: {
-    optimizePackageImports: ["framer-motion"],
+    optimizePackageImports: ["motion"],
   },
 };
 

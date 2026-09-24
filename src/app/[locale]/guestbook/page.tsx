@@ -2,7 +2,7 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { useSession } from "@/lib/auth-client";
 import { FiSend, FiMessageSquare, FiCheckCircle, FiUser, FiHash, FiAlertCircle, FiTrash2, FiRefreshCw } from "react-icons/fi";
 import { SiDiscord } from "react-icons/si";

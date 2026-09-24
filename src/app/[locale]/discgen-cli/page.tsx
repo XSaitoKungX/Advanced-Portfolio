@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useState, useEffect, useRef, useReducer } from "react";
 import { useTranslations } from "next-intl";
 import {
@@ -309,7 +309,7 @@ function TerminalDemo() {
   return (
     <div className="rounded-2xl overflow-hidden border border-white/10 bg-[#0d0f14] shadow-2xl shadow-black/40">
       {/* Title bar */}
-      <div className="flex items-center gap-2 px-4 py-3 bg-white/[0.03] border-b border-white/[0.06]">
+      <div className="flex items-center gap-2 px-4 py-3 bg-white/3 border-b border-white/6">
         <div className="flex gap-1.5">
           <div className="w-3 h-3 rounded-full bg-red-500/70" />
           <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
@@ -334,7 +334,7 @@ function TerminalDemo() {
       </div>
 
       {/* Terminal body */}
-      <div className="p-5 font-mono text-sm min-h-[280px]">
+      <div className="p-5 font-mono text-sm min-h-70">
         <div className="flex items-center gap-2 mb-4 text-white/20 text-xs">
           <FiTerminal className="w-3 h-3" />
           <span>user@dev:~/projects$</span>
@@ -447,7 +447,7 @@ export default function DiscgenCliPage() {
 
             {/* Install command */}
             <div className="flex items-center justify-center gap-3 mb-8 flex-wrap">
-              <div className="inline-flex items-center gap-3 px-5 py-3 rounded-xl bg-white/[0.04] border border-white/10 font-mono text-sm text-white/80">
+              <div className="inline-flex items-center gap-3 px-5 py-3 rounded-xl bg-white/4 border border-white/10 font-mono text-sm text-white/80">
                 <span className="text-[#a78bfa]">$</span>
                 <span>{installCmd}</span>
                 <CopyButton text={installCmd} />
@@ -515,7 +515,7 @@ export default function DiscgenCliPage() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.07 }}
               >
-                <GlassCard className="p-6 h-full hover:bg-white/[0.04] transition-colors">
+                <GlassCard className="p-6 h-full hover:bg-white/4 transition-colors">
                   <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
                     style={{ background: `${f.color}18`, color: f.color }}>
                     {f.icon}
@@ -530,7 +530,7 @@ export default function DiscgenCliPage() {
       </section>
 
       {/* ── Presets ──────────────────────────────────────────────────────── */}
-      <section className="py-20 border-t border-white/5 bg-white/[0.01]">
+      <section className="py-20 border-t border-white/5 bg-white/1">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader title={t("presetsTitle")} subtitle={t("presetsSubtitle")} />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
@@ -589,7 +589,7 @@ export default function DiscgenCliPage() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.06 }}
                 >
-                  <GlassCard className="flex items-center justify-between px-4 py-3 hover:bg-white/[0.04] transition-colors">
+                  <GlassCard className="flex items-center justify-between px-4 py-3 hover:bg-white/4 transition-colors">
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 rounded-full" style={{ background: g.color }} />
                       <code className="text-sm font-mono text-white/70">{cmd}</code>
@@ -621,7 +621,7 @@ export default function DiscgenCliPage() {
       </section>
 
       {/* ── How it Works ─────────────────────────────────────────────────── */}
-      <section className="py-20 border-t border-white/5 bg-white/[0.01]">
+      <section className="py-20 border-t border-white/5 bg-white/1">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader title={t("howItWorksTitle")} subtitle={t("howItWorksSubtitle")} />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
@@ -657,7 +657,7 @@ export default function DiscgenCliPage() {
             {TECH_STACK.map((tech) => (
               <div
                 key={tech.label}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.07] transition-colors"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 bg-white/4 hover:bg-white/[0.07] transition-colors"
                 style={{ color: tech.color }}
               >
                 {tech.icon}
@@ -687,7 +687,7 @@ export default function DiscgenCliPage() {
       </section>
 
       {/* ── Changelog ────────────────────────────────────────────────────── */}
-      <section className="py-16 border-t border-white/5 bg-white/[0.01]">
+      <section className="py-16 border-t border-white/5 bg-white/1">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <SectionHeader title={t("changelogTitle")} subtitle={t("changelogSubtitle")} />
@@ -717,7 +717,7 @@ export default function DiscgenCliPage() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.08 }}
-                    className="group block p-4 rounded-xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.06] hover:border-white/10 transition-all duration-200"
+                    className="group block p-4 rounded-xl bg-white/3 hover:bg-white/7 border border-white/6 hover:border-white/10 transition-all duration-200"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
@@ -779,7 +779,7 @@ export default function DiscgenCliPage() {
               <p className="text-white/50 mb-8 max-w-lg mx-auto leading-relaxed">{t("ctaDescription")}</p>
 
               <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="inline-flex items-center gap-3 px-5 py-3 rounded-xl bg-white/[0.06] border border-white/10 font-mono text-sm text-white/70">
+                <div className="inline-flex items-center gap-3 px-5 py-3 rounded-xl bg-white/6 border border-white/10 font-mono text-sm text-white/70">
                   <span className="text-[#a78bfa]">$</span>
                   <span>{installCmd}</span>
                   <CopyButton text={installCmd} />

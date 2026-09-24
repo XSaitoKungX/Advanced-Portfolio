@@ -6,7 +6,7 @@ import { useLocale } from "next-intl";
 import { FiArrowLeft, FiCalendar, FiMessageSquare, FiUser, FiHash, FiExternalLink } from "react-icons/fi";
 import { SiDiscord } from "react-icons/si";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import GlassCard from "@/components/ui/GlassCard";
 import Image from "next/image";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, MouseEvent } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 
 interface TiltCardProps {
   children: React.ReactNode;

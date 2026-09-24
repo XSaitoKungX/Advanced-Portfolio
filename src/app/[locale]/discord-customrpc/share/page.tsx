@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { FiDownload, FiCheckCircle, FiAlertCircle, FiCopy, FiExternalLink } from "react-icons/fi";
 import { SiDiscord } from "react-icons/si";
 

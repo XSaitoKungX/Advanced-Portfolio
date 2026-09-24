@@ -1,9 +1,8 @@
 import { betterAuth } from "better-auth";
 import type { Pool } from "pg";
-import { OWNER_DISCORD_ID } from "./constants";
+import { getSmtpTransporter, getSmtpUser } from "@/lib/mailer";
+import { cleanupBeforeUserDeletion } from "@/lib/delete-user-data";
 import { syncDiscordProfileForUser } from "./sync-discord";
-
-export { OWNER_DISCORD_ID };
 
 // Server-only database pool - lazy loaded to prevent client bundling
 let pool: Pool | undefined;
@@ -13,7 +12,7 @@ function getPool(): Pool | undefined {
     const { Pool: PgPool } = require("pg");
     pool = new PgPool({
       connectionString: process.env.DATABASE_URL,
-      ssl: { rejectUnauthorized: false },
+      ssl: { rejectUnauthorized: true },
     });
   }
   return pool;
@@ -32,6 +31,22 @@ export const auth = betterAuth({
   session: {
     expiresIn: 60 * 60 * 24 * 30,
     updateAge: 60 * 60 * 24,
+  },
+  user: {
+    deleteUser: {
+      enabled: true,
+      sendDeleteAccountVerification: async ({ user, url }) => {
+        await getSmtpTransporter().sendMail({
+          from: `"Portfolio" <${getSmtpUser()}>`,
+          to: user.email,
+          subject: "Confirm your xsaitox.dev account deletion",
+          text: `To confirm deletion of your account and associated profile data, open this link:\n\n${url}\n\nApproved guestbook messages will remain visible anonymously. Pending entries will be removed.`,
+        });
+      },
+      beforeDelete: async (user) => {
+        await cleanupBeforeUserDeletion(user.id, user.email);
+      },
+    },
   },
   databaseHooks: {
     session: {

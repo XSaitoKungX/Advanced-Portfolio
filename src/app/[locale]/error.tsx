@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useLocale } from "next-intl";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { FiAlertTriangle, FiArrowLeft, FiRefreshCw } from "react-icons/fi";
 
 export default function Error({

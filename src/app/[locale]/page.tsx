@@ -2,7 +2,7 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -14,32 +14,37 @@ import RoleTyper from "@/components/sections/RoleTyper";
 const TerminalHero = dynamic(() => import("@/components/sections/TerminalHero"), {
   ssr: false,
   loading: () => (
-    <div className="w-full max-w-3xl h-[100px] bg-[#0D1117]/50 rounded-2xl border border-white/10 animate-pulse" />
+    <div className="w-full max-w-3xl h-25 bg-[#0D1117]/50 rounded-2xl border border-white/10 animate-pulse" />
   ),
 });
 
 interface Stats {
-  projects: number;
-  tech: number;
-  commits: number;
+  projects: number | null;
+  tech: number | null;
+  commits: number | null;
+  astraServers: number | null;
 }
 
 function useStats() {
-  const [stats, setStats] = useState<Stats>({ projects: 0, tech: 0, commits: 0 });
+  const [stats, setStats] = useState<Stats>({ projects: null, tech: null, commits: null, astraServers: null });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/stats")
-      .then((res) => res.json())
-      .then((data) => {
-        setStats(data);
-        setLoading(false);
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch stats");
+        return res.json() as Promise<Partial<Stats>>;
       })
-      .catch(() => {
-        // Fallback values on error
-        setStats({ projects: 6, tech: 26, commits: 1000 });
-        setLoading(false);
-      });
+      .then((data) => {
+        setStats({
+          projects: typeof data.projects === "number" ? data.projects : null,
+          tech: typeof data.tech === "number" ? data.tech : null,
+          commits: typeof data.commits === "number" ? data.commits : null,
+          astraServers: typeof data.astraServers === "number" ? data.astraServers : null,
+        });
+      })
+      .catch(() => setStats({ projects: null, tech: null, commits: null, astraServers: null }))
+      .finally(() => setLoading(false));
   }, []);
 
   return { stats, loading };
@@ -90,7 +95,7 @@ export default function HomePage() {
               <div className="mb-4">
                 <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold tracking-widest text-[#A78BFA] bg-[#7C3AED]/10 border border-[#7C3AED]/20 rounded-full uppercase">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Available for projects
+                  {t("availability")}
                 </span>
               </div>
 
@@ -172,7 +177,7 @@ export default function HomePage() {
               className="order-1 lg:order-2 flex flex-col items-center gap-6"
             >
               {/* Mascot */}
-              <div className="relative w-full max-w-[260px] aspect-square">
+              <div className="relative w-full max-w-65 aspect-square">
                 <Image
                   src="/saito-mascot.png"
                   alt="Saito Mascot"
@@ -216,9 +221,10 @@ export default function HomePage() {
           >
             {[
               { value: stats.projects, label: locale === "de" ? "Projekte" : "Projects", suffix: "" },
-              { value: 2, label: locale === "de" ? "Jahre Erfahrung" : "Years Experience", suffix: "+" },
+              { value: 3, label: locale === "de" ? "Jahre Erfahrung" : "Years Experience", suffix: "+" },
               { value: stats.tech, label: locale === "de" ? "Technologien" : "Technologies", suffix: "" },
               { value: stats.commits, label: "Commits", suffix: "+" },
+              { value: stats.astraServers, label: locale === "de" ? "Astra-Server" : "Astra Servers", suffix: "" },
             ].map((stat, i) => (
               <motion.div
                 key={stat.label}
@@ -229,7 +235,7 @@ export default function HomePage() {
                 className="text-center"
               >
                 <div className={`text-3xl sm:text-4xl font-bold text-gradient-purple mb-1 ${loading ? "animate-pulse" : ""}`}>
-                  {loading ? "—" : <AnimatedNumber value={stat.value} suffix={stat.suffix} />}
+                  {loading || stat.value === null ? "—" : <AnimatedNumber value={stat.value} suffix={stat.suffix} />}
                 </div>
                 <div className="text-sm text-white/40">{stat.label}</div>
               </motion.div>

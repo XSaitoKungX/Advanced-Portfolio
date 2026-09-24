@@ -18,6 +18,7 @@ export interface Translations {
     description: string;
     cta_projects: string;
     cta_contact: string;
+    availability: string;
     terminal: {
       boot: string;
       loading_modules: string;
@@ -43,7 +44,6 @@ export interface Translations {
       cmd_contact_title: string;
       cmd_experience_title: string;
       cmd_about_title: string;
-      cmd_about_age: string;
       cmd_about_status: string;
       cmd_whoami_title: string;
       cmd_whoami_role: string;
@@ -67,6 +67,7 @@ export interface Translations {
     subtitle: string;
     description1: string;
     description2: string;
+    availability: string;
     stats: {
       age: string;
       experience: string;
@@ -329,6 +330,13 @@ export interface Translations {
     notFound: string;
     errorLoading: string;
     today: string;
+    deleteAccountTitle: string;
+    deleteAccountDescription: string;
+    deleteAccountConfirm: string;
+    deleteAccountButton: string;
+    deleteAccountSending: string;
+    deleteAccountRequested: string;
+    deleteAccountError: string;
   };
   footer: {
     projects: string;
@@ -382,65 +390,6 @@ export interface Translations {
     contactTitle: string;
     contactContent: string;
     contactLink: string;
-  };
-  smartCalendar: {
-    badge: string;
-    title: string;
-    titleHighlight: string;
-    description: string;
-    downloadLatest: string;
-    viewOnGithub: string;
-    platformNote: string;
-    featuresTitle: string;
-    featuresSubtitle: string;
-    featureCalendar: string;
-    featureCalendarDesc: string;
-    featureKana: string;
-    featureKanaDesc: string;
-    featureReminders: string;
-    featureRemindersDesc: string;
-    featureClock: string;
-    featureClockDesc: string;
-    featureAiKeys: string;
-    featureAiKeysDesc: string;
-    featureOffline: string;
-    featureOfflineDesc: string;
-    stackTitle: string;
-    kanaTitle: string;
-    kanaDescription: string;
-    kanaProvider1: string;
-    kanaProvider2: string;
-    kanaProvider3: string;
-    kanaProvider4: string;
-    stepsTitle: string;
-    stepsSubtitle: string;
-    step1Title: string;
-    step1Desc: string;
-    step2Title: string;
-    step2Desc: string;
-    step3Title: string;
-    step3Desc: string;
-    faqTitle: string;
-    faq1Question: string;
-    faq1Answer: string;
-    faq2Question: string;
-    faq2Answer: string;
-    faq3Question: string;
-    faq3Answer: string;
-    faq4Question: string;
-    faq4Answer: string;
-    faq5Question: string;
-    faq5Answer: string;
-    changelogTitle: string;
-    changelogSubtitle: string;
-    viewAllReleases: string;
-    noReleasesFound: string;
-    viewReleasesOnGithub: string;
-    ctaTitle: string;
-    ctaDescription: string;
-    madeWith: string;
-    by: string;
-    license: string;
   };
   common: {
     loading: string;

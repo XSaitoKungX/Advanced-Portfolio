@@ -26,13 +26,13 @@ export const projects: Project[] = [
     slug: "astra-bot",
     title: "Astra Bot",
     description: {
-      de: "Multifunktionaler Discord Bot — aktuell auf 100+ Servern. Weitere Invites pending (Discord Verifizierung ausstehend).",
-      en: "Multi-functional Discord bot — currently on 100+ servers. More invites pending (Discord verification in progress).",
+      de: "Multifunktionaler Discord-Bot mit Moderation, Musik, Levelsystem, Economy, Tickets und Dashboard.",
+      en: "Multi-functional Discord bot with moderation, music, leveling, economy, tickets and a web dashboard.",
     },
     longDescription: {
       de: `## Astra Bot
 
-Astra ist mein bisher größtes und ambitioniertestes Projekt: ein vollständig selbst entwickelter Discord-Bot, der aktuell in über **100 Servern** aktiv ist.
+Astra ist mein bisher größtes und ambitioniertestes Projekt: ein vollständig selbst entwickelter Discord-Bot mit umfangreichen Community-Features.
 
 ### Features
 
@@ -55,7 +55,7 @@ Astra ist mein bisher größtes und ambitioniertestes Projekt: ein vollständig 
 Die zugehörige Website [astra-bot.app](https://astra-bot.app) wurde mit **Next.js** und **Tailwind CSS** umgesetzt.`,
       en: `## Astra Bot
 
-Astra is my largest and most ambitious project: a fully self-built Discord bot currently active in over **100 servers**.
+Astra is my largest and most ambitious project: a fully self-built Discord bot with a broad set of community features.
 
 ### Features
 
@@ -178,52 +178,67 @@ Open source under MIT license on [GitHub](https://github.com/XSaitoKungX/Discord
     year: 2025,
   },
   {
-    id: "astra-v3",
-    slug: "astra-v3",
-    title: "Astra Bot v3",
+    id: "astra-rebran",
+    slug: "astra-rebran",
+    title: "Astra Rebran",
     description: {
-      de: "Komplette Neuentwicklung von Astra mit modularer Architektur, eigenem Dashboard und verbesserter Skalierbarkeit.",
-      en: "Full rewrite of Astra with a modular architecture, dedicated dashboard and improved scalability.",
+      de: "Weiterentwicklung von Astra als All-in-One-Discord-Plattform mit Bot-Runtime, Echtzeit-Dashboard, Moderation und Levelsystem.",
+      en: "Astra's next iteration as an all-in-one Discord platform with a bot runtime, realtime dashboard, moderation and leveling.",
     },
     longDescription: {
-      de: `## Astra Bot v3
+      de: `## Astra Rebran
 
-Version 3 ist eine vollständige Neuentwicklung von Astra – mit einem cleanen Architektur-Ansatz von Grund auf.
+Astra Rebran führt Discord-Gateway, Fastify-API, React-Dashboard und PostgreSQL-Persistenz in einer gemeinsamen Plattform zusammen.
 
-### Geplante Verbesserungen
+### Bereits umgesetzt
 
-- Komplett modulares Plugin-System
-- Eigenes Web-Dashboard für Server-Admins
-- Verbesserte Performance und Fehlerbehandlung
-- REST-API für externe Integrationen
-- Umfangreiches Logging und Monitoring
+- Discord-Gateway, Moderation und duale Nachrichten-/Voice-Leveling-Systeme
+- OAuth-Sitzungen, Fastify-API und Echtzeit-Updates über SSE
+- Konfigurierbares Dashboard und PostgreSQL mit Drizzle ORM
+- Gemeinsame englische und deutsche Sprachkataloge`,
+      en: `## Astra Rebran
 
-### Ziel
+Astra Rebran brings the Discord Gateway runtime, Fastify API, React dashboard and PostgreSQL persistence together in one platform.
 
-Astra v3 soll die solide Basis von v2 nehmen und daraus ein robustes, wartbares System machen – mit klarer Trennung von Concerns und professioneller Codequalität.`,
-      en: `## Astra Bot v3
+### Implemented
 
-Version 3 is a complete rewrite of Astra – built from the ground up with a clean architectural approach.
-
-### Planned Improvements
-
-- Fully modular plugin system
-- Dedicated web dashboard for server admins
-- Improved performance and error handling
-- REST API for external integrations
-- Comprehensive logging and monitoring
-
-### Goal
-
-Astra v3 takes the solid foundation of v2 and turns it into a robust, maintainable system – with clear separation of concerns and professional code quality.`,
+- Discord Gateway, moderation and dual message/voice leveling tracks
+- OAuth sessions, Fastify API and realtime SSE updates
+- Configurable dashboard and PostgreSQL persistence with Drizzle ORM
+- Shared English and German locale catalogs`,
     },
-    tags: ["Node.js", "TypeScript", "Discord.js", "Next.js", "PostgreSQL", "Docker"],
+    tags: ["Discord", "Bot", "TypeScript", "Fastify", "PostgreSQL"],
     labels: ["Discord", "Bot", "Dashboard"],
-    stack: ["Node.js", "TypeScript", "Discord.js", "Next.js", "PostgreSQL"],
+    stack: ["Node.js 24", "TypeScript 7", "Discord.js", "Fastify", "React", "PostgreSQL", "Drizzle ORM"],
+    category: "discord",
+    status: "in_progress",
+    featured: true,
+    year: 2026,
+  },
+  {
+    id: "advanced-modmail",
+    slug: "advanced-modmail",
+    title: "Advanced Modmail",
+    description: {
+      de: "Open-Source-Modmail für Discord mit konfigurierbaren Support-Workflows. Das Projekt Relaya befindet sich in der Pre-Alpha-Architekturphase.",
+      en: "Open-source Discord modmail with configurable support workflows. The Relaya project is in its pre-alpha architecture phase.",
+    },
+    longDescription: {
+      de: `## Advanced Modmail — Relaya
+
+Ein Architekturprojekt für sichere, konfigurierbare Modmail-Workflows mit Mehrserver-Isolation, nachvollziehbarer Moderation, Transkripten und Lokalisierung. Die Umsetzung steht noch am Anfang; diese Punkte sind Projektziele, keine bereits ausgelieferten Features.`,
+      en: `## Advanced Modmail — Relaya
+
+An architecture-stage project for secure, configurable Discord modmail workflows, with goals including multi-guild isolation, auditable moderation, transcripts and localization. Implementation is at an early stage; these are project goals, not shipped features.`,
+    },
+    tags: ["Discord", "Modmail", "Open Source", "TypeScript"],
+    labels: ["Discord", "Modmail", "Open Source"],
+    stack: ["Node.js 24", "TypeScript 7", "PostgreSQL", "Drizzle ORM"],
     category: "discord",
     status: "planning",
-    featured: true,
-    year: 2025,
+    featured: false,
+    year: 2026,
+    github: "https://github.com/XSaitoKungX/advanced-modmail",
   },
 
   // 🛠️ Developer Tools
@@ -414,66 +429,7 @@ Open source under MIT license on [GitHub](https://github.com/XSaitoKungX/System-
     year: 2025,
   },
 
-  // 🗓️ Smart Calendar
-  {
-    id: "smart-calendar",
-    slug: "smart-calendar",
-    title: "Smart Calendar — Kana AI",
-    description: {
-      de: "KI-gestützter Kalender für Linux — mit Kana AI-Assistentin, Event-Management, Alarmen, Timern und Multi-Provider-KI (OpenRouter, Gemini, Claude, Ollama).",
-      en: "AI-powered calendar for Linux — with Kana AI assistant, event management, alarms, timers and multi-provider AI (OpenRouter, Gemini, Claude, Ollama).",
-    },
-    longDescription: {
-      de: `## Smart Calendar — Kana AI
 
-Ein moderner Desktop-Kalender für Linux, gebaut mit Flutter. Im Mittelpunkt steht Kana — eine eingebaute KI-Assistentin, die natürliche Sprache versteht und dir hilft, deinen Kalender zu verwalten.
-
-### Features
-
-- **Kalender**: Monats-, Wochen- und Tagesansicht mit Kategorien, Konflikt-Erkennung und Erinnerungen
-- **Kana AI**: Chat-Assistentin mit Unterstützung für OpenRouter (kostenlos), Google Gemini, Anthropic Claude und Ollama
-- **Uhr-Suite**: Weltzeituhr, Stoppuhr, Countdown-Timer und Alarmverwaltung mit Wochentag-Wiederholung
-- **Offline First**: Alle Daten lokal in SQLite gespeichert via Drift ORM
-- **Sicherheit**: API Keys im OS-Schlüsselbund via flutter_secure_storage
-
-### Tech Stack
-
-- **Flutter** + **Dart** für plattformübergreifende Desktop-App
-- **Drift / SQLite** für lokale Datenpersistenz
-- **Riverpod** für State Management
-- **Dio** für HTTP-Kommunikation mit AI-APIs
-- **flutter_local_notifications** für Erinnerungen`,
-      en: `## Smart Calendar — Kana AI
-
-A modern desktop calendar for Linux built with Flutter. At its heart is Kana — a built-in AI assistant who understands natural language and helps you manage your schedule.
-
-### Features
-
-- **Calendar**: Monthly, weekly and daily views with categories, conflict detection and reminders
-- **Kana AI**: Chat assistant supporting OpenRouter (free), Google Gemini, Anthropic Claude and Ollama
-- **Clock Suite**: World clock, stopwatch, countdown timers and alarm manager with repeat days
-- **Offline First**: All data stored locally in SQLite via Drift ORM
-- **Security**: API keys stored in OS keychain via flutter_secure_storage
-
-### Tech Stack
-
-- **Flutter** + **Dart** for cross-platform desktop app
-- **Drift / SQLite** for local data persistence
-- **Riverpod** for state management
-- **Dio** for HTTP communication with AI APIs
-- **flutter_local_notifications** for reminders`,
-    },
-    tags: ["Flutter", "Dart", "AI", "Linux", "Desktop"],
-    labels: ["Flutter", "AI", "Desktop", "Linux"],
-    stack: ["Flutter", "Dart", "Drift", "SQLite", "Riverpod"],
-    category: "system",
-    status: "in_progress",
-    image: undefined,
-    demo: "https://xsaitox.dev/en/smart-calendar",
-    github: "https://github.com/XSaitoKungX/Smart-Calendar",
-    featured: true,
-    year: 2025,
-  },
 
   // ⚡ Utility / Fun
   {

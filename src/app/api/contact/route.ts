@@ -1,49 +1,8 @@
 import { NextRequest } from "next/server";
-import nodemailer from "nodemailer";
+import { getSmtpTransporter, getSmtpUser } from "@/lib/mailer";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { parseLimitedJson, RequestBodyTooLargeError } from "@/lib/limited-json";
 import { contactSchema } from "@/lib/validations/contact";
-
-// Lazy initialization - created on first use
-let transporter: nodemailer.Transporter | null = null;
-
-function getTransporter(): nodemailer.Transporter {
-  if (!transporter) {
-    const host = process.env.SMTP_HOST ?? "mail.spacemail.com";
-    const port = parseInt(process.env.SMTP_PORT ?? "465", 10);
-    const user = process.env.SMTP_USER;
-    const pass = process.env.SMTP_PASS;
-
-    if (!user || !pass) {
-      throw new Error("SMTP credentials not configured");
-    }
-
-    transporter = nodemailer.createTransport({
-      host,
-      port,
-      secure: port === 465,
-      auth: { user, pass },
-    });
-  }
-  if (!transporter) {
-    throw new Error("SMTP not initialized");
-  }
-  return transporter;
-}
-
-const rateLimitMap = new Map<string, { count: number; reset: number }>();
-const RATE_LIMIT = 5;
-const RATE_WINDOW = 60_000;
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-  if (!entry || now > entry.reset) {
-    rateLimitMap.set(ip, { count: 1, reset: now + RATE_WINDOW });
-    return true;
-  }
-  if (entry.count >= RATE_LIMIT) return false;
-  entry.count++;
-  return true;
-}
 
 function escapeHtml(value: string): string {
   return value.replace(/[&<>"']/g, (char) => {
@@ -65,21 +24,22 @@ function escapeHtml(value: string): string {
 }
 
 export async function POST(req: NextRequest) {
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    req.headers.get("x-real-ip") ??
-    "unknown";
-
-  if (!checkRateLimit(ip)) {
+  if (!checkRateLimit(`contact:${getClientIp(req.headers)}`, 5, 60_000)) {
     return Response.json(
       { error: "Too many requests. Please wait before sending another message." },
       { status: 429, headers: { "Retry-After": "60" } }
     );
   }
 
+  let body: unknown;
   try {
-    const body = await req.json();
+    body = await parseLimitedJson(req, 16 * 1024);
+  } catch (error) {
+    const status = error instanceof RequestBodyTooLargeError ? 413 : 400;
+    return Response.json({ error: "Invalid request body" }, { status });
+  }
 
+  try {
     const result = contactSchema.safeParse(body);
     if (!result.success) {
       const fieldErrors: Record<string, string[]> = {};
@@ -106,8 +66,8 @@ export async function POST(req: NextRequest) {
     const safeSubject = escapeHtml(subject);
     const safeMessage = escapeHtml(message);
 
-    await getTransporter().sendMail({
-      from: `"Portfolio Contact" <${process.env.SMTP_USER}>`,
+    await getSmtpTransporter().sendMail({
+      from: `"Portfolio Contact" <${getSmtpUser()}>`,
       to: contactEmail,
       replyTo: email,
       subject: `[Portfolio] ${subject}`,

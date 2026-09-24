@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   release:
+    if: ${{ !startsWith(github.event.head_commit.message, 'chore(release):') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,7 +24,7 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: latest
+          bun-version: 1.4.2
 
       - name: Conventional Changelog Action
         id: changelog

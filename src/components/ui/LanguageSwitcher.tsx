@@ -2,7 +2,7 @@
 
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 export default function LanguageSwitcher() {
   const locale = useLocale();

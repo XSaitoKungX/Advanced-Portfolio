@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import { SiDiscord } from "react-icons/si";
 import { FiUser, FiBookOpen, FiArrowLeft, FiCheckCircle } from "react-icons/fi";

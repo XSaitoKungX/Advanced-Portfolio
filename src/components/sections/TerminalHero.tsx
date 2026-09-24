@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback, useMemo, type KeyboardEvent } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
@@ -229,7 +229,7 @@ export default function TerminalHero() {
         </div>
 
         {/* Output area */}
-        <div className="relative h-[420px] overflow-y-auto scrollbar-none p-4 font-mono text-sm">
+        <div className="relative h-105 overflow-y-auto scrollbar-none p-4 font-mono text-sm">
           <div className="absolute inset-0 pointer-events-none" style={{
             background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.008) 2px, rgba(255,255,255,0.008) 4px)",
           }} />
@@ -300,7 +300,7 @@ export default function TerminalHero() {
                 aria-label="terminal input"
               />
               {input.length === 0 && (
-                <span className="inline-block w-[7px] h-[15px] bg-white/60 animate-pulse" />
+                <span className="inline-block w-1.75 h-3.75 bg-white/60 animate-pulse" />
               )}
             </div>
           )}

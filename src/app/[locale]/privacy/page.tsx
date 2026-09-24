@@ -1,12 +1,13 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { FiArrowLeft } from "react-icons/fi";
 import GlassCard from "@/components/ui/GlassCard";
 
 export default function PrivacyPage() {
   const t = useTranslations("legal");
+  const locale = useLocale();
 
   return (
     <main className="min-h-screen py-20 px-4">
@@ -22,7 +23,7 @@ export default function PrivacyPage() {
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
           {t("privacyTitle")}
         </h1>
-        <p className="text-white/60 mb-8">{t("lastUpdated")}: April 9, 2026</p>
+        <p className="text-white/60 mb-8">{t("lastUpdated")}: {locale === "de" ? "23. September 2026" : "September 23, 2026"}</p>
 
         <GlassCard className="p-8 space-y-6">
           <section>

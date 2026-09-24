@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import {
   FiCopy, FiCheck, FiRefreshCw, FiShield, FiZap, FiEye, FiEyeOff,
   FiDownload, FiLock, FiHash, FiList, FiGrid, FiBookOpen, FiEdit3,
@@ -103,9 +103,9 @@ export default function PasswordGeneratorPage() {
     <div className="min-h-screen pt-28 pb-24">
       {/* BG glows */}
       <div className="fixed inset-0 pointer-events-none -z-10">
-        <div className="absolute top-1/4 left-1/3 w-[600px] h-[600px] rounded-full blur-[130px] opacity-[0.055]"
+        <div className="absolute top-1/4 left-1/3 w-150 h-150 rounded-full blur-[130px] opacity-[0.055]"
           style={{ background: "radial-gradient(circle, #7C3AED, transparent)" }} />
-        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full blur-[110px] opacity-[0.035]"
+        <div className="absolute bottom-1/4 right-1/4 w-100 h-100 rounded-full blur-[110px] opacity-[0.035]"
           style={{ background: "radial-gradient(circle, #4F46E5, transparent)" }} />
       </div>
 
@@ -209,7 +209,7 @@ export default function PasswordGeneratorPage() {
 
                 {/* Output display */}
                 <div className="relative mb-5">
-                  <div className={`w-full min-h-[80px] flex items-center px-5 py-4 rounded-xl border font-mono leading-relaxed transition-colors duration-200 ${
+                  <div className={`w-full min-h-20 flex items-center px-5 py-4 rounded-xl border font-mono leading-relaxed transition-colors duration-200 ${
                     isEmpty
                       ? "bg-white/2 border-dashed border-white/10 text-white/20 text-sm"
                       : "bg-black/30 border-white/8 text-white text-base tracking-wider select-all"

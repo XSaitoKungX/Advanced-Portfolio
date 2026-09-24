@@ -105,8 +105,8 @@ export default function AnimatedBackground() {
         }}
       />
 
-      <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] bg-[#7C3AED]/4 rounded-full blur-[80px] animate-pulse" style={{ animationDuration: "10s" }} />
-      <div className="absolute bottom-1/3 right-1/4 w-[300px] h-[300px] bg-[#4F46E5]/5 rounded-full blur-[60px] animate-pulse" style={{ animationDuration: "14s", animationDelay: "5s" }} />
+      <div className="absolute top-1/4 left-1/3 w-125 h-125 bg-[#7C3AED]/4 rounded-full blur-[80px] animate-pulse" style={{ animationDuration: "10s" }} />
+      <div className="absolute bottom-1/3 right-1/4 w-75 h-75 bg-[#4F46E5]/5 rounded-full blur-[60px] animate-pulse" style={{ animationDuration: "14s", animationDelay: "5s" }} />
     </div>
   );
 }

@@ -12,6 +12,8 @@ A modern, production-ready portfolio built with **Next.js 16**, **TypeScript**, 
 - 🎨 **Tailwind CSS v4** with custom design system
 - 🖥️ **Interactive Terminal** in Hero Section
 - 📖 **Guestbook** with Discord verification
+- Self-service Discord account deletion with email confirmation
+- Live Astra server count from its public stats API
 - 🐳 **Docker-ready** with custom Bun server
 
 ## Tech Stack
@@ -19,14 +21,14 @@ A modern, production-ready portfolio built with **Next.js 16**, **TypeScript**, 
 | Layer     | Technology                  |
 |-----------|-----------------------------|
 | Framework | Next.js 16 (App Router)     |
-| Language  | TypeScript 5                |
+| Language  | TypeScript 6                |
 | Runtime   | Bun                         |
 | Styling   | Tailwind CSS v4             |
 | Auth      | Better Auth (Discord OAuth) |
 | Database  | Neon PostgreSQL             |
 | ORM       | Prisma 7                    |
 | Email     | Nodemailer (SMTP)           |
-| Animations| Framer Motion               |
+| Animations| Motion                      |
 | Icons     | React Icons                 |
 | Validation| Zod                         |
 
@@ -34,7 +36,7 @@ A modern, production-ready portfolio built with **Next.js 16**, **TypeScript**, 
 
 ### Prerequisites
 
-- [Bun](https://bun.sh) (v1.2+)
+- [Bun](https://bun.sh) (v1.4.2)
 - Neon PostgreSQL database
 - Discord OAuth app
 - SMTP credentials (Spaceship, Gmail, etc.)
@@ -77,6 +79,7 @@ BETTER_AUTH_URL=http://localhost:3000
 NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
 DISCORD_CLIENT_ID=your_discord_client_id
 DISCORD_CLIENT_SECRET=your_discord_client_secret
+DISCORD_PUBLIC_KEY=your_discord_application_public_key
 
 # Database (Neon)
 DATABASE_URL=postgresql://user:pass@endpoint-pooler.region.neon.tech/db?sslmode=require
@@ -93,12 +96,18 @@ CONTACT_EMAIL=your@email.com
 GITHUB_TOKEN=ghp_xxxx
 ```
 
+To remove stored Discord profile data when a user revokes app authorization, set `DISCORD_PUBLIC_KEY` from the Discord Developer Portal and configure the app's Webhooks endpoint as `${BETTER_AUTH_URL}/api/webhooks/discord`, subscribed to `APPLICATION_DEAUTHORIZED`. Profile deletion requests also use SMTP to send a confirmation link. Approved guestbook messages remain anonymously visible after account deletion.
+
+For CI, optionally add the repository secret `CI_BETTER_AUTH_SECRET`. If it is unset, CI uses a test-only fallback; never reuse the production `BETTER_AUTH_SECRET`.
+
 ## Available Scripts
 
 | Command                | Description                    |
 |------------------------|--------------------------------|
 | `bun dev`              | Development server (Turbopack) |
 | `bun run build`        | Production build               |
+| `bun run lint`         | ESLint checks                  |
+| `bun run type-check`   | TypeScript checks              |
 | `bun start:prod`       | Production server with Bun     |
 | `bunx prisma db push`  | Push schema to database        |
 | `bunx prisma generate` | Generate Prisma client         |
@@ -167,7 +176,7 @@ bun run start:prod
 ### Docker
 
 ```dockerfile
-FROM oven/bun:1
+FROM oven/bun:1.4.2
 WORKDIR /app
 COPY . .
 RUN bun install && bun run build

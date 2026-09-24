@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import {
   FiExternalLink, FiGithub, FiX, FiLayers,
   FiCheckCircle, FiClock, FiTool, FiCheck, FiStar,
@@ -55,12 +55,12 @@ function ProjectCard({
 
   return (
     <TiltCard intensity={5} className="group h-full">
-      <div className={`relative h-full min-h-[320px] rounded-2xl overflow-hidden ${project.featured ? "ring-1 ring-[#7C3AED]/50 shadow-lg shadow-[#7C3AED]/20" : ""}`}>
+      <div className={`relative h-full min-h-80 rounded-2xl overflow-hidden ${project.featured ? "ring-1 ring-[#7C3AED]/50 shadow-lg shadow-[#7C3AED]/20" : ""}`}>
         {/* Glow effect for featured */}
         {project.featured && (
           <div className="absolute -inset-px bg-linear-to-r from-[#7C3AED]/20 via-[#4F46E5]/10 to-[#7C3AED]/20 rounded-2xl blur-sm opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
         )}
-        <GlassCard hover className="relative h-full min-h-[320px] flex flex-col p-5">
+        <GlassCard hover className="relative h-full min-h-80 flex flex-col p-5">
           {/* Header: Labels & Status */}
           <div className="flex items-start justify-between mb-2">
             <div className={`flex flex-wrap gap-1.5 ${labelsExpanded ? "" : "max-h-7 overflow-hidden"}`}>
@@ -117,7 +117,7 @@ function ProjectCard({
           </h3>
 
           {/* Description - Fixed height with line clamp */}
-          <p className="text-sm text-white/50 leading-relaxed mb-3 line-clamp-3 h-[60px]">
+          <p className="text-sm text-white/50 leading-relaxed mb-3 line-clamp-3 h-15">
             {project.description[locale as "de" | "en"]}
           </p>
 

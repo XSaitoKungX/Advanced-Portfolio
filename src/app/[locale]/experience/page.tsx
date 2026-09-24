@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations, useLocale } from "next-intl";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { FiBriefcase, FiBook, FiStar, FiCode } from "react-icons/fi";
 import SectionHeader from "@/components/ui/SectionHeader";
 import GlassCard from "@/components/ui/GlassCard";
@@ -68,7 +68,7 @@ function ExperienceItem({ exp, locale, t, index }: { exp: Experience; locale: st
           <div className="flex items-center gap-1.5 text-xs text-white/40 shrink-0">
             <span className="whitespace-nowrap">{formatDate(exp.startDate, locale)}</span>
             <span>—</span>
-            <span className="whitespace-nowrap min-w-[60px]">{exp.endDate ? formatDate(exp.endDate, locale) : t("present")}</span>
+            <span className="whitespace-nowrap min-w-15">{exp.endDate ? formatDate(exp.endDate, locale) : t("present")}</span>
           </div>
         </div>
 

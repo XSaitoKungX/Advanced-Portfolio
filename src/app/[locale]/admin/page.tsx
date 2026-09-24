@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations, useLocale } from "next-intl";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import Link from "next/link";
 import { FiArrowLeft, FiShield, FiUser, FiMail, FiCode, FiCheck, FiX, FiTrash2, FiMessageSquare } from "react-icons/fi";
 import { RiTerminalBoxFill } from "react-icons/ri";

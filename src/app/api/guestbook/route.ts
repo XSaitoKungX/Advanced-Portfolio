@@ -2,6 +2,15 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
+import { z } from "zod";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { parseLimitedJson, RequestBodyTooLargeError } from "@/lib/limited-json";
+
+const entrySchema = z.object({
+  message: z.string().trim().min(1).max(500),
+  name: z.string().trim().max(50).optional(),
+});
+const deleteSchema = z.object({ id: z.string().uuid() });
 
 export async function GET() {
   try {
@@ -56,13 +65,13 @@ export async function GET() {
         };
       });
 
-      return NextResponse.json({ entries: enriched });
+      return NextResponse.json({ entries: enriched }, { headers: { "Cache-Control": "private, no-store" } });
     }
 
-    return NextResponse.json({ entries });
+    return NextResponse.json({ entries }, { headers: { "Cache-Control": "private, no-store" } });
   } catch (error) {
     console.error("Guestbook GET error:", error);
-    return NextResponse.json({ entries: [] });
+    return NextResponse.json({ error: "Failed to fetch entries" }, { status: 500, headers: { "Cache-Control": "no-store" } });
   }
 }
 
@@ -76,11 +85,20 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { id } = await request.json();
-    if (!id) {
+    let body: unknown;
+    try {
+      body = await parseLimitedJson(request, 2 * 1024);
+    } catch (error) {
+      const status = error instanceof RequestBodyTooLargeError ? 413 : 400;
+      return NextResponse.json({ error: "Invalid request body" }, { status });
+    }
+
+    const parsed = deleteSchema.safeParse(body);
+    if (!parsed.success) {
       return NextResponse.json({ error: "Entry ID required" }, { status: 400 });
     }
 
+    const { id } = parsed.data;
     const entry = await prisma.guestbookEntry.findUnique({ where: { id } });
     if (!entry || entry.userId !== session.user.id) {
       return NextResponse.json({ error: "Not found or not your entry" }, { status: 403 });
@@ -100,17 +118,28 @@ export async function POST(request: Request) {
       headers: await headers(),
     });
 
-    const body = await request.json();
-    const { message, name } = body;
-
-    if (!message || message.trim().length === 0) {
-      return NextResponse.json({ error: "Message is required" }, { status: 400 });
+    const limitKey = session?.user?.id ?? getClientIp(request.headers);
+    if (!checkRateLimit(`guestbook:${limitKey}`, 5, 60_000)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please wait before posting again." },
+        { status: 429, headers: { "Retry-After": "60" } }
+      );
     }
 
-    if (message.length > 500) {
-      return NextResponse.json({ error: "Message too long (max 500 chars)" }, { status: 400 });
+    let body: unknown;
+    try {
+      body = await parseLimitedJson(request, 4 * 1024);
+    } catch (error) {
+      const status = error instanceof RequestBodyTooLargeError ? 413 : 400;
+      return NextResponse.json({ error: "Invalid request body" }, { status });
     }
 
+    const parsed = entrySchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json({ error: "Invalid guestbook entry" }, { status: 400 });
+    }
+
+    const { message, name } = parsed.data;
     const entry = await prisma.guestbookEntry.create({
       data: {
         message: message.trim(),

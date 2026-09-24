@@ -17,21 +17,21 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: latest
+          bun-version: 1.4.2
           
       - name: Install dependencies
-        run: bun install
+        run: bun install --frozen-lockfile
         
       - name: Type check
-        run: bun run type-check || bun tsc --noEmit
+        run: bun run type-check
         
       - name: Lint
-        run: bun run lint || echo "No lint script configured"
+        run: bun run lint
         
       - name: Build
         run: bun run build
         env:
           NODE_ENV: production
-          BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET || 'ci-test-secret-change-in-production' }}
+          BETTER_AUTH_SECRET: ${{ secrets.CI_BETTER_AUTH_SECRET || 'ci-test-secret-change-in-production' }}
           BETTER_AUTH_URL: http://localhost:3000
           NEXT_PUBLIC_BETTER_AUTH_URL: http://localhost:3000

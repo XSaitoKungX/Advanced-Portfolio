@@ -1,81 +1,93 @@
 import { NextResponse } from "next/server";
 import { projects } from "@/lib/data/projects";
 import { skills } from "@/lib/data/skills";
+import { z } from "zod";
 
-// Cache GitHub stats for 5 minutes to avoid rate limits
+const PAGE_SIZE = 100;
+const CACHE_TTL = 5 * 60 * 1000;
 let cachedCommits: number | null = null;
 let cacheTime = 0;
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
-async function getGitHubCommits(): Promise<number> {
-  // Return cached value if fresh
+const astraStatsSchema = z.object({ guilds: z.number().int().nonnegative() });
+
+async function getAstraServerCount(): Promise<number | null> {
+  try {
+    const response = await fetch("https://astra-bot.app/api/stats", {
+      headers: { Accept: "application/json" },
+      next: { revalidate: 300 },
+      signal: AbortSignal.timeout(5_000),
+    });
+    if (!response.ok) return null;
+
+    const result = astraStatsSchema.safeParse(await response.json());
+    return result.success ? result.data.guilds : null;
+  } catch {
+    return null;
+  }
+}
+
+function githubHeaders() {
+  return {
+    Accept: "application/vnd.github+json",
+    ...(process.env.GITHUB_TOKEN && {
+      Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+    }),
+  };
+}
+
+async function fetchCommitsPage(page?: number) {
+  const url = new URL("https://api.github.com/repos/XSaitoKungX/Advanced-Portfolio/commits");
+  url.searchParams.set("per_page", String(PAGE_SIZE));
+  if (page) url.searchParams.set("page", String(page));
+
+  const response = await fetch(url, {
+    headers: githubHeaders(),
+    next: { revalidate: 300 },
+  });
+
+  if (!response.ok) return null;
+  const commits: unknown = await response.json();
+  return Array.isArray(commits)
+    ? { commits, linkHeader: response.headers.get("link") }
+    : null;
+}
+
+async function getGitHubCommits(): Promise<number | null> {
   if (cachedCommits !== null && Date.now() - cacheTime < CACHE_TTL) {
     return cachedCommits;
   }
 
   try {
-    // Fetch commits only for this portfolio repo
-    const commitsRes = await fetch(
-      "https://api.github.com/repos/XSaitoKungX/Advanced-Portfolio/commits?per_page=100",
-      {
-        headers: {
-          Accept: "application/vnd.github.v3+json",
-          ...(process.env.GITHUB_TOKEN && {
-            Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-          }),
-        },
-        next: { revalidate: 300 },
-      }
-    );
+    const firstPage = await fetchCommitsPage();
+    if (!firstPage) return null;
 
-    if (!commitsRes.ok) {
-      // Try alternative repo name
-      const altRes = await fetch(
-        "https://api.github.com/repos/XSaitoKungX/portfolio/commits?per_page=100",
-        {
-          headers: {
-            Accept: "application/vnd.github.v3+json",
-            ...(process.env.GITHUB_TOKEN && {
-              Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-            }),
-          },
-        }
-      );
-      
-      if (altRes.ok) {
-        const linkHeader = altRes.headers.get("link");
-        const total = linkHeader?.match(/page=(\d+)[^>]*>;\s*rel="last"/)?.[1];
-        const count = total ? parseInt(total, 10) : (await altRes.json()).length || 100;
-        cachedCommits = count;
-        cacheTime = Date.now();
-        return count;
-      }
-      
-      throw new Error(`GitHub API error: ${commitsRes.status}`);
+    const lastPage = Number(firstPage.linkHeader?.match(/<[^>]*[?&]page=(\d+)[^>]*>\s*;\s*rel="last"/)?.[1] ?? 1);
+    let count = firstPage.commits.length;
+
+    if (lastPage > 1) {
+      const finalPage = await fetchCommitsPage(lastPage);
+      if (!finalPage) return null;
+      count = (lastPage - 1) * PAGE_SIZE + finalPage.commits.length;
     }
 
-    // Get total commit count from Link header (pagination)
-    const linkHeader = commitsRes.headers.get("link");
-    const totalPages = linkHeader?.match(/page=(\d+)[^>]*>;\s*rel="last"/)?.[1];
-    
-    // If no pagination, count returned commits
-    const commits = await commitsRes.json();
-    const totalCommits = totalPages ? parseInt(totalPages, 10) * 100 : commits.length || 100;
-    const finalCount = totalCommits > 0 ? totalCommits : 100;
-    cachedCommits = finalCount;
+    cachedCommits = count;
     cacheTime = Date.now();
-    return finalCount;
+    return count;
   } catch {
-    return cachedCommits ?? 100;
+    return null;
   }
 }
 
 export async function GET() {
-  const [commits] = await Promise.all([getGitHubCommits()]);
+  const [commits, astraServers] = await Promise.all([
+    getGitHubCommits(),
+    getAstraServerCount(),
+  ]);
 
   return NextResponse.json({
     projects: projects.length,
     tech: skills.length,
     commits,
+    astraServers,
   });
 }

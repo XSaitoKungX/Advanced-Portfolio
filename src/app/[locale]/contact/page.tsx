@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useForm } from "react-hook-form";
 import { FiMail, FiMapPin, FiCheckCircle, FiAlertCircle, FiSend, FiClock } from "react-icons/fi";
 import { SiDiscord, SiGithub, SiX } from "react-icons/si";

@@ -5,6 +5,8 @@ on:
     branches:
       - main
       - master
+    tags:
+      - "v*"
 
 permissions:
   contents: write
@@ -12,7 +14,7 @@ permissions:
 
 jobs:
   release:
-    if: ${{ !startsWith(github.event.head_commit.message, 'chore(release):') }}
+    if: ${{ github.ref_type == 'branch' && !startsWith(github.event.head_commit.message, 'chore(release):') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -48,5 +50,18 @@ jobs:
           name: Release ${{ steps.changelog.outputs.tag }}
           draft: false
           prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  tag-release:
+    if: ${{ github.ref_type == 'tag' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release from pushed tag
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

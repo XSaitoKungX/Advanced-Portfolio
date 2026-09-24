@@ -9,6 +9,7 @@
 
 * bound and validate contact and guestbook requests; verify database TLS certificates
 * return unavailable statistics instead of fabricated fallback values
+* include PostgreSQL type declarations so clean CI installs pass TypeScript checks
 
 ### Maintenance
 

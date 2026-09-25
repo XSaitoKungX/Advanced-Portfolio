@@ -179,7 +179,7 @@ export default function HomePage() {
               {/* Mascot */}
               <div className="relative w-full max-w-65 aspect-square">
                 <Image
-                  src="/saito-mascot.png"
+                  src="/assets/mascot/saito-character-mascot.webp"
                   alt="Saito Mascot"
                   fill
                   className="object-contain drop-shadow-2xl"

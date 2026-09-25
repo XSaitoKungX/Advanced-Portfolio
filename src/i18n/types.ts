@@ -64,16 +64,30 @@ export interface Translations {
   };
   about: {
     title: string;
+    titleHighlight: string;
     subtitle: string;
-    description1: string;
-    description2: string;
+    description: string;
     availability: string;
+    role: string;
+    scrollCta: string;
     stats: {
       age: string;
       experience: string;
       servers: string;
       graduation: string;
     };
+    storyEyebrow: string;
+    storyTitle: string;
+    factsTitle: string;
+    factLocation: string;
+    factLocationValue: string;
+    factEducation: string;
+    factEducationValue: string;
+    factFocus: string;
+    factFocusValue: string;
+    factSince: string;
+    factSinceValue: string;
+    valuesEyebrow: string;
     values: {
       title: string;
       clean_code: string;
@@ -85,7 +99,13 @@ export interface Translations {
       learning: string;
       learning_desc: string;
     };
+    astraTrustedBy: string;
+    astraOnline: string;
+    astraLive: string;
+    cvTitle: string;
+    cvDescription: string;
     download_cv: string;
+    cvBadge: string;
   };
   skills: {
     title: string;
@@ -114,8 +134,22 @@ export interface Translations {
   };
   experience: {
     title: string;
+    titleHighlight: string;
     subtitle: string;
+    description: string;
     present: string;
+    statStarted: string;
+    statExperience: string;
+    statGraduation: string;
+    scrollCta: string;
+    timelineEyebrow: string;
+    timelineTitle: string;
+    timelineDescription: string;
+    current: string;
+    typeWork: string;
+    typeEducation: string;
+    typeFreelance: string;
+    typePersonal: string;
   };
   contact: {
     title: string;

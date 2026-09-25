@@ -1,12 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useTranslations, useLocale } from "next-intl";
-import { motion } from "motion/react";
 import Image from "next/image";
-import { FiDownload, FiCode, FiZap, FiLayout, FiBookOpen, FiArrowUpRight } from "react-icons/fi";
+import { useEffect, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { motion } from "motion/react";
+import {
+  FiArrowDown,
+  FiArrowUpRight,
+  FiBookOpen,
+  FiCalendar,
+  FiCode,
+  FiDownload,
+  FiFileText,
+  FiLayout,
+  FiMapPin,
+  FiZap,
+} from "react-icons/fi";
 import { SiDiscord } from "react-icons/si";
-import SectionHeader from "@/components/ui/SectionHeader";
 import GlassCard from "@/components/ui/GlassCard";
 import MarkdownRenderer from "@/components/ui/MarkdownRenderer";
 
@@ -69,12 +79,19 @@ My current main stack: **TypeScript**, **Next.js**, **React**, **Node.js / Bun**
 I'm not an expert in everything – but I bring real project experience to each of these areas.`;
 }
 
-const fadeUp = {
-  initial: { opacity: 0, y: 30 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.6 },
-};
+const VALUES = [
+  { icon: FiCode, key: "clean_code", color: "#A78BFA" },
+  { icon: FiZap, key: "performance", color: "#FBBF24" },
+  { icon: FiLayout, key: "design", color: "#34D399" },
+  { icon: FiBookOpen, key: "learning", color: "#60A5FA" },
+] as const;
+
+const FACTS = [
+  { icon: FiMapPin, labelKey: "factLocation", valueKey: "factLocationValue" },
+  { icon: FiBookOpen, labelKey: "factEducation", valueKey: "factEducationValue" },
+  { icon: FiCode, labelKey: "factFocus", valueKey: "factFocusValue" },
+  { icon: FiCalendar, labelKey: "factSince", valueKey: "factSinceValue" },
+] as const;
 
 export default function AboutPage() {
   const t = useTranslations("about");
@@ -101,13 +118,6 @@ export default function AboutPage() {
     };
   }, []);
 
-  const values = [
-    { icon: FiCode, key: "clean_code", color: "#A78BFA" },
-    { icon: FiZap, key: "performance", color: "#FBBF24" },
-    { icon: FiLayout, key: "design", color: "#34D399" },
-    { icon: FiBookOpen, key: "learning", color: "#60A5FA" },
-  ] as const;
-
   const stats = [
     { value: `${age}`, label: t("stats.age") },
     { value: "3", label: t("stats.experience") },
@@ -116,144 +126,249 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="min-h-screen pt-28 pb-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader title={t("title")} subtitle={t("subtitle")} align="left" />
+    <div className="relative min-h-screen overflow-hidden pb-24 pt-24">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-190 overflow-hidden">
+        <div
+          className="absolute -left-24 -top-40 h-140 w-140 rounded-full opacity-20 blur-[150px]"
+          style={{ background: "radial-gradient(circle, #7c3aed, transparent 68%)" }}
+        />
+        <div
+          className="absolute right-[8%] top-32 h-105 w-105 rounded-full opacity-15 blur-[140px]"
+          style={{ background: "radial-gradient(circle, #4f46e5, transparent 70%)" }}
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_55%,#030712_100%)]" />
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
-          <motion.div {...fadeUp}>
-            <MarkdownRenderer content={getAboutContent(locale as "de" | "en", age)} />
-            <motion.a
-              href="/cv.pdf"
-              download
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="inline-flex items-center gap-2 mt-8 px-6 py-3 text-sm font-semibold text-white bg-linear-to-r from-[#7C3AED] to-[#4F46E5] rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-[#7C3AED]/25"
-            >
-              <FiDownload className="w-4 h-4" />
-              {t("download_cv")}
-            </motion.a>
-          </motion.div>
-
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <section className="grid items-center gap-10 py-10 md:py-16 lg:min-h-[min(780px,calc(100svh-6rem))] lg:grid-cols-[1.05fr_.95fr] lg:gap-4">
           <motion.div
-            {...fadeUp}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="space-y-6"
+            initial={false}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55 }}
+            className="relative z-10 min-w-0"
           >
-            <GlassCard className="p-6 mb-6">
-            <div className="flex items-center gap-4">
-              <div className="relative shrink-0">
-                <div className="w-16 h-16 rounded-2xl overflow-hidden bg-linear-to-br from-[#7C3AED] to-[#4F46E5] shadow-lg shadow-[#7C3AED]/30">
-                  <Image
-                    src="/icon.png"
-                    alt="Mark"
-                    width={64}
-                    height={64}
-                    className="w-full h-full object-cover"
-                    unoptimized
-                  />
-                </div>
-                <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-background" />
-              </div>
-              <div>
-                <p className="text-base font-bold text-white">Mark</p>
-                <p className="text-sm text-[#A78BFA]">{locale === "de" ? "Azubi Fachinformatiker" : "CS Apprentice"}</p>
-                <span className="inline-flex items-center gap-1.5 mt-1.5 text-[10px] font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2 py-0.5">
-                  <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
-                  {t("availability")}
-                </span>
-              </div>
-            </div>
-          </GlassCard>
+            <p className="inline-flex items-center gap-2 rounded-full border border-[#A78BFA]/20 bg-[#A78BFA]/6 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.24em] text-[#C4B5FD] sm:text-xs">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#A78BFA] shadow-[0_0_10px_#7c3aed]" />
+              {t("subtitle")}
+            </p>
+            <h1 className="mt-6 min-w-0 max-w-3xl text-[clamp(1.6rem,7vw,3rem)] font-black leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl">
+              <span className="block">{t("title")}</span>
+              <span className="block bg-linear-to-r from-[#C4B5FD] via-[#A78BFA] to-[#60A5FA] bg-clip-text text-transparent">
+                {t("titleHighlight")}
+              </span>
+            </h1>
+            <p className="mt-6 max-w-2xl text-base leading-7 text-white/60 sm:text-lg sm:leading-8">
+              {t("description")}
+            </p>
 
-          <div className="grid grid-cols-2 gap-4">
-              {stats.map((stat, i) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  <GlassCard className="p-6 text-center">
-                    <div className="text-3xl font-bold text-gradient-purple mb-1">{stat.value}</div>
-                    <div className="text-sm text-white/50">{stat.label}</div>
-                  </GlassCard>
-                </motion.div>
+            <div className="mt-9 grid max-w-2xl grid-cols-2 gap-x-4 gap-y-6 border-y border-white/10 py-5 sm:grid-cols-4 sm:divide-x sm:divide-white/10 sm:gap-x-0 sm:gap-y-0">
+              {stats.map((stat) => (
+                <div key={stat.label} className="min-w-0 sm:px-5 sm:first:pl-0 sm:last:pr-0">
+                  <p className="text-2xl font-bold tracking-tight text-white sm:text-3xl">{stat.value}</p>
+                  <p className="mt-1 text-[10px] leading-4 text-white/40 sm:text-xs">{stat.label}</p>
+                </div>
               ))}
             </div>
 
-            {/* Discord Bot Card */}
-            <motion.a
-              href="https://discord.gg/FNcAvF2aGQ"
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-              whileHover={{ scale: 1.02 }}
-              className="block"
+            <a
+              href="#about-story"
+              className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-white/75 transition-colors hover:text-[#C4B5FD]"
             >
-              <GlassCard className="p-5 relative overflow-hidden group cursor-pointer">
-                <div className="absolute top-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <FiArrowUpRight className="w-4 h-4 text-white/50" />
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-[#5865F2]/20 border border-[#5865F2]/30 flex items-center justify-center shrink-0">
-                    <SiDiscord className="w-6 h-6 text-[#5865F2]" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="text-base font-bold text-white">Astra Bot</p>
-                      <span className="px-1.5 py-0.5 text-[10px] font-medium text-[#5865F2] bg-[#5865F2]/10 border border-[#5865F2]/20 rounded">v2.0</span>
-                    </div>
-                    <p className="text-sm text-white/50 truncate">
-                      {locale === "de" ? "Vertraut von" : "Trusted by"} <span className="text-[#A78BFA] font-semibold">{astraServers?.toLocaleString() ?? "—"}</span> Discord {locale === "de" ? "Servern" : "Servers"}
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-4 flex items-center gap-3 text-xs text-white/40">
-                  <span className="flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    {locale === "de" ? "Online" : "Online"}
-                  </span>
-                  <span>•</span>
-                  <span>{locale === "de" ? "Live-Serverstatistik" : "Live server count"}</span>
-                </div>
-              </GlassCard>
-            </motion.a>
-
-            <GlassCard className="p-6">
-              <h3 className="text-sm font-semibold text-white/50 uppercase tracking-wider mb-4">
-                {t("values.title")}
-              </h3>
-              <div className="space-y-4">
-                {values.map(({ icon: Icon, key, color }, i) => (
-                  <motion.div
-                    key={key}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="flex items-start gap-3"
-                  >
-                    <div
-                      className="mt-0.5 p-2 rounded-lg shrink-0"
-                      style={{ background: `${color}15`, border: `1px solid ${color}25` }}
-                    >
-                      <Icon className="w-4 h-4" style={{ color }} />
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold text-white/80">{t(`values.${key}`)}</div>
-                      <div className="text-xs text-white/40 mt-0.5">{t(`values.${key}_desc`)}</div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </GlassCard>
+              {t("scrollCta")}
+              <FiArrowDown aria-hidden="true" className="h-4 w-4 text-[#A78BFA]" />
+            </a>
           </motion.div>
-        </div>
+
+          <motion.div
+            initial={false}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.12 }}
+            className="relative mx-auto w-full max-w-105"
+          >
+            <div
+              aria-hidden="true"
+              className="absolute inset-[12%] rounded-full opacity-60 blur-3xl"
+              style={{ background: "radial-gradient(circle, rgba(124,58,237,.28), rgba(79,70,229,.14) 48%, transparent 72%)" }}
+            />
+            <div className="absolute inset-[5%] rounded-full border border-[#A78BFA]/10" aria-hidden="true" />
+            <Image
+              src="/assets/mascot/saito-avatar.webp"
+              alt=""
+              width={1024}
+              height={1024}
+              sizes="(max-width: 1024px) 80vw, 42vw"
+              preload
+              className="relative z-10 h-auto w-full object-contain drop-shadow-[0_28px_70px_rgba(124,58,237,0.25)]"
+            />
+            <div className="absolute bottom-[4%] left-0 z-20 max-w-[85%] rounded-xl border border-white/10 bg-[#08090d]/85 px-4 py-3 shadow-2xl backdrop-blur-xl">
+              <p className="text-sm font-bold text-white">
+                Mark <span className="text-white/30">·</span> <span className="font-medium text-[#C4B5FD]">{t("role")}</span>
+              </p>
+              <p className="mt-1.5 inline-flex items-center gap-1.5 text-[10px] font-semibold text-emerald-400">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                {t("availability")}
+              </p>
+            </div>
+          </motion.div>
+        </section>
+
+        <section id="about-story" aria-labelledby="about-story-title" className="scroll-mt-28 pt-10 sm:pt-16">
+          <div className="mb-10 max-w-2xl">
+            <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[#A78BFA]">{t("storyEyebrow")}</p>
+            <h2 id="about-story-title" className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              {t("storyTitle")}
+            </h2>
+          </div>
+
+          <div className="grid gap-10 lg:grid-cols-[1.15fr_.85fr] lg:gap-14">
+            <motion.div
+              initial={false}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-64px" }}
+              transition={{ duration: 0.5 }}
+              className="min-w-0"
+            >
+              <MarkdownRenderer content={getAboutContent(locale as "de" | "en", age)} />
+            </motion.div>
+
+            <div className="min-w-0 space-y-5">
+              <motion.div
+                initial={false}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-64px" }}
+                transition={{ duration: 0.5, delay: 0.05 }}
+              >
+                <GlassCard hover={false} className="p-6">
+                  <h3 className="text-[10px] font-bold uppercase tracking-[0.24em] text-white/40">
+                    {t("factsTitle")}
+                  </h3>
+                  <dl className="mt-5 space-y-4">
+                    {FACTS.map(({ icon: Icon, labelKey, valueKey }) => (
+                      <div key={labelKey} className="flex items-start gap-3">
+                        <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[#A78BFA]/20 bg-[#A78BFA]/10">
+                          <Icon aria-hidden="true" className="h-3.5 w-3.5 text-[#C4B5FD]" />
+                        </div>
+                        <div className="min-w-0">
+                          <dt className="text-[10px] font-semibold uppercase tracking-wider text-white/40">
+                            {t(labelKey)}
+                          </dt>
+                          <dd className="mt-0.5 text-sm font-medium leading-5 text-white/80">
+                            {t(valueKey)}
+                          </dd>
+                        </div>
+                      </div>
+                    ))}
+                  </dl>
+                </GlassCard>
+              </motion.div>
+
+              <motion.a
+                href="https://discord.gg/FNcAvF2aGQ"
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={false}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-64px" }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                whileHover={{ scale: 1.02 }}
+                className="block"
+              >
+                <GlassCard className="group relative p-5 cursor-pointer">
+                  <div className="absolute right-3 top-3 opacity-0 transition-opacity group-hover:opacity-100">
+                    <FiArrowUpRight aria-hidden="true" className="h-4 w-4 text-white/50" />
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[#5865F2]/30 bg-[#5865F2]/20">
+                      <SiDiscord aria-hidden="true" className="h-6 w-6 text-[#5865F2]" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <p className="text-base font-bold text-white">Astra Bot</p>
+                        <span className="rounded border border-[#5865F2]/20 bg-[#5865F2]/10 px-1.5 py-0.5 text-[10px] font-medium text-[#8b94ff]">
+                          v2.0
+                        </span>
+                      </div>
+                      <p className="mt-0.5 truncate text-sm text-white/50">
+                        {t("astraTrustedBy", { count: astraServers?.toLocaleString() ?? "—" })}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-4 flex items-center gap-3 text-xs text-white/40">
+                    <span className="flex items-center gap-1.5">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      {t("astraOnline")}
+                    </span>
+                    <span aria-hidden="true">•</span>
+                    <span>{t("astraLive")}</span>
+                  </div>
+                </GlassCard>
+              </motion.a>
+
+              <motion.div
+                initial={false}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-64px" }}
+                transition={{ duration: 0.5, delay: 0.15 }}
+              >
+                <GlassCard hover={false} className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+                      <FiFileText aria-hidden="true" className="h-6 w-6 text-white/60" />
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="text-base font-bold text-white">{t("cvTitle")}</h3>
+                      <span className="mt-1 inline-flex items-center gap-1.5 rounded-full border border-amber-300/20 bg-amber-300/8 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-200">
+                        <span className="h-1 w-1 rounded-full bg-amber-300" />
+                        {t("cvBadge")}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="mt-4 text-sm leading-6 text-white/50">{t("cvDescription")}</p>
+                  <button
+                    type="button"
+                    disabled
+                    className="mt-5 inline-flex cursor-not-allowed items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white/35"
+                  >
+                    <FiDownload aria-hidden="true" className="h-4 w-4" />
+                    {t("download_cv")}
+                  </button>
+                </GlassCard>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="about-values-title" className="pt-16 sm:pt-24">
+          <div className="mb-10 max-w-2xl">
+            <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[#A78BFA]">{t("valuesEyebrow")}</p>
+            <h2 id="about-values-title" className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              {t("values.title")}
+            </h2>
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {VALUES.map(({ icon: Icon, key, color }, i) => (
+              <motion.div
+                key={key}
+                initial={false}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-64px" }}
+                transition={{ duration: 0.45, delay: i * 0.06 }}
+              >
+                <GlassCard className="h-full p-6">
+                  <div
+                    className="flex h-11 w-11 items-center justify-center rounded-xl"
+                    style={{ background: `${color}15`, border: `1px solid ${color}30`, color }}
+                  >
+                    <Icon aria-hidden="true" className="h-5 w-5" />
+                  </div>
+                  <h3 className="mt-5 text-base font-bold text-white">{t(`values.${key}`)}</h3>
+                  <p className="mt-2 text-sm leading-6 text-white/50">{t(`values.${key}_desc`)}</p>
+                </GlassCard>
+              </motion.div>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );

@@ -1,20 +1,14 @@
-# [0.18.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.17.0...v0.18.0) (2026-09-24)
+# [0.19.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.18.0...v0.19.0) (2026-09-25)
+
 
 ### Features
 
-* add self-service Discord account deletion and deauthorization cleanup
-* load live Astra server statistics and add Advanced Modmail project information
+* **ui:** redesign experience & about pages, migrate mascots to webp ([757f63a](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/757f63a9eb9299483ea1992c9cfa08eb557cedd3))
 
-### Bug Fixes
 
-* bound and validate contact and guestbook requests; verify database TLS certificates
-* return unavailable statistics instead of fabricated fallback values
-* include PostgreSQL type declarations so clean CI installs pass TypeScript checks
 
-### Maintenance
+# [0.18.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.17.0...v0.18.0) (2026-09-24)
 
-* update core dependencies, ESLint, Motion, Bun and CI checks
-* remove the discontinued Smart Calendar portfolio page
 
 
 # [0.17.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.16.0...v0.17.0) (2026-05-17)
@@ -41,24 +35,6 @@
 ### Features
 
 * **password-generator:** full rewrite with 6 modes ([339890d](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/339890da25fd54874673298908208fd2ee08bd1f))
-
-
-
-## [0.14.1](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.14.0...v0.14.1) (2026-04-30)
-
-
-### Bug Fixes
-
-* **password-generator:** remove unused refs/effects + minor cleanup ([93363ae](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/93363ae7aecedbd71dc134b97c8e7ac951f23a0d))
-
-
-
-# [0.14.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.13.0...v0.14.0) (2026-04-30)
-
-
-### Features
-
-* add Password Generator tool + projects entry ([1f9c8ed](https://github.com/XSaitoKungX/Advanced-Portfolio/commit/1f9c8ede12c1e8aad885cd12610a93b8a832a9a3))
 
 
 

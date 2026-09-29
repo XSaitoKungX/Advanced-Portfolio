@@ -1,3 +1,12 @@
+# [0.20.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.19.0...v0.20.0) (2026-09-29)
+
+### Features
+
+* redesign the projects page with a hero section, statistics strip and the new projects mascot
+* localize project status and category labels for German and English
+* filter to used categories with counts and sort featured projects first
+
+
 # [0.19.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.18.0...v0.19.0) (2026-09-25)
 
 
@@ -8,6 +17,21 @@
 
 
 # [0.18.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.17.0...v0.18.0) (2026-09-24)
+
+### Features
+
+* add self-service Discord account deletion and deauthorization cleanup
+* load live Astra server statistics and add Advanced Modmail project information
+
+### Bug Fixes
+
+* bound and validate contact and guestbook requests; verify database TLS certificates
+* return unavailable statistics instead of fabricated fallback values
+
+### Maintenance
+
+* update core dependencies, ESLint, Motion, Bun and CI checks
+* remove the discontinued Smart Calendar portfolio page
 
 
 

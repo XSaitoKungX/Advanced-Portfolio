@@ -116,6 +116,7 @@ For CI, optionally add the repository secret `CI_BETTER_AUTH_SECRET`. If it is u
 
 ```markdown
 ├── prisma/           # Prisma schema
+├── public/assets/    # Mascot images & static assets (WebP)
 ├── src/
 │   ├── app/          # Next.js App Router
 │   │   ├── [locale]/ # i18n routes (de, en)

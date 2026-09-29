@@ -120,16 +120,37 @@ export interface Translations {
   };
   projects: {
     title: string;
+    titleHighlight: string;
     subtitle: string;
+    description: string;
+    scrollCta: string;
+    statProjects: string;
+    statReleased: string;
+    statActive: string;
+    statCategories: string;
     filter_all: string;
     view_demo: string;
     view_code: string;
     view_details: string;
+    expand: string;
+    collapse: string;
     status: {
-      completed: string;
+      launched: string;
+      planning: string;
       in_progress: string;
-      planned: string;
+      completed: string;
+      incoming: string;
     };
+    categories: {
+      discord: string;
+      devtools: string;
+      system: string;
+      creative: string;
+      utility: string;
+      web: string;
+    };
+    projectCount: string;
+    featured: string;
     no_results: string;
   };
   experience: {

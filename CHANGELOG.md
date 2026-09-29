@@ -1,3 +1,10 @@
+# [0.20.1](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.20.0...v0.20.1) (2026-09-29)
+
+### Bug Fixes
+
+* reject bogus `Next-Action` requests in the proxy so scanner probes no longer throw "Failed to find Server Action"
+
+
 # [0.20.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.19.0...v0.20.0) (2026-09-29)
 
 ### Features

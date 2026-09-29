@@ -12,5 +12,6 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Discord deauthorization cleanup requires `DISCORD_PUBLIC_KEY` and an `APPLICATION_DEAUTHORIZED` webhook configured at the endpoint documented in `README.md`.
 - Astra server counts come from the public stats endpoint; preserve the unavailable fallback rather than hardcoding counts.
 - Mascot images live in `public/assets/mascot/`; use the `.webp` variants via `next/image`, not the PNG fallbacks.
+- The app registers no Server Actions; `src/proxy.ts` rejects `next-action` requests. Remove that guard before adding real Server Actions.
 - Production currently runs in a Hetzner/Pelican container. The Homelab is not public yet; do not deploy without an explicit request.
 - Avoid dependency overrides unless no compatible non-override solution exists.

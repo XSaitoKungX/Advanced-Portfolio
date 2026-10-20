@@ -111,7 +111,7 @@ const MemorableMode = forwardRef<ModeHandle, ModeProps>(function MemorableMode({
                   ? "bg-violet-500/20 border-violet-500/40 text-violet-300"
                   : "bg-white/5 border-white/10 text-white/50 hover:border-white/20"
               }`}>
-              0–{n - 1}
+              0-{n - 1}
             </button>
           ))}
         </div>

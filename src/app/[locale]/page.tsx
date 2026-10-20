@@ -182,6 +182,7 @@ export default function HomePage() {
                   src="/assets/mascot/saito-character-mascot.webp"
                   alt="Saito Mascot"
                   fill
+                  preload
                   className="object-contain drop-shadow-2xl"
                   sizes="260px"
                 />

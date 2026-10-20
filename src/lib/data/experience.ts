@@ -37,8 +37,8 @@ export const experiences: Experience[] = [
     startDate: "2019-01",
     endDate: "2020-12",
     description: {
-      de: "Ich vertiefte meine Python-Kenntnisse durch Online-Kurse und begann, erste Discord-Bots mit discord.py zu bauen – hauptsächlich über Tutorials. Parallel dazu experimentierte ich mit kleinen Spielprojekten in Unity und einem Snake-Klon. Im Rahmen eines Python-Kurses beschäftigte ich mich außerdem mit Minecraft-Agents und einfacher Spielelogik.",
-      en: "I deepened my Python knowledge through online courses and started building my first Discord bots with discord.py – mostly following tutorials. At the same time, I experimented with small game projects in Unity and a Snake clone. Through a Python course, I also worked with Minecraft Agents and basic game logic.",
+      de: "Ich vertiefte meine Python-Kenntnisse durch Online-Kurse und begann, erste Discord-Bots mit discord.py zu bauen - hauptsächlich über Tutorials. Parallel dazu experimentierte ich mit kleinen Spielprojekten in Unity und einem Snake-Klon. Im Rahmen eines Python-Kurses beschäftigte ich mich außerdem mit Minecraft-Agents und einfacher Spielelogik.",
+      en: "I deepened my Python knowledge through online courses and started building my first Discord bots with discord.py - mostly following tutorials. At the same time, I experimented with small game projects in Unity and a Snake clone. Through a Python course, I also worked with Minecraft Agents and basic game logic.",
     },
     technologies: ["Python", "discord.py", "Unity", "C#"],
     type: "personal",
@@ -62,16 +62,16 @@ export const experiences: Experience[] = [
   {
     id: "4",
     role: {
-      de: "Berufsschule BBS2 – Elektrotechnik & Systemintegration",
-      en: "Vocational School BBS2 – Electrical Engineering & System Integration",
+      de: "Berufsschule BBS2 - Elektrotechnik & Systemintegration",
+      en: "Vocational School BBS2 - Electrical Engineering & System Integration",
     },
     company: "BBS2",
     location: "Deutschland",
     startDate: "2022-08",
     endDate: "2023-07",
     description: {
-      de: "Ein Jahr Berufsschule mit Schwerpunkt auf Elektrotechnik und Systemintegration. Erste strukturierte Berührungspunkte mit C++ und Elektronik-Grundlagen. Diese Zeit hat mein technisches Gesamtverständnis deutlich geschärft – von Schaltkreisen bis hin zu systemnaher Programmierung.",
-      en: "One year of vocational school focused on electrical engineering and system integration. First structured exposure to C++ and electronics fundamentals. This period significantly sharpened my overall technical understanding – from circuits to low-level programming.",
+      de: "Ein Jahr Berufsschule mit Schwerpunkt auf Elektrotechnik und Systemintegration. Erste strukturierte Berührungspunkte mit C++ und Elektronik-Grundlagen. Diese Zeit hat mein technisches Gesamtverständnis deutlich geschärft - von Schaltkreisen bis hin zu systemnaher Programmierung.",
+      en: "One year of vocational school focused on electrical engineering and system integration. First structured exposure to C++ and electronics fundamentals. This period significantly sharpened my overall technical understanding - from circuits to low-level programming.",
     },
     technologies: ["C++", "Electronics", "System Integration"],
     type: "education",
@@ -79,8 +79,8 @@ export const experiences: Experience[] = [
   {
     id: "5",
     role: {
-      de: "Moderne Web-Entwicklung – React, Next.js & eigene Projekte",
-      en: "Modern Web Development – React, Next.js & Personal Projects",
+      de: "Moderne Web-Entwicklung - React, Next.js & eigene Projekte",
+      en: "Modern Web Development - React, Next.js & Personal Projects",
     },
     company: "Selbststudium & Eigenprojekte",
     startDate: "2023-01",
@@ -95,8 +95,8 @@ export const experiences: Experience[] = [
   {
     id: "6",
     role: {
-      de: "Berufsschule BBS1 – Teamprojekt: Souls-like Game",
-      en: "Vocational School BBS1 – Team Project: Souls-like Game",
+      de: "Berufsschule BBS1 - Teamprojekt: Souls-like Game",
+      en: "Vocational School BBS1 - Team Project: Souls-like Game",
     },
     company: "BBS1",
     location: "Deutschland",
@@ -111,8 +111,8 @@ export const experiences: Experience[] = [
   {
     id: "7",
     role: {
-      de: "Ausbildung – Fachinformatiker für Anwendungsentwicklung",
-      en: "Apprenticeship – IT Specialist for Application Development",
+      de: "Ausbildung - Fachinformatiker für Anwendungsentwicklung",
+      en: "Apprenticeship - IT Specialist for Application Development",
     },
     company: "Leuphana Universität",
     location: "Lüneburg, Deutschland",

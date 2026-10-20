@@ -10,6 +10,11 @@ export interface Translations {
     login: string;
     logout: string;
     admin: string;
+    profile: string;
+    publicProfile: string;
+    menu: string;
+    closeMenu: string;
+    openMenu: string;
   };
   home: {
     greeting: string;
@@ -109,7 +114,13 @@ export interface Translations {
   };
   skills: {
     title: string;
+    titleHighlight: string;
     subtitle: string;
+    description: string;
+    scrollCta: string;
+    statSkills: string;
+    gridEyebrow: string;
+    gridTitle: string;
     note: string;
     categories: {
       frontend: string;
@@ -117,6 +128,7 @@ export interface Translations {
       devops: string;
       tools: string;
     };
+    skillCount: string;
   };
   projects: {
     title: string;
@@ -394,6 +406,8 @@ export interface Translations {
     deleteAccountError: string;
   };
   footer: {
+    tagline: string;
+    navigation: string;
     projects: string;
     legal: string;
     getInTouch: string;
@@ -401,6 +415,7 @@ export interface Translations {
     madeWith: string;
     inGermany: string;
     allSystemsOperational: string;
+    backToTop: string;
   };
   legal: {
     backToHome: string;

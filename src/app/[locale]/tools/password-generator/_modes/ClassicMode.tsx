@@ -112,9 +112,9 @@ const ClassicMode = forwardRef<ModeHandle, ModeProps>(function ClassicMode({ onG
       <p className="text-xs font-semibold text-white/40 uppercase tracking-wider">Options</p>
       <Slider label="Length" value={opts.length} min={4} max={128} onChange={v => set({ length: v })} />
       <div className="space-y-2">
-        <Toggle label="Uppercase letters" desc="A–Z" checked={opts.uppercase} onChange={v => set({ uppercase: v })} />
-        <Toggle label="Lowercase letters" desc="a–z" checked={opts.lowercase} onChange={v => set({ lowercase: v })} />
-        <Toggle label="Numbers"           desc="0–9" checked={opts.numbers}   onChange={v => set({ numbers: v })} />
+        <Toggle label="Uppercase letters" desc="A-Z" checked={opts.uppercase} onChange={v => set({ uppercase: v })} />
+        <Toggle label="Lowercase letters" desc="a-z" checked={opts.lowercase} onChange={v => set({ lowercase: v })} />
+        <Toggle label="Numbers"           desc="0-9" checked={opts.numbers}   onChange={v => set({ numbers: v })} />
         <Toggle label="Symbols"           desc="! @ # $ % …" checked={opts.symbols} onChange={v => set({ symbols: v })} />
         <Toggle label="Exclude similar"   desc="i l 1 L o 0 O" checked={opts.excludeSimilar} onChange={v => set({ excludeSimilar: v })} />
         <Toggle label="Pronounceable"     desc="Consonant-vowel alternation" checked={opts.pronounceable} onChange={v => set({ pronounceable: v })} />

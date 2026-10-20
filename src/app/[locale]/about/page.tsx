@@ -36,47 +36,47 @@ function getAboutContent(locale: "de" | "en", age: number) {
 
 Ich bin Mark, ${age} Jahre alt, aus Deutschland und aktuell in der Ausbildung zum **Fachinformatiker für Anwendungsentwicklung** an der Leuphana Universität (voraussichtlicher Abschluss: 2027).
 
-Angefangen hat alles mit der US-Serie **"Scorpion"** – die Geschichte um Walter O'Brien und sein Team hat mich mit 13 fasziniert. Mit 14 begann ich selbst zu programmieren und wollte verstehen, wie Software wirklich funktioniert.
+Angefangen hat alles mit der US-Serie **"Scorpion"** - die Geschichte um Walter O'Brien und sein Team hat mich mit 13 fasziniert. Mit 14 begann ich selbst zu programmieren und wollte verstehen, wie Software wirklich funktioniert.
 
-Ich habe mir das Programmieren größtenteils selbst beigebracht – von ersten Python-Skripten und Discord-Bots bis hin zu modernen Web-Apps mit React und Next.js. Außerdem entwickle ich den öffentlichen Discord-Bot **Astra**.
+Ich habe mir das Programmieren größtenteils selbst beigebracht - von ersten Python-Skripten und Discord-Bots bis hin zu modernen Web-Apps mit React und Next.js. Außerdem entwickle ich den öffentlichen Discord-Bot **Astra**.
 
 ## Was mich antreibt
 
-Ich baue Software, die ich selbst gerne nutzen würde – funktional, schnell und visuell ansprechend. Mir ist wichtig:
+Ich baue Software, die ich selbst gerne nutzen würde - funktional, schnell und visuell ansprechend. Mir ist wichtig:
 
-- **Sauberer Code** – wartbar, verständlich, strukturiert
-- **Gutes Design** – visuelle Qualität und durchdachte UX
-- **Ehrliches Handwerk** – solide Grundlagen statt Buzzword-Bingo
-- **Weiterentwicklung** – neugierig bleiben, Dinge ausprobieren
+- **Sauberer Code** - wartbar, verständlich, strukturiert
+- **Gutes Design** - visuelle Qualität und durchdachte UX
+- **Ehrliches Handwerk** - solide Grundlagen statt Buzzword-Bingo
+- **Weiterentwicklung** - neugierig bleiben, Dinge ausprobieren
 
 ## Tech-Stack
 
 Mein aktueller Hauptstack: **TypeScript**, **Next.js**, **React**, **Node.js / Bun** und **PostgreSQL**. Diese Website läuft aktuell in einem Bun-Container auf einem Hetzner-Server mit Pelican; der Umzug ins eigene Homelab ist geplant.
 
-Ich bin kein Experte in allem – aber ich bringe in jedem dieser Bereiche echte Projekterfahrung mit.`;
+Ich bin kein Experte in allem - aber ich bringe in jedem dieser Bereiche echte Projekterfahrung mit.`;
   }
   return `## Who I Am
 
 I'm Mark, ${age} years old, from Germany, currently doing my apprenticeship as an **IT Specialist for Application Development** at Leuphana University (expected graduation: 2027).
 
-It all started with the TV show **"Scorpion"** – the story of Walter O'Brien and his team fascinated me at 13. I started programming at 14 because I wanted to understand how software actually works.
+It all started with the TV show **"Scorpion"** - the story of Walter O'Brien and his team fascinated me at 13. I started programming at 14 because I wanted to understand how software actually works.
 
-I'm largely self-taught – from early Python scripts and Discord bots to modern web apps with React and Next.js. I also develop the public Discord bot **Astra**.
+I'm largely self-taught - from early Python scripts and Discord bots to modern web apps with React and Next.js. I also develop the public Discord bot **Astra**.
 
 ## What Drives Me
 
-I build software I'd want to use myself – functional, fast and visually polished. What matters to me:
+I build software I'd want to use myself - functional, fast and visually polished. What matters to me:
 
-- **Clean code** – maintainable, readable, well-structured
-- **Good design** – visual quality and thoughtful UX
-- **Honest craft** – solid foundations over buzzword-driven choices
-- **Continuous growth** – staying curious, trying things out
+- **Clean code** - maintainable, readable, well-structured
+- **Good design** - visual quality and thoughtful UX
+- **Honest craft** - solid foundations over buzzword-driven choices
+- **Continuous growth** - staying curious, trying things out
 
 ## Tech Stack
 
 My current main stack: **TypeScript**, **Next.js**, **React**, **Node.js / Bun** and **PostgreSQL**. This website currently runs in a Bun container on a Hetzner server managed with Pelican; migration to my own homelab is planned.
 
-I'm not an expert in everything – but I bring real project experience to each of these areas.`;
+I'm not an expert in everything - but I bring real project experience to each of these areas.`;
 }
 
 const VALUES = [

@@ -1,3 +1,18 @@
+# [0.21.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.20.1...v0.21.0) (2026-10-20)
+
+### Features
+
+* redesign the skills page with a hero section, the new skills mascot and per-category stats and filters
+* rebuild the navigation as a floating capsule on scroll with the avatar logo, localized user menu and full ARIA coverage
+* rebuild the footer with a brand column, eyebrow headings, localized tagline and a back-to-top control
+
+### Bug Fixes
+
+* replace skill icons removed from react-icons (SiCss3, SiJava, SiVisualstudiocode) so all 27 icons render again
+* mark the home page mascot as LCP-preload to remove the eager-loading warning
+* use Next Link for internal footer links and point the Astra link at astra-bot.app
+
+
 # [0.20.1](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.20.0...v0.20.1) (2026-09-29)
 
 ### Bug Fixes

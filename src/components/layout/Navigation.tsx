@@ -6,7 +6,6 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence } from "motion/react";
-import { RiTerminalBoxFill } from "react-icons/ri";
 import {
   FiMenu, FiX, FiUser, FiShield, FiLogOut, FiChevronDown, FiGlobe,
 } from "react-icons/fi";
@@ -29,6 +28,7 @@ export default function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -39,6 +39,18 @@ export default function Navigation() {
       setUserMenuOpen(false);
     });
   }, [pathname]);
+
+  useEffect(() => {
+    if (!mobileOpen && !userMenuOpen) return;
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setMobileOpen(false);
+        setUserMenuOpen(false);
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [mobileOpen, userMenuOpen]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -76,13 +88,13 @@ export default function Navigation() {
   const userMenuItems = [
     {
       icon: FiUser,
-      label: "Profile",
+      label: t("profile"),
       href: profileHref,
       show: !!session,
     },
     {
       icon: FiGlobe,
-      label: "Public Profile",
+      label: t("publicProfile"),
       href: discordId ? `/${locale}/global/profile/${discordId}` : null,
       show: !!session && !!discordId,
     },
@@ -100,23 +112,31 @@ export default function Navigation() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-background/85 backdrop-blur-2xl border-b border-white/6 shadow-xl shadow-black/30"
-          : "bg-transparent"
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 px-3 sm:px-4"
     >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-18">
+      <div
+        className={`mx-auto max-w-7xl transition-all duration-300 ${
+          scrolled
+            ? "mt-3 lg:mt-4 rounded-2xl border border-white/8 bg-[#0a0810]/80 backdrop-blur-2xl shadow-2xl shadow-black/50"
+            : "mt-0 border-b border-transparent bg-transparent"
+        }`}
+      >
+        <nav className="flex items-center justify-between h-16 px-3 sm:px-5" aria-label={t("menu")}>
 
           {/* Logo */}
           <Link href={`/${locale}`} className="flex items-center gap-2.5 group shrink-0">
-            <div className="relative">
-              <RiTerminalBoxFill className="w-7 h-7 text-[#7C3AED] group-hover:text-[#A78BFA] transition-colors duration-200" />
-              <div className="absolute inset-0 bg-[#7C3AED]/30 blur-md rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </div>
-            <span className="text-lg font-bold tracking-tight bg-linear-to-r from-white to-white/60 bg-clip-text text-transparent group-hover:from-[#A78BFA] group-hover:to-white/90 transition-all duration-200">
-              xsaitox.dev
+            <span className="relative block h-9 w-9 overflow-hidden rounded-xl border border-white/10 bg-white/5 transition-all duration-300 group-hover:border-white/25">
+              <Image
+                src="/assets/mascot/saito-avatar.webp"
+                alt=""
+                width={36}
+                height={36}
+                loading="eager"
+                className="h-full w-full object-cover"
+              />
+            </span>
+            <span className="text-lg font-bold tracking-tight text-white/90 transition-colors duration-200 group-hover:text-white">
+              xsaitox<span className="text-[#A78BFA]">.dev</span>
             </span>
           </Link>
 
@@ -126,6 +146,7 @@ export default function Navigation() {
               <Link
                 key={link.href}
                 href={link.href}
+                aria-current={isActive(link.href) ? "page" : undefined}
                 className={`relative px-3.5 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                   isActive(link.href)
                     ? "text-white"
@@ -152,6 +173,8 @@ export default function Navigation() {
               <div className="relative" ref={userMenuRef}>
                 <button
                   onClick={() => setUserMenuOpen((v) => !v)}
+                  aria-haspopup="menu"
+                  aria-expanded={userMenuOpen}
                   className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-xl border border-white/10 hover:border-white/20 bg-white/3 hover:bg-white/6 transition-all duration-200 group"
                 >
                   {avatarUrl ? (
@@ -178,6 +201,7 @@ export default function Navigation() {
                 <AnimatePresence>
                   {userMenuOpen && (
                     <motion.div
+                      role="menu"
                       initial={{ opacity: 0, y: 6, scale: 0.97 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 6, scale: 0.97 }}
@@ -202,6 +226,7 @@ export default function Navigation() {
                             <Link
                               key={item.href}
                               href={item.href!}
+                              role="menuitem"
                               onClick={() => setUserMenuOpen(false)}
                               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 ${
                                 item.accent
@@ -218,6 +243,7 @@ export default function Navigation() {
                       {/* Logout */}
                       <div className="p-1.5 pt-0 border-t border-white/6 mt-0.5">
                         <button
+                          role="menuitem"
                           onClick={() => { setUserMenuOpen(false); signOut(); }}
                           className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-red-400/80 hover:text-red-400 hover:bg-red-500/10 transition-all duration-150"
                         >
@@ -243,8 +269,10 @@ export default function Navigation() {
           {/* Mobile Hamburger */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-nav"
+            aria-label={mobileOpen ? t("closeMenu") : t("openMenu")}
             className="lg:hidden p-2 text-white/60 hover:text-white transition-colors duration-200"
-            aria-label="Menu"
           >
             <AnimatePresence mode="wait" initial={false}>
               {mobileOpen ? (
@@ -258,109 +286,111 @@ export default function Navigation() {
               )}
             </AnimatePresence>
           </button>
-        </div>
-      </nav>
+        </nav>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="lg:hidden overflow-hidden bg-background/95 backdrop-blur-2xl border-b border-white/6"
-          >
-            <div className="max-w-7xl mx-auto px-4 pt-3 pb-5 space-y-1">
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              id="mobile-nav"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+              className="lg:hidden overflow-hidden border-t border-white/6 bg-[#0a0810]/95 backdrop-blur-2xl rounded-b-2xl"
+            >
+              <div className="px-2 pt-3 pb-5 space-y-1">
 
-              {/* Nav links */}
-              {navLinks.map((link, i) => (
-                <motion.div
-                  key={link.href}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.04 }}
-                >
-                  <Link
-                    href={link.href}
-                    className={`flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${
-                      isActive(link.href)
-                        ? "bg-white/8 text-white border border-white/8"
-                        : "text-white/55 hover:text-white hover:bg-white/5"
-                    }`}
+                {/* Nav links */}
+                {navLinks.map((link, i) => (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.04 }}
                   >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      href={link.href}
+                      aria-current={isActive(link.href) ? "page" : undefined}
+                      className={`flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${
+                        isActive(link.href)
+                          ? "bg-white/8 text-white border border-white/8"
+                          : "text-white/55 hover:text-white hover:bg-white/5"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
 
-              {/* User section for mobile */}
-              {session && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.28 }}
-                  className="pt-3 mt-2 border-t border-white/6 space-y-1"
-                >
-                  {/* User info */}
-                  <div className="flex items-center gap-3 px-4 py-2 mb-2">
-                    {avatarUrl ? (
-                      <Image src={avatarUrl} alt="" width={36} height={36} className="rounded-full border border-white/10 object-cover" />
-                    ) : (
-                      <div className="w-9 h-9 rounded-full bg-[#7C3AED]/30 flex items-center justify-center">
-                        <FiUser className="w-4 h-4 text-[#A78BFA]" />
+                {/* User section for mobile */}
+                {session && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.28 }}
+                    className="pt-3 mt-2 border-t border-white/6 space-y-1"
+                  >
+                    {/* User info */}
+                    <div className="flex items-center gap-3 px-4 py-2 mb-2">
+                      {avatarUrl ? (
+                        <Image src={avatarUrl} alt="" width={36} height={36} className="rounded-full border border-white/10 object-cover" />
+                      ) : (
+                        <div className="w-9 h-9 rounded-full bg-[#7C3AED]/30 flex items-center justify-center">
+                          <FiUser className="w-4 h-4 text-[#A78BFA]" />
+                        </div>
+                      )}
+                      <div>
+                        <p className="text-sm font-semibold text-white">{userName}</p>
+                        <p className="text-xs text-white/40">{session.user.email}</p>
                       </div>
-                    )}
-                    <div>
-                      <p className="text-sm font-semibold text-white">{userName}</p>
-                      <p className="text-xs text-white/40">{session.user.email}</p>
                     </div>
-                  </div>
 
-                  {userMenuItems
-                    .filter((item) => item.show && item.href)
-                    .map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href!}
-                        className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-                          item.accent
-                            ? "text-[#A78BFA] hover:bg-[#7C3AED]/10"
-                            : "text-white/60 hover:text-white hover:bg-white/5"
-                        }`}
-                      >
-                        <item.icon className="w-4 h-4" />
-                        {item.label}
-                      </Link>
-                    ))}
+                    {userMenuItems
+                      .filter((item) => item.show && item.href)
+                      .map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href!}
+                          className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
+                            item.accent
+                              ? "text-[#A78BFA] hover:bg-[#7C3AED]/10"
+                              : "text-white/60 hover:text-white hover:bg-white/5"
+                          }`}
+                        >
+                          <item.icon className="w-4 h-4" />
+                          {item.label}
+                        </Link>
+                      ))}
 
-                  <button
-                    onClick={() => signOut()}
-                    className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-red-400/80 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"
-                  >
-                    <FiLogOut className="w-4 h-4" />
-                    {t("logout")}
-                  </button>
-                </motion.div>
-              )}
-
-              {/* Bottom bar */}
-              <div className="pt-3 border-t border-white/6 flex items-center justify-between">
-                <LanguageSwitcher />
-                {!session && (
-                  <Link
-                    href={`/${locale}/login`}
-                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-linear-to-r from-[#7C3AED] to-[#4F46E5] rounded-lg"
-                  >
-                    <FiUser className="w-4 h-4" />
-                    {t("login")}
-                  </Link>
+                    <button
+                      onClick={() => signOut()}
+                      className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-red-400/80 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"
+                    >
+                      <FiLogOut className="w-4 h-4" />
+                      {t("logout")}
+                    </button>
+                  </motion.div>
                 )}
+
+                {/* Bottom bar */}
+                <div className="pt-3 border-t border-white/6 flex items-center justify-between px-2">
+                  <LanguageSwitcher />
+                  {!session && (
+                    <Link
+                      href={`/${locale}/login`}
+                      className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-linear-to-r from-[#7C3AED] to-[#4F46E5] rounded-lg"
+                    >
+                      <FiUser className="w-4 h-4" />
+                      {t("login")}
+                    </Link>
+                  )}
+                </div>
               </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </motion.header>
   );
 }

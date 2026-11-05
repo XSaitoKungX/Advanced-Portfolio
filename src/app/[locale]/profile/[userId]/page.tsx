@@ -48,6 +48,7 @@ export default function OwnProfilePage() {
   const t = useTranslations("profile");
   const router = useRouter();
   const { data: session, isPending } = useSession();
+  const sessionUserId = session?.user?.id;
   const userId = params.userId as string;
 
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -56,6 +57,7 @@ export default function OwnProfilePage() {
   const [editingBio, setEditingBio] = useState(false);
   const [bio, setBio] = useState("");
   const [savingBio, setSavingBio] = useState(false);
+  const [bioError, setBioError] = useState(false);
   const [deletionState, setDeletionState] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   const fetchProfile = useCallback(async () => {
@@ -78,27 +80,31 @@ export default function OwnProfilePage() {
 
   useEffect(() => {
     if (isPending) return;
-    if (!session?.user) {
+    if (!sessionUserId) {
       router.push(`/${locale}/login`);
       return;
     }
     fetchProfile();
-  }, [isPending, session, router, locale, fetchProfile]);
+  }, [isPending, sessionUserId, router, locale, fetchProfile]);
 
   async function saveBio() {
-    if (!profile) return;
+    if (!profile || savingBio) return;
     setSavingBio(true);
+    setBioError(false);
     try {
       const res = await fetch(`/api/profile/${userId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ bio }),
       });
-      if (res.ok) {
-        const data = await res.json();
-        setProfile(data.profile);
-        setEditingBio(false);
-      }
+      if (!res.ok) throw new Error("Failed to save bio");
+      const data = await res.json();
+      if (!data.profile) throw new Error("Missing updated profile");
+      setProfile(data.profile);
+      setBio(data.profile.bio ?? "");
+      setEditingBio(false);
+    } catch {
+      setBioError(true);
     } finally {
       setSavingBio(false);
     }
@@ -164,7 +170,10 @@ export default function OwnProfilePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <ProfileCard profile={profile} isOwn={true} />
+              <ProfileCard profile={profile} isOwn={true} onProfileUpdate={(updatedProfile) => {
+                setProfile(updatedProfile);
+                if (!editingBio) setBio(updatedProfile.bio ?? "");
+              }} />
             </motion.div>
           </div>
 
@@ -247,7 +256,7 @@ export default function OwnProfilePage() {
                   <h3 className="text-lg font-semibold text-white">About You</h3>
                   {!editingBio ? (
                     <button
-                      onClick={() => setEditingBio(true)}
+                      onClick={() => { setBio(profile.bio ?? ""); setBioError(false); setEditingBio(true); }}
                       className="flex items-center gap-2 text-sm text-[#7C3AED] hover:text-[#A78BFA] transition-colors"
                     >
                       <FiEdit2 className="w-4 h-4" /> Edit
@@ -256,6 +265,7 @@ export default function OwnProfilePage() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => { setEditingBio(false); setBio(profile.bio ?? ""); }}
+                        disabled={savingBio}
                         className="text-sm text-white/50 hover:text-white transition-colors"
                       >
                         Cancel
@@ -277,10 +287,12 @@ export default function OwnProfilePage() {
                     placeholder="Tell others about yourself..."
                     maxLength={500}
                     rows={4}
+                    disabled={savingBio}
+                    aria-label={t("bioPlaceholder")}
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-[#7C3AED] resize-none"
                   />
                 ) : (
-                  <p className="text-white/70 leading-relaxed">
+                  <p className="text-white/70 leading-relaxed whitespace-pre-wrap [overflow-wrap:anywhere]">
                     {profile.bio || (
                       <span className="text-white/40 italic">
                         No bio yet. Click Edit to tell others about yourself.
@@ -288,6 +300,7 @@ export default function OwnProfilePage() {
                     )}
                   </p>
                 )}
+                {editingBio && bioError && <p role="alert" className="mt-3 text-sm leading-6 text-red-300">{t("errorSaving")}</p>}
               </GlassCard>
             </motion.div>
 

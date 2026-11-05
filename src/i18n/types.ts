@@ -214,6 +214,14 @@ export interface Translations {
   };
   auth: {
     login_with_discord: string;
+    login_error: string;
+    admin_loading_error: string;
+    admin_moderation_error: string;
+    admin_retry: string;
+    admin_approve: string;
+    admin_reject: string;
+    admin_delete: string;
+    admin_pending: string;
     logging_in: string;
     logout_confirm: string;
     welcome_back: string;
@@ -229,6 +237,30 @@ export interface Translations {
   };
   guestbook: {
     title: string;
+    hero_title: string;
+    hero_highlight: string;
+    hero_description: string;
+    write_cta: string;
+    host_note: string;
+    host_signature: string;
+    form_title: string;
+    form_description: string;
+    anonymous_divider: string;
+    name_label: string;
+    message_label: string;
+    optional: string;
+    moderation_hint: string;
+    verified_hint: string;
+    entries_eyebrow: string;
+    entries_title: string;
+    newest_first: string;
+    loading_session: string;
+    loading_entries: string;
+    signing_in: string;
+    error_sign_in: string;
+    error_submit: string;
+    error_rate_limit: string;
+    error_delete: string;
     subtitle: string;
     description: string;
     sign_with_discord: string;
@@ -396,6 +428,7 @@ export interface Translations {
     loading: string;
     notFound: string;
     errorLoading: string;
+    errorSaving: string;
     today: string;
     deleteAccountTitle: string;
     deleteAccountDescription: string;

@@ -10,9 +10,10 @@ export default function LanguageSwitcher() {
   const router = useRouter();
 
   const switchLocale = (newLocale: string) => {
+    if (newLocale === locale) return;
     const segments = pathname.split("/");
     segments[1] = newLocale;
-    router.push(segments.join("/"));
+    router.push(`${segments.join("/")}${window.location.search}${window.location.hash}`);
   };
 
   return (

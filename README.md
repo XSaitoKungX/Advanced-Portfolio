@@ -107,6 +107,7 @@ For CI, optionally add the repository secret `CI_BETTER_AUTH_SECRET`. If it is u
 | `bun dev`              | Development server (Turbopack) |
 | `bun run build`        | Production build               |
 | `bun run lint`         | ESLint checks                  |
+| `bun test`             | Regression tests (no live services required) |
 | `bun run type-check`   | TypeScript checks              |
 | `bun start:prod`       | Production server with Bun     |
 | `bunx prisma db push`  | Push schema to database        |

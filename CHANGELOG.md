@@ -1,3 +1,25 @@
+# [0.22.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.21.0...v0.22.0) (2026-11-05)
+
+### Features
+
+* modernize the guestbook with a personal hero, responsive writing and message columns, accessible form labels and localized moderation guidance
+
+### Bug Fixes
+
+* show guestbook sign-in, submission, rate-limit and deletion errors while preserving unsent messages
+* wrap long guestbook names and messages and refresh entries when the signed-in user changes
+* keep the initial guestbook form consistent during session hydration
+* preserve shared RPC profile data and URL anchors when switching languages
+* make failed Discord sign-ins retryable and move authenticated redirects out of render
+* retain pending moderation entries on failed actions and show queue loading errors with retry
+* keep both bio editors synchronized, retain drafts on save failures and preserve website bios during Discord sync
+* decode UTF-8 RPC share links correctly, validate malformed profile data and encode copied import links safely
+
+### Maintenance
+
+* add Bun regression tests for shared RPC profiles and Discord bio synchronization and run them in CI
+
+
 # [0.21.0](https://github.com/XSaitoKungX/Advanced-Portfolio/compare/v0.20.1...v0.21.0) (2026-10-20)
 
 ### Features

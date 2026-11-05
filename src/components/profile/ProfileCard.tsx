@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { FiCalendar, FiEdit2, FiCheck } from "react-icons/fi";
 import { SiDiscord } from "react-icons/si";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface UserProfile {
   id: string;
@@ -31,6 +32,7 @@ interface UserProfile {
 interface ProfileCardProps {
   profile: UserProfile;
   isOwn: boolean;
+  onProfileUpdate: (profile: UserProfile) => void;
 }
 
 function getPremiumLabel(type: number | null | undefined): string | null {
@@ -59,10 +61,12 @@ function getDiscordFlags(flags: number | null | undefined): string[] {
     .map(([, label]) => label);
 }
 
-export default function ProfileCard({ profile, isOwn }: ProfileCardProps) {
+export default function ProfileCard({ profile, isOwn, onProfileUpdate }: ProfileCardProps) {
+  const t = useTranslations("profile");
   const [editingBio, setEditingBio] = useState(false);
   const [bio, setBio] = useState(profile.bio ?? "");
   const [savingBio, setSavingBio] = useState(false);
+  const [bioError, setBioError] = useState(false);
 
   const bannerStyle = profile.banner
     ? { backgroundImage: `url(${profile.banner})`, backgroundSize: "cover", backgroundPosition: "center" }
@@ -72,14 +76,23 @@ export default function ProfileCard({ profile, isOwn }: ProfileCardProps) {
   const badges = getDiscordFlags(profile.publicFlags);
 
   async function saveBio() {
+    if (savingBio) return;
     setSavingBio(true);
+    setBioError(false);
     try {
-      await fetch(`/api/profile/${profile.userId}`, {
+      const res = await fetch(`/api/profile/${profile.userId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ bio }),
       });
+      if (!res.ok) throw new Error("Failed to save bio");
+      const data = await res.json();
+      if (!data.profile) throw new Error("Missing updated profile");
+      onProfileUpdate(data.profile);
+      setBio(data.profile.bio ?? "");
       setEditingBio(false);
+    } catch {
+      setBioError(true);
     } finally {
       setSavingBio(false);
     }
@@ -116,9 +129,9 @@ export default function ProfileCard({ profile, isOwn }: ProfileCardProps) {
             <div className="absolute bottom-1 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-[#1a1023]" />
           </div>
 
-          {isOwn && (
+          {isOwn && !editingBio && (
             <button
-              onClick={() => setEditingBio(true)}
+              onClick={() => { setBio(profile.bio ?? ""); setBioError(false); setEditingBio(true); }}
               className="flex items-center gap-1.5 px-3 py-1.5 border border-white/20 rounded-lg text-sm text-white/70 hover:text-white hover:border-white/40 transition-all"
             >
               <FiEdit2 className="w-3 h-3" />
@@ -178,6 +191,8 @@ export default function ProfileCard({ profile, isOwn }: ProfileCardProps) {
                 onChange={(e) => setBio(e.target.value)}
                 maxLength={500}
                 rows={3}
+                disabled={savingBio}
+                aria-label={t("bioPlaceholder")}
                 className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-white/40 focus:outline-none focus:border-[#7C3AED] resize-none"
                 placeholder="Write something about yourself..."
                 autoFocus
@@ -193,15 +208,17 @@ export default function ProfileCard({ profile, isOwn }: ProfileCardProps) {
                 </button>
                 <button
                   onClick={() => { setEditingBio(false); setBio(profile.bio ?? ""); }}
+                  disabled={savingBio}
                   className="px-3 py-1.5 border border-white/10 text-white/60 text-xs rounded-lg hover:text-white transition-colors"
                 >
                   Cancel
                 </button>
               </div>
+              {bioError && <p role="alert" className="text-xs leading-5 text-red-300">{t("errorSaving")}</p>}
             </div>
           ) : (
-            <p className="text-white/60 text-sm leading-relaxed">
-              {bio || (isOwn ? <span className="text-white/30 italic">No bio yet — click Edit to add one</span> : <span className="text-white/30 italic">No bio</span>)}
+            <p className="text-white/60 text-sm leading-relaxed whitespace-pre-wrap [overflow-wrap:anywhere]">
+              {profile.bio || (isOwn ? <span className="text-white/30 italic">No bio yet — click Edit to add one</span> : <span className="text-white/30 italic">No bio</span>)}
             </p>
           )}
         </div>

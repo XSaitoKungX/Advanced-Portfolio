@@ -39,7 +39,7 @@ export async function syncDiscordProfile(userId: string, accessToken: string): P
       avatar: newAvatar,
       banner: newBanner,
       bannerColor: discord.banner_color,
-      bio: discord.bio,
+      // The website's bio editor owns existing bios; Discord only seeds new profiles.
       accentColor: discord.accent_color,
       premiumType: discord.premium_type,
       publicFlags: discord.public_flags,

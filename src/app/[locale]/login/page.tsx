@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import { SiDiscord } from "react-icons/si";
 import { FiUser, FiBookOpen, FiArrowLeft, FiCheckCircle } from "react-icons/fi";
 import { signIn, useSession } from "@/lib/auth-client";
+import { useHydrated } from "@/hooks/useHydrated";
 import Link from "next/link";
 
 export default function LoginPage() {
@@ -14,21 +15,30 @@ export default function LoginPage() {
   const locale = useLocale();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [loginError, setLoginError] = useState(false);
   const { data: session } = useSession();
+  const hydrated = useHydrated();
 
-  if (session) {
-    router.replace(`/${locale}/profile/${session.user.id}`);
-    return null;
-  }
+  const userId = hydrated ? session?.user?.id : undefined;
+  useEffect(() => {
+    if (userId) router.replace(`/${locale}/profile/${userId}`);
+  }, [userId, locale, router]);
 
   const handleDiscordLogin = async () => {
+    if (loading) return;
     setLoading(true);
+    setLoginError(false);
     try {
-      await signIn.social({
+      const result = await signIn.social({
         provider: "discord",
         callbackURL: `/${locale}/auth/callback`,
       });
+      if (result.error) {
+        setLoginError(true);
+        setLoading(false);
+      }
     } catch {
+      setLoginError(true);
       setLoading(false);
     }
   };
@@ -38,6 +48,8 @@ export default function LoginPage() {
     { icon: FiBookOpen, text: t("guestbook_verified") },
     { icon: FiCheckCircle, text: locale === "de" ? "Sicherer Discord OAuth" : "Secure Discord OAuth" },
   ];
+
+  if (userId) return null;
 
   return (
     <div className="min-h-screen flex items-center justify-center pt-20 pb-16 px-4">
@@ -97,6 +109,12 @@ export default function LoginPage() {
               </>
             )}
           </motion.button>
+
+          {loginError && (
+            <p role="alert" className="mt-4 text-sm text-red-300">
+              {t("login_error")}
+            </p>
+          )}
 
           <div className="pt-4 border-t border-white/10 space-y-3">
             <Link

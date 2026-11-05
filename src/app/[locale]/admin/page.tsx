@@ -7,6 +7,7 @@ import { FiArrowLeft, FiShield, FiUser, FiMail, FiCode, FiCheck, FiX, FiTrash2, 
 import { RiTerminalBoxFill } from "react-icons/ri";
 import { useSession } from "@/lib/auth-client";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useHydrated } from "@/hooks/useHydrated";
 import { isOwner } from "@/lib/is-owner";
 import { OWNER_DISCORD_ID } from "@/lib/constants";
 import GlassCard from "@/components/ui/GlassCard";
@@ -14,12 +15,15 @@ import { projects } from "@/lib/data/projects";
 import { skills } from "@/lib/data/skills";
 import { experiences } from "@/lib/data/experience";
 import { FiLayers, FiCpu, FiBriefcase } from "react-icons/fi";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function AdminPage() {
   const locale = useLocale();
   const t = useTranslations("auth");
-  const { data: session, isPending } = useSession();
+  const { data: sessionData, isPending: sessionPending } = useSession();
+  const hydrated = useHydrated();
+  const session = hydrated ? sessionData : null;
+  const isPending = !hydrated || sessionPending;
   const { profile } = useCurrentUser();
   const ownerAccess = isOwner(session?.user ?? null) || profile?.discordId === OWNER_DISCORD_ID;
 
@@ -27,31 +31,50 @@ export default function AdminPage() {
     id: string; name: string; message: string; createdAt: string; email?: string;
   }>>([]);
   const [loadingEntries, setLoadingEntries] = useState(false);
+  const [fetchError, setFetchError] = useState(false);
+  const [moderationError, setModerationError] = useState(false);
+  const [moderatingId, setModeratingId] = useState<string | null>(null);
+
+  const fetchPending = useCallback(async (signal?: AbortSignal) => {
+    setLoadingEntries(true);
+    setFetchError(false);
+    try {
+      const res = await fetch("/api/admin/guestbook", { cache: "no-store", signal });
+      if (!res.ok) throw new Error("Failed to load moderation queue");
+      const data = await res.json();
+      if (!Array.isArray(data.pending)) throw new Error("Invalid moderation queue");
+      if (!signal?.aborted) setPendingEntries(data.pending);
+    } catch {
+      if (!signal?.aborted) setFetchError(true);
+    } finally {
+      if (!signal?.aborted) setLoadingEntries(false);
+    }
+  }, []);
 
   useEffect(() => {
-    if (ownerAccess) fetchPending();
-  }, [ownerAccess]);
-
-  async function fetchPending() {
-    setLoadingEntries(true);
-    try {
-      const res = await fetch("/api/admin/guestbook");
-      if (res.ok) {
-        const data = await res.json();
-        setPendingEntries(data.pending ?? []);
-      }
-    } finally {
-      setLoadingEntries(false);
-    }
-  }
+    if (!ownerAccess) return;
+    const controller = new AbortController();
+    void fetchPending(controller.signal);
+    return () => controller.abort();
+  }, [ownerAccess, fetchPending]);
 
   async function moderateEntry(id: string, action: "approve" | "reject" | "delete") {
-    await fetch("/api/admin/guestbook", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, action }),
-    });
-    setPendingEntries((prev) => prev.filter((e) => e.id !== id));
+    if (moderatingId) return;
+    setModeratingId(id);
+    setModerationError(false);
+    try {
+      const res = await fetch("/api/admin/guestbook", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, action }),
+      });
+      if (!res.ok) throw new Error("Moderation failed");
+      setPendingEntries((prev) => prev.filter((entry) => entry.id !== id));
+    } catch {
+      setModerationError(true);
+    } finally {
+      setModeratingId(null);
+    }
   }
 
   if (isPending) {
@@ -189,12 +212,22 @@ export default function AdminPage() {
               </h2>
               {pendingEntries.length > 0 && (
                 <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">
-                  {pendingEntries.length} pending
+                  {t("admin_pending", { n: pendingEntries.length })}
                 </span>
               )}
             </div>
 
-            {loadingEntries ? (
+            {moderationError && (
+              <p role="alert" className="mb-4 text-sm text-red-300">{t("admin_moderation_error")}</p>
+            )}
+            {fetchError ? (
+              <div role="alert" className="py-4 text-center text-sm text-red-300">
+                <p>{t("admin_loading_error")}</p>
+                <button type="button" onClick={() => void fetchPending()} className="mt-3 rounded-lg border border-white/15 px-3 py-2 text-white/80 hover:bg-white/5">
+                  {t("admin_retry")}
+                </button>
+              </div>
+            ) : loadingEntries ? (
               <div className="flex justify-center py-6">
                 <div className="w-6 h-6 border-2 border-[#7C3AED] border-t-transparent rounded-full animate-spin" />
               </div>
@@ -205,9 +238,9 @@ export default function AdminPage() {
             ) : (
               <div className="space-y-3">
                 {pendingEntries.map((entry) => (
-                  <div key={entry.id} className="p-4 rounded-xl bg-yellow-500/5 border border-yellow-500/20">
+                  <div key={entry.id} aria-busy={moderatingId === entry.id} className="p-4 rounded-xl bg-yellow-500/5 border border-yellow-500/20">
                     <div className="flex items-start justify-between gap-3 mb-2">
-                      <div>
+                      <div className="min-w-0 [overflow-wrap:anywhere]">
                         <span className="font-medium text-white text-sm">{entry.name}</span>
                         {entry.email && (
                           <span className="text-white/40 text-xs ml-2">{entry.email}</span>
@@ -217,28 +250,31 @@ export default function AdminPage() {
                         {new Date(entry.createdAt).toLocaleDateString()}
                       </span>
                     </div>
-                    <p className="text-white/70 text-sm mb-3 whitespace-pre-wrap">{entry.message}</p>
-                    <div className="flex gap-2">
+                    <p className="text-white/70 text-sm mb-3 whitespace-pre-wrap [overflow-wrap:anywhere]">{entry.message}</p>
+                    <div className="flex flex-wrap gap-2">
                       <button
                         onClick={() => moderateEntry(entry.id, "approve")}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-green-500/20 hover:bg-green-500/30 text-green-400 text-xs rounded-lg border border-green-500/30 transition-colors"
+                        disabled={moderatingId !== null}
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-green-500/20 hover:bg-green-500/30 text-green-400 text-xs rounded-lg border border-green-500/30 transition-colors disabled:opacity-50 disabled:cursor-wait"
                       >
                         <FiCheck className="w-3 h-3" />
-                        Approve
+                        {t("admin_approve")}
                       </button>
                       <button
                         onClick={() => moderateEntry(entry.id, "reject")}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-400 text-xs rounded-lg border border-red-500/30 transition-colors"
+                        disabled={moderatingId !== null}
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-400 text-xs rounded-lg border border-red-500/30 transition-colors disabled:opacity-50 disabled:cursor-wait"
                       >
                         <FiX className="w-3 h-3" />
-                        Reject
+                        {t("admin_reject")}
                       </button>
                       <button
                         onClick={() => moderateEntry(entry.id, "delete")}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-white/40 text-xs rounded-lg border border-white/10 transition-colors"
+                        disabled={moderatingId !== null}
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-white/40 text-xs rounded-lg border border-white/10 transition-colors disabled:opacity-50 disabled:cursor-wait"
                       >
                         <FiTrash2 className="w-3 h-3" />
-                        Delete
+                        {t("admin_delete")}
                       </button>
                     </div>
                   </div>

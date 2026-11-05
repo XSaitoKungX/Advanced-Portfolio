@@ -2,25 +2,12 @@
 
 import { useState, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { FiDownload, FiCheckCircle, FiAlertCircle, FiCopy, FiExternalLink } from "react-icons/fi";
 import { SiDiscord } from "react-icons/si";
-
-interface SharedProfile {
-  name: string;
-  applicationId: string;
-  details?: string;
-  state?: string;
-  largeImageKey?: string;
-  largeImageText?: string;
-  smallImageKey?: string;
-  smallImageText?: string;
-  button1Label?: string;
-  button1Url?: string;
-  button2Label?: string;
-  button2Url?: string;
-}
+import { decodeProfile, type SharedProfile } from "./_lib/profile";
 
 // Demo profile for showcase when no data parameter is provided
 const DEMO_PROFILE: SharedProfile = {
@@ -36,19 +23,12 @@ const DEMO_PROFILE: SharedProfile = {
   button2Label: "Join Discord",
 };
 
-function decodeProfile(data: string): SharedProfile | null {
-  try {
-    const json = atob(data);
-    return JSON.parse(json) as SharedProfile;
-  } catch {
-    return null;
-  }
-}
-
 export default function SharePage() {
+  const locale = useLocale();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState(false);
 
   const data = searchParams.get("data");
 
@@ -60,13 +40,20 @@ export default function SharePage() {
   }, [data]);
 
   const handleOpenInApp = () => {
-    window.location.href = `discordrpc://import?data=${data}`;
+    if (data) window.location.href = `discordrpc://import?data=${encodeURIComponent(data)}`;
   };
 
   const handleCopyDeeplink = async () => {
-    await navigator.clipboard.writeText(`discordrpc://import?data=${data}`);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    if (!data) return;
+    setCopied(false);
+    setCopyError(false);
+    try {
+      await navigator.clipboard.writeText(`discordrpc://import?data=${encodeURIComponent(data)}`);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopyError(true);
+    }
   };
 
   return (
@@ -94,11 +81,11 @@ export default function SharePage() {
         </div>
 
         {error ? (
-          <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-6 text-center">
+          <div role="alert" className="bg-red-500/10 border border-red-500/30 rounded-xl p-6 text-center">
             <FiAlertCircle className="w-10 h-10 text-red-400 mx-auto mb-3" />
             <p className="text-red-300 font-medium">{error}</p>
             <button
-              onClick={() => router.push("/discord-customrpc")}
+              onClick={() => router.push(`/${locale}/discord-customrpc`)}
               className="mt-4 text-sm text-zinc-400 hover:text-white transition-colors"
             >
               ← Back to Discord Custom RPC
@@ -107,7 +94,7 @@ export default function SharePage() {
         ) : profile ? (
           <>
             {/* Profile Card */}
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-6 backdrop-blur-sm">
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-6 backdrop-blur-sm [overflow-wrap:anywhere]">
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <h2 className="text-xl font-semibold text-white">{profile.name}</h2>
@@ -166,7 +153,7 @@ export default function SharePage() {
                 // Demo mode buttons
                 <>
                   <Link
-                    href="/discord-customrpc"
+                    href={`/${locale}/discord-customrpc`}
                     className="w-full flex items-center justify-center gap-2.5 bg-[#5865F2] hover:bg-[#4752c4] text-white font-semibold py-3.5 px-6 rounded-xl transition-colors"
                   >
                     <FiDownload className="w-5 h-5" />
@@ -211,9 +198,11 @@ export default function SharePage() {
                 </>
               )}
 
+              {copyError && <p role="alert" className="text-center text-sm text-red-300">{locale === "de" ? "Der Link konnte nicht kopiert werden. Bitte prüfe die Zwischenablage-Berechtigung und versuche es erneut." : "The link could not be copied. Please check clipboard permission and try again."}</p>}
+
               <div className="text-center pt-2">
                 <Link
-                  href="/discord-customrpc"
+                  href={`/${locale}/discord-customrpc`}
                   className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors inline-flex items-center gap-1.5"
                 >
                   <FiDownload className="w-3.5 h-3.5" />
